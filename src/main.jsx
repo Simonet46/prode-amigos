@@ -542,8 +542,8 @@ function Ranking({ ranking }) {
       <Header title="Ranking" subtitle="Desempate: exactos, grupos, especiales y empate oficial." />
       <div className="rankingList">
         {ranking.map((item, index) => (
-          <article key={item.id} className="rankingCard">
-            <span className="rank">#{index + 1}</span>
+          <article key={item.id} className={`rankingCard${index < 3 ? ` podium-${index + 1}` : ''}`}>
+            <span className="rank">{index === 0 ? <Crown size={19} strokeWidth={2.4} /> : `#${index + 1}`}</span>
             <Avatar profile={item} />
             <div className="rankName">
               <b>{item.team_name || 'Sin equipo'}</b>
