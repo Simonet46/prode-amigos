@@ -1047,7 +1047,7 @@ function ProfileSticker({ profile, compact = false }) {
 function Avatar({ profile, large = false }) {
   const imageUrl =
   profile?.username
-    ? `/prode-amigos/avatars/${profile.username}.webp?v=2`
+    ? `/prode-amigos/dist/avatars/${profile.username}.webp?v=2`
     : null;
   const initials = profile?.prode_avatars?.code || profile?.avatar_code || profile?.team_name?.slice(0, 2) || AVATAR_FALLBACK;
   return (
