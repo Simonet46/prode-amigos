@@ -1185,6 +1185,35 @@ select:focus {
   border-color: rgba(255, 255, 255, 0.45);
 }
 
+/* Botón de guardado con estados */
+.saveButton.saved:disabled {
+  opacity: 1;
+  cursor: default;
+  color: #9ef0c0;
+  background: linear-gradient(180deg, rgba(31, 143, 100, 0.28), rgba(13, 95, 72, 0.3));
+  border-color: rgba(110, 222, 160, 0.45);
+}
+
+.saveButton.saved svg {
+  animation: checkPop 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes checkPop {
+  from {
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.matchCard.locked .saveButton:disabled {
+  opacity: 0.75;
+}
+
 /* Chat de la liga */
 .avatar.small {
   width: 30px;

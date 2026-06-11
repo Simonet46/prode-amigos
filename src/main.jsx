@@ -5,8 +5,10 @@ import {
   Award,
   BookOpen,
   CalendarClock,
+  Check,
   Crown,
   GitBranch,
+  Lock,
   LogOut,
   Medal,
   MessageCircle,
@@ -38,8 +40,12 @@ const tabs = [
   { id: 'profile', label: 'Perfil', icon: UserRound },
 ];
 
+const TZ_AR = 'America/Argentina/Buenos_Aires';
+const TZ_FR = 'Europe/Paris';
 const nowIso = () => new Date().toISOString();
-const dateKey = (value) => (value ? new Date(value).toISOString().slice(0, 10) : 'sin-fecha');
+const dateInTz = (date, timeZone) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+const dateKey = (value) => (value ? dateInTz(new Date(value), TZ_AR) : 'sin-fecha');
 const fmtDay = (value) =>
   value && value !== 'sin-fecha'
     ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short' }).format(new Date(`${value}T12:00:00Z`))
@@ -49,8 +55,16 @@ const fmtDate = (value) =>
     ? new Intl.DateTimeFormat('es-AR', {
         dateStyle: 'medium',
         timeStyle: 'short',
+        timeZone: TZ_AR,
       }).format(new Date(value))
     : 'Sin horario';
+const fmtKickoff = (value) => {
+  if (!value) return 'Sin horario';
+  const date = new Date(value);
+  const frTime = new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TZ_FR }).format(date);
+  const nextDayFr = dateInTz(date, TZ_FR) > dateInTz(date, TZ_AR) ? ' +1 día' : '';
+  return `${fmtDate(value)} ARG (${frTime}${nextDayFr} 🇫🇷)`;
+};
 const timeAgo = (value) => {
   const hours = Math.round((Date.now() - new Date(value).getTime()) / 3600000);
   if (hours < 1) return 'hace minutos';
@@ -619,9 +633,16 @@ function Predictions({ matches, predictionByMatch, onSaved, setNotice }) {
     if (days.length && !days.includes(day)) setDay(days[0]);
   }, [days.join('|'), day]);
 
+  // Re-render periódico: bloquea las tarjetas en vivo cuando llega la hora del partido.
+  const [, setNowTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setNowTick((tick) => tick + 1), 30000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="stack">
-      <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio." />
+      <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio. Horarios de Argentina (y Francia)." />
       <Segmented options={days} value={day} onChange={setDay} render={(item) => fmtDay(item)} />
       {visible.map((match) => (
         <PredictionEditor key={match.id} match={match} prediction={predictionByMatch[match.id]} onSaved={onSaved} setNotice={setNotice} />
@@ -634,7 +655,11 @@ function Predictions({ matches, predictionByMatch, onSaved, setNotice }) {
 function PredictionEditor({ match, prediction, onSaved, setNotice }) {
   const [home, setHome] = useState(prediction?.home_score ?? 0);
   const [away, setAway] = useState(prediction?.away_score ?? 0);
+  const [saving, setSaving] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const editable = canEditMatch(match);
+  const saved = Boolean(prediction);
+  const dirty = !saved || Number(home) !== Number(prediction.home_score) || Number(away) !== Number(prediction.away_score);
 
   useEffect(() => {
     setHome(prediction?.home_score ?? 0);
@@ -642,6 +667,11 @@ function PredictionEditor({ match, prediction, onSaved, setNotice }) {
   }, [prediction?.id, prediction?.home_score, prediction?.away_score]);
 
   const save = async () => {
+    if (!canEditMatch(match)) {
+      setNotice('Ese partido ya está cerrado.');
+      return;
+    }
+    setSaving(true);
     const { data: user } = await supabase.auth.getUser();
     const { error } = await supabase.from('prode_predictions').upsert({
       id: prediction?.id,
@@ -651,18 +681,20 @@ function PredictionEditor({ match, prediction, onSaved, setNotice }) {
       home_score: Number(home),
       away_score: Number(away),
     });
+    setSaving(false);
     if (error) {
       setNotice(error.message.includes('locked') ? 'Ese partido ya está cerrado.' : error.message);
       return;
     }
-    setNotice('Prode guardado.');
+    setJustSaved(true);
+    setTimeout(() => setJustSaved(false), 2600);
     onSaved();
   };
 
   return (
     <article className={`matchCard ${!editable ? 'locked' : ''}`}>
       <div className="matchMeta">
-        <span>{fmtDate(match.kickoff_at)}</span>
+        <span>{fmtKickoff(match.kickoff_at)}</span>
         <strong>{editable ? 'Abierto' : match.status === 'finished' ? 'Finalizado' : 'Cerrado'}</strong>
       </div>
       <div className="matchRound">{match.homeMatchNumber === match.awayMatchNumber ? ordinalMatchLabel(match.homeMatchNumber) : `${match.home_team?.name || 'Local'}: ${ordinalMatchLabel(match.homeMatchNumber)} · ${match.away_team?.name || 'Visitante'}: ${ordinalMatchLabel(match.awayMatchNumber)}`}</div>
@@ -672,7 +704,23 @@ function PredictionEditor({ match, prediction, onSaved, setNotice }) {
         <span>-</span>
         <input aria-label="Goles visitante" type="number" min="0" value={away} disabled={!editable} onChange={(event) => setAway(event.target.value)} />
       </div>
-      <button className="secondary" disabled={!editable} onClick={save}><Save size={17} /> Guardar</button>
+      <button
+        className={`secondary saveButton${(saved && !dirty) || justSaved ? ' saved' : ''}`}
+        disabled={!editable || saving || (saved && !dirty)}
+        onClick={save}
+      >
+        {!editable ? (
+          <><Lock size={17} /> Partido iniciado</>
+        ) : justSaved || (saved && !dirty) ? (
+          <><Check size={17} strokeWidth={3} /> {justSaved ? '¡Guardado!' : 'Guardado'}</>
+        ) : saving ? (
+          'Guardando...'
+        ) : saved ? (
+          <><Save size={17} /> Modificar resultado</>
+        ) : (
+          <><Save size={17} /> Guardar</>
+        )}
+      </button>
     </article>
   );
 }
