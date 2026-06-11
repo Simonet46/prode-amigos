@@ -1240,6 +1240,14 @@ select:focus {
   border-color: rgba(103, 183, 247, 0.4);
 }
 
+.sceneCover {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 189, 85, 0.35);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
 /* Escena "siesta del siglo": dormidos al frente, fiesta detrás */
 .pressItem.withScene {
   grid-template-columns: 1fr;

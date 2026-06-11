@@ -234,9 +234,23 @@ function buildProdeHeadlines(facts) {
 }
 
 function PressScene({ sleeping, byTeam, members }) {
+  // Portada ilustrada (generada con IA a partir de los avatares); si no existe
+  // o no carga, cae a la escena armada con los avatares reales.
+  const [coverOk, setCoverOk] = useState(true);
   const sleepers = sleeping.map((team) => byTeam[team]).filter(Boolean);
   const sleeperIds = new Set(sleepers.map((member) => member.id));
   const party = (members || []).filter((member) => !sleeperIds.has(member.id)).slice(0, 8);
+  if (coverOk) {
+    return (
+      <img
+        className="sceneCover"
+        src={`${import.meta.env.BASE_URL}press-cover.webp`}
+        alt="Los dormidos del prode"
+        loading="lazy"
+        onError={() => setCoverOk(false)}
+      />
+    );
+  }
   return (
     <div className="pressScene">
       <div className="sceneParty">
