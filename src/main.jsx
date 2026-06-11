@@ -80,6 +80,208 @@ const timeAgo = (value) => {
   return days === 1 ? 'ayer' : `hace ${days} días`;
 };
 
+// RNG con semilla: mismos titulares para todos durante el día, rotan a medianoche ART.
+const hashSeed = (str) => {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i += 1) {
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+};
+const seededRng = (seedStr) => {
+  let a = hashSeed(seedStr);
+  return () => {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+function buildProdeHeadlines(facts) {
+  if (!facts) return [];
+  const rng = seededRng(dateKey(nowIso()));
+  const pickOne = (options) => options[Math.floor(rng() * options.length)];
+  const stories = [];
+  const sign = (h, a) => Math.sign(Number(h) - Number(a));
+
+  for (const match of facts.lockedPicks || []) {
+    const picks = match.picks || [];
+    if (!picks.length) continue;
+    const versus = `${match.home} vs ${match.away}`;
+    const finished = match.home_score !== null && match.away_score !== null;
+    const groups = { 1: [], 0: [], '-1': [] };
+    picks.forEach((p) => groups[sign(p.home, p.away)].push(p));
+    const sorted = Object.entries(groups).filter(([, list]) => list.length).sort((a, b) => a[1].length - b[1].length);
+    const minority = sorted.length > 1 && sorted[0][1].length === 1 ? sorted[0][1][0] : null;
+    const minoritySign = minority ? Number(sorted[0][0]) : null;
+
+    if (finished) {
+      const score = `${match.home_score}-${match.away_score}`;
+      const exacts = picks.filter((p) => Number(p.home) === match.home_score && Number(p.away) === match.away_score);
+      if (exacts.length === 1) {
+        stories.push({ priority: 1, tag: 'VIDENTE', mood: 'vidente', emoji: '🔮', actors: [exacts[0].team], title: pickOne([
+          `🔮 ¿Vidente o arreglado? ${exacts[0].team} clavó el ${score} de ${versus} y la liga pide investigación`,
+          `🎯 ESCALOFRIANTE: ${exacts[0].team} sabía el ${score} de ${versus} antes que la FIFA`,
+        ]), detail: `Único resultado exacto del partido. 3 puntos a la bolsa.` });
+      } else if (exacts.length === 0) {
+        stories.push({ priority: 1, tag: 'PAPELÓN', mood: 'papelon', emoji: '🤡', actors: [], title: pickOne([
+          `🤡 PAPELÓN COLECTIVO: ${picks.length} prodes y NADIE le embocó al ${score} de ${versus}`,
+          `❌ VERGÜENZA NACIONAL: el ${score} de ${versus} dejó a toda la liga pagando`,
+        ]), detail: 'Cero exactos. Una liga entera mirando para otro lado.' });
+      } else {
+        stories.push({ priority: 2, tag: 'DATA', mood: 'exclusivo', emoji: '🎯', actors: exacts.map((p) => p.team), title: `🎯 Lluvia de exactos en ${versus}: ${exacts.map((p) => p.team).join(', ')} la clavaron con el ${score}`, detail: '3 puntos por cabeza. Sospechosamente fácil.' });
+      }
+      if (minority) {
+        const hit = minoritySign === sign(match.home_score, match.away_score);
+        stories.push({ priority: 1, tag: hit ? 'BATACAZO' : 'PAPELÓN', mood: hit ? 'batacazo' : 'crisis', emoji: hit ? '💣' : '🪦', actors: [minority.team], title: hit
+          ? pickOne([
+              `💣 EL BATACAZO DEL AÑO: ${minority.team} desafió a todos en ${versus}... y les rompió el orgullo`,
+              `👑 SOLO CONTRA EL MUNDO: ${minority.team} fue el único que la vio en ${versus}`,
+            ])
+          : pickOne([
+              `📉 SE ESTRELLÓ: ${minority.team} quiso el batacazo en ${versus} y quedó en ridículo`,
+              `🪦 QEPD el batacazo de ${minority.team} en ${versus}. El resto de la liga se ríe`,
+            ]), detail: `Puso ${minority.home}-${minority.away} cuando todos iban para el otro lado.` });
+      }
+    } else {
+      if (minority) {
+        stories.push({ priority: 2, tag: 'BATACAZO', mood: 'batacazo', emoji: '🚨', actors: [minority.team], title: pickOne([
+          `🚨 REBELDE SIN CAUSA: ${minority.team} puso ${minority.home}-${minority.away} en ${versus} y desafía a toda la liga`,
+          `💥 ${minority.team} va por el batacazo en ${versus}: ${minority.home}-${minority.away} mientras el resto se abraza`,
+        ]), detail: 'El pronóstico ya está cerrado. No hay vuelta atrás.' });
+      } else if (sorted.length === 1 && picks.length > 2) {
+        stories.push({ priority: 3, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '🤝', actors: [], title: `🤝 UNANIMIDAD SOSPECHOSA: los ${picks.length} equipos pusieron lo mismo en ${versus}. ¿Cartel del prode?`, detail: 'Nadie quiso despeinarse. Aburridos.' });
+      }
+    }
+  }
+
+  for (const today of facts.todayMissing || []) {
+    const absent = today.absent || [];
+    if (absent.length && absent.length <= 3) {
+      stories.push({ priority: 2, tag: 'ESCÁNDALO', mood: 'escandalo', emoji: '😱', actors: absent, title: pickOne([
+        `😱 ESCÁNDALO: ${absent.join(', ')} ${absent.length === 1 ? 'todavía no cargó' : 'todavía no cargaron'} el prode para ${today.home} vs ${today.away}`,
+        `⏰ ALARMA: ${today.home} vs ${today.away} se juega hoy y ${absent.join(', ')} ${absent.length === 1 ? 'sigue dormido' : 'siguen dormidos'}`,
+      ]), detail: 'El reloj corre. Después no lloren.' });
+    }
+  }
+
+  const standings = facts.standings || [];
+  const leader = standings[0];
+  const second = standings[1];
+  const last = standings[standings.length - 1];
+  if (leader && second && leader.total > 0) {
+    const gap = leader.total - second.total;
+    stories.push({ priority: 4, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '👑', actors: gap === 0 ? [leader.team, second.team] : [leader.team], title: gap === 0
+      ? `🔥 INFARTO EN LA CIMA: ${leader.team} y ${second.team} empatados en ${leader.total}. Esto se define a las piñas`
+      : pickOne([
+          `👑 ${leader.team} manda con ${leader.total} puntos y ya se prueba la corona. ${second.team} a ${gap} y transpirando`,
+          `📊 ${leader.team} pisa fuerte: ${leader.total} puntos y mirando a todos desde arriba`,
+        ]), detail: 'La tabla no miente. Por ahora.' });
+    if (last && last.team !== leader.team && last.total < leader.total) {
+      stories.push({ priority: 4, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
+        `🚑 CRISIS TOTAL en ${last.team}: último con ${last.total} puntos y sin reacción`,
+        `📉 ${last.team} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
+      ]), detail: '¿Hay proyecto? La dirigencia no responde.' });
+    }
+  } else if (leader && leader.total === 0) {
+    stories.push({ priority: 4, tag: 'URGENTE', mood: 'urgente', emoji: '⚔️', actors: [], title: '⚔️ TODOS EN CERO: arranca la guerra del prode y nadie quiere ser el primero en quedar pagando', detail: 'La calma antes de la tormenta.' });
+  }
+
+  const chosen = [];
+  const usedTags = new Set();
+  const ordered = stories
+    .map((story) => ({ ...story, jitter: rng() }))
+    .sort((a, b) => a.priority - b.priority || a.jitter - b.jitter);
+  for (const story of ordered) {
+    if (chosen.length >= 3) break;
+    if (usedTags.has(story.tag) && ordered.length > 3) continue;
+    usedTags.add(story.tag);
+    chosen.push(story);
+  }
+  for (const story of ordered) {
+    if (chosen.length >= 3) break;
+    if (!chosen.includes(story)) chosen.push(story);
+  }
+  return chosen;
+}
+
+function PressFigure({ story, byTeam }) {
+  const actors = (story.actors || []).map((team) => byTeam[team]).filter(Boolean).slice(0, 3);
+  return (
+    <div className={`pressFigure mood-${story.mood}${actors.length > 1 ? ' multi' : ''}`}>
+      {actors.length ? (
+        actors.map((member) => <Avatar key={member.id} profile={member} />)
+      ) : (
+        <span className="pressEmojiBig">{story.emoji}</span>
+      )}
+      {actors.length > 0 && <em className="pressBadge">{story.emoji}</em>}
+    </div>
+  );
+}
+
+// Fixture solo de desarrollo: permite ver la Crónica sin la función SQL.
+// import.meta.env.DEV es false en producción, así que este bloque no llega al build.
+const DEV_FACTS = import.meta.env.DEV
+  ? {
+      standings: [
+        { team: 'El Diego FC', total: 4, exacts: 1 },
+        { team: 'Clota FC', total: 3, exacts: 0 },
+        { team: 'ElmedijoGorda', total: 0, exacts: 0 },
+      ],
+      lockedPicks: [
+        {
+          home: 'Mexico', away: 'South Africa', home_score: 1, away_score: 0,
+          picks: [
+            { team: 'El Diego FC', home: 1, away: 0 },
+            { team: 'Clota FC', home: 2, away: 0 },
+            { team: 'ElmedijoGorda', home: 0, away: 2 },
+          ],
+        },
+      ],
+      todayMissing: [{ home: 'Argentina', away: 'Australia', absent: ['La Tanoneta'] }],
+    }
+  : null;
+
+function PressRoom({ members }) {
+  const [facts, setFacts] = useState(null);
+  useEffect(() => {
+    supabase.rpc('prode_news_facts').then(({ data, error }) => {
+      if (!error) setFacts(data); // si la función no existe todavía, el panel queda oculto
+      else if (DEV_FACTS) setFacts(DEV_FACTS);
+    });
+  }, []);
+  const headlines = useMemo(() => buildProdeHeadlines(facts), [facts]);
+  const byTeam = useMemo(() => {
+    const map = {};
+    (members || []).forEach((member) => {
+      if (member.team_name) map[member.team_name] = member;
+      if (member.real_name) map[member.real_name] = member;
+    });
+    return map;
+  }, [members]);
+  if (!headlines.length) return null;
+  return (
+    <section className="panel">
+      <h2>🗞️ Crónica del Prode</h2>
+      <div className="pressList">
+        {headlines.map((story) => (
+          <article key={story.title} className="pressItem">
+            <div className="pressBody">
+              <span className="pressTag">{story.tag}</span>
+              <b>{story.title}</b>
+              {story.detail && <small>{story.detail}</small>}
+            </div>
+            <PressFigure story={story} byTeam={byTeam} />
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function useNews() {
   const [news, setNews] = useState(null);
   useEffect(() => {
@@ -585,6 +787,7 @@ function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
         <Stat label="Puntos" value={ranking.find((item) => item.id === profile?.id)?.total ?? 0} />
         <Stat label="Primer partido" value={firstKickoffAt ? fmtDate(firstKickoffAt) : 'A cargar'} />
       </div>
+      <PressRoom members={ranking} />
       <section className="panel">
         <h2>Próximo partido</h2>
         {nextMatch ? <MatchTitle match={nextMatch} /> : <p className="muted">Todavía no hay partidos abiertos cargados.</p>}
