@@ -15,5 +15,5 @@ jobs:
           node-version: 22
       - run: node scripts/sync-results.mjs
         env:
-          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_URL: https://pnchuwlktwayhqjlmxoh.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
