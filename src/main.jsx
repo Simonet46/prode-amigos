@@ -41,29 +41,36 @@ const tabs = [
 ];
 
 const TZ_AR = 'America/Argentina/Buenos_Aires';
-const TZ_FR = 'Europe/Paris';
+const DEVICE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const nowIso = () => new Date().toISOString();
 const dateInTz = (date, timeZone) =>
   new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+const timeInTz = (date, timeZone) =>
+  new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone }).format(date);
 const dateKey = (value) => (value ? dateInTz(new Date(value), TZ_AR) : 'sin-fecha');
 const fmtDay = (value) =>
   value && value !== 'sin-fecha'
     ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short' }).format(new Date(`${value}T12:00:00Z`))
     : 'Sin día';
+// Fechas en la hora local del dispositivo de quien mira.
 const fmtDate = (value) =>
   value
     ? new Intl.DateTimeFormat('es-AR', {
         dateStyle: 'medium',
         timeStyle: 'short',
-        timeZone: TZ_AR,
       }).format(new Date(value))
     : 'Sin horario';
+// Hora local del que mira + referencia argentina si difieren.
 const fmtKickoff = (value) => {
   if (!value) return 'Sin horario';
   const date = new Date(value);
-  const frTime = new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TZ_FR }).format(date);
-  const nextDayFr = dateInTz(date, TZ_FR) > dateInTz(date, TZ_AR) ? ' +1 día' : '';
-  return `${fmtDate(value)} ARG (${frTime}${nextDayFr} 🇫🇷)`;
+  const sameAsArgentina = timeInTz(date, DEVICE_TZ) === timeInTz(date, TZ_AR) && dateInTz(date, DEVICE_TZ) === dateInTz(date, TZ_AR);
+  if (sameAsArgentina) return `${fmtDate(value)} 🇦🇷`;
+  const sameDay = dateInTz(date, DEVICE_TZ) === dateInTz(date, TZ_AR);
+  const argentina = sameDay
+    ? timeInTz(date, TZ_AR)
+    : new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TZ_AR }).format(date);
+  return `${fmtDate(value)} (${argentina} 🇦🇷)`;
 };
 const timeAgo = (value) => {
   const hours = Math.round((Date.now() - new Date(value).getTime()) / 3600000);
@@ -642,7 +649,7 @@ function Predictions({ matches, predictionByMatch, onSaved, setNotice }) {
 
   return (
     <div className="stack">
-      <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio. Horarios de Argentina (y Francia)." />
+      <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio. Horarios en tu hora local (🇦🇷 entre paréntesis)." />
       <Segmented options={days} value={day} onChange={setDay} render={(item) => fmtDay(item)} />
       {visible.map((match) => (
         <PredictionEditor key={match.id} match={match} prediction={predictionByMatch[match.id]} onSaved={onSaved} setNotice={setNotice} />
