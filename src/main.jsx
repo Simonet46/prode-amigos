@@ -176,6 +176,23 @@ function buildProdeHeadlines(facts) {
     }
   }
 
+  // Portada: los que duermen sin completar los primeros 3 partidos del Mundial.
+  const earlyMissing = facts.earlyMissing || [];
+  const earlyMatches = facts.earlyMatches || [];
+  if (earlyMatches.length >= 3) {
+    if (earlyMissing.length) {
+      const list = earlyMissing.join(', ');
+      const one = earlyMissing.length === 1;
+      stories.push({ priority: 0, tag: 'ÚLTIMO MOMENTO', mood: 'siesta', emoji: '😴', actors: earlyMissing, scene: { sleeping: earlyMissing }, title: pickOne([
+        `🚨 ESCÁNDALO MAYÚSCULO: ${list} ${one ? 'DUERME' : 'DUERMEN'} la siesta del siglo y ${one ? 'debe' : 'deben'} completar el prode de los primeros 3 partidos`,
+        `😴 PAPELÓN EN LA PREVIA: el Mundial ya está acá y ${list} ${one ? 'sigue roncando' : 'siguen roncando'}: ${one ? 'le faltan' : 'les faltan'} los primeros 3 partidos`,
+        `🛏️ ALERTA ROJA: la liga entera festeja el arranque mientras ${list} ${one ? 'duerme' : 'duermen'} sin cargar los primeros 3 partidos`,
+      ]), detail: 'El resto ya cumplió y lo festeja en su cara. Qué papelón.' });
+    } else {
+      stories.push({ priority: 0, tag: 'HISTÓRICO', mood: 'exclusivo', emoji: '🎉', actors: [], title: `🎉 MILAGRO DEPORTIVO: los ${(facts.standings || []).length} equipos completaron el prode de los primeros 3 partidos. Ni un solo dormido`, detail: 'La FIFA estudia el caso. Nadie lo puede creer.' });
+    }
+  }
+
   const standings = facts.standings || [];
   const leader = standings[0];
   const second = standings[1];
@@ -216,6 +233,30 @@ function buildProdeHeadlines(facts) {
   return chosen;
 }
 
+function PressScene({ sleeping, byTeam, members }) {
+  const sleepers = sleeping.map((team) => byTeam[team]).filter(Boolean);
+  const sleeperIds = new Set(sleepers.map((member) => member.id));
+  const party = (members || []).filter((member) => !sleeperIds.has(member.id)).slice(0, 8);
+  return (
+    <div className="pressScene">
+      <div className="sceneParty">
+        {party.map((member) => <Avatar key={member.id} profile={member} small />)}
+      </div>
+      <span className="sceneConfetti">🎉</span>
+      <span className="sceneConfetti two">🥳</span>
+      <span className="sceneConfetti three">🪩</span>
+      <div className="sceneSleep">
+        {sleepers.slice(0, 4).map((member) => (
+          <div key={member.id} className="sceneSleeper">
+            <Avatar profile={member} />
+            <em>💤</em>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function PressFigure({ story, byTeam }) {
   const actors = (story.actors || []).map((team) => byTeam[team]).filter(Boolean).slice(0, 3);
   return (
@@ -250,6 +291,12 @@ const DEV_FACTS = import.meta.env.DEV
         },
       ],
       todayMissing: [{ home: 'Argentina', away: 'Australia', absent: ['La Tanoneta'] }],
+      earlyMatches: [
+        { home: 'Mexico', away: 'South Africa' },
+        { home: 'South Korea', away: 'Czech Republic' },
+        { home: 'Argentina', away: 'Australia' },
+      ],
+      earlyMissing: ['La Tanoneta', 'ElmedijoGorda'],
     }
   : null;
 
@@ -257,7 +304,8 @@ function PressRoom({ members }) {
   const [facts, setFacts] = useState(null);
   useEffect(() => {
     supabase.rpc('prode_news_facts').then(({ data, error }) => {
-      if (!error) setFacts(data); // si la función no existe todavía, el panel queda oculto
+      // En desarrollo el fixture rellena los campos que falten; en producción DEV_FACTS es null.
+      if (!error) setFacts(DEV_FACTS ? { ...DEV_FACTS, ...data } : data);
       else if (DEV_FACTS) setFacts(DEV_FACTS);
     });
   }, []);
@@ -276,13 +324,15 @@ function PressRoom({ members }) {
       <h2>🗞️ Crónica del Prode</h2>
       <div className="pressList">
         {headlines.map((story) => (
-          <article key={story.title} className="pressItem">
+          <article key={story.title} className={`pressItem${story.scene ? ' withScene' : ''}`}>
             <div className="pressBody">
               <span className="pressTag">{story.tag}</span>
               <b>{story.title}</b>
               {story.detail && <small>{story.detail}</small>}
             </div>
-            <PressFigure story={story} byTeam={byTeam} />
+            {story.scene
+              ? <PressScene sleeping={story.scene.sleeping} byTeam={byTeam} members={members} />
+              : <PressFigure story={story} byTeam={byTeam} />}
           </article>
         ))}
       </div>
