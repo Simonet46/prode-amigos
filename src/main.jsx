@@ -160,11 +160,19 @@ function buildProdeHeadlines(facts) {
 
   for (const today of facts.todayMissing || []) {
     const absent = today.absent || [];
+    const versus = `${today.home} vs ${today.away}`;
     if (absent.length && absent.length <= 3) {
       stories.push({ priority: 2, tag: 'ESCÁNDALO', mood: 'escandalo', emoji: '😱', actors: absent, title: pickOne([
-        `😱 ESCÁNDALO: ${absent.join(', ')} ${absent.length === 1 ? 'todavía no cargó' : 'todavía no cargaron'} el prode para ${today.home} vs ${today.away}`,
-        `⏰ ALARMA: ${today.home} vs ${today.away} se juega hoy y ${absent.join(', ')} ${absent.length === 1 ? 'sigue dormido' : 'siguen dormidos'}`,
+        `😱 ESCÁNDALO: ${absent.join(', ')} ${absent.length === 1 ? 'todavía no cargó' : 'todavía no cargaron'} el prode para ${versus}`,
+        `⏰ ALARMA: ${versus} se juega hoy y ${absent.join(', ')} ${absent.length === 1 ? 'sigue dormido' : 'siguen dormidos'}`,
       ]), detail: 'El reloj corre. Después no lloren.' });
+    } else {
+      // Previa para los días sin escándalos: que nunca falte material.
+      stories.push({ priority: 5, tag: 'HOY', mood: 'urgente', emoji: '🍿', actors: [], title: pickOne([
+        `🍿 HOY SE JUEGA: ${versus}. La liga contiene la respiración y afila los colmillos`,
+        `🔥 LLEGÓ EL DÍA: ${versus}. Prodes cerrados, uñas comidas, amistades en juego`,
+        `⚽ ${versus} se juega HOY: en unas horas sabremos quién la vio y quién quedó pagando`,
+      ]), detail: 'Pronósticos cargados. Ya no depende de ustedes.' });
     }
   }
 
