@@ -47,6 +47,24 @@ const fmtDate = (value) =>
         timeStyle: 'short',
       }).format(new Date(value))
     : 'Sin horario';
+const timeAgo = (value) => {
+  const hours = Math.round((Date.now() - new Date(value).getTime()) / 3600000);
+  if (hours < 1) return 'hace minutos';
+  if (hours < 24) return `hace ${hours} h`;
+  const days = Math.round(hours / 24);
+  return days === 1 ? 'ayer' : `hace ${days} días`;
+};
+
+function useNews() {
+  const [news, setNews] = useState(null);
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}news.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then(setNews)
+      .catch(() => setNews(null));
+  }, []);
+  return news;
+}
 
 function scoreMatch(prediction, match) {
   if (match.home_score === null || match.away_score === null || !prediction) return 0;
@@ -415,6 +433,7 @@ function Onboarding({ profile, onDone }) {
 function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
   const position = ranking.findIndex((item) => item.id === profile?.id) + 1;
   const nextMatch = matches.find((match) => canEditMatch(match));
+  const news = useNews();
   return (
     <div className="stack">
       <ProfileSticker profile={profile} compact />
@@ -427,6 +446,20 @@ function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
         <h2>Próximo partido</h2>
         {nextMatch ? <MatchTitle match={nextMatch} /> : <p className="muted">Todavía no hay partidos abiertos cargados.</p>}
       </section>
+      {news?.items?.length ? (
+        <section className="panel">
+          <h2>Noticias del Mundial</h2>
+          <div className="newsList">
+            {news.items.map((item) => (
+              <a key={item.url} className="newsItem" href={item.url} target="_blank" rel="noreferrer">
+                <span className={`newsTag${item.tag === 'Argentina' ? ' arg' : ''}`}>{item.tag}</span>
+                <b>{item.title}</b>
+                <small>{item.source} · {timeAgo(item.publishedAt)}</small>
+              </a>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section className="panel">
         <h2>Top 5</h2>
         <div className="miniRanking">
