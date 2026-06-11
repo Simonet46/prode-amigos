@@ -100,12 +100,18 @@ const seededRng = (seedStr) => {
   };
 };
 
-function buildProdeHeadlines(facts) {
+function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
   const rng = seededRng(dateKey(nowIso()));
   const pickOne = (options) => options[Math.floor(rng() * options.length)];
   const stories = [];
   const sign = (h, a) => Math.sign(Number(h) - Number(a));
+  // Nombre propio + equipo: "Tomas Dinn (La Tanoneta)". Si no hay perfil, queda el equipo.
+  const who = (team) => {
+    const member = byTeam[team];
+    return member?.real_name && member.real_name !== team ? `${member.real_name} (${team})` : team;
+  };
+  const whoList = (teams) => teams.map(who).join(', ');
 
   for (const match of facts.lockedPicks || []) {
     const picks = match.picks || [];
@@ -123,37 +129,38 @@ function buildProdeHeadlines(facts) {
       const exacts = picks.filter((p) => Number(p.home) === match.home_score && Number(p.away) === match.away_score);
       if (exacts.length === 1) {
         stories.push({ priority: 1, tag: 'VIDENTE', mood: 'vidente', emoji: '🔮', actors: [exacts[0].team], title: pickOne([
-          `🔮 ¿Vidente o arreglado? ${exacts[0].team} clavó el ${score} de ${versus} y la liga pide investigación`,
-          `🎯 ESCALOFRIANTE: ${exacts[0].team} sabía el ${score} de ${versus} antes que la FIFA`,
-        ]), detail: `Único resultado exacto del partido. 3 puntos a la bolsa.` });
+          `🔮 ¿Vidente o arreglado? ${who(exacts[0].team)} clavó el ${score} de ${versus} y la liga exige allanamiento`,
+          `🎯 ESCALOFRIANTE: ${who(exacts[0].team)} sabía el ${score} de ${versus} antes que la FIFA. Interpol ya fue notificada`,
+          `🕵️ CASO ABIERTO: ${who(exacts[0].team)} acertó el ${score} de ${versus}. ¿Talento o tiene un primo en el vestuario?`,
+        ]), detail: 'Único exacto del partido. 3 puntos y una citación a declarar.' });
       } else if (exacts.length === 0) {
         stories.push({ priority: 1, tag: 'PAPELÓN', mood: 'papelon', emoji: '🤡', actors: [], title: pickOne([
-          `🤡 PAPELÓN COLECTIVO: ${picks.length} prodes y NADIE le embocó al ${score} de ${versus}`,
-          `❌ VERGÜENZA NACIONAL: el ${score} de ${versus} dejó a toda la liga pagando`,
+          `🤡 PAPELÓN PLANETARIO: ${picks.length} prodes y NADIE le embocó al ${score} de ${versus}. Devuelvan las camisetas`,
+          `❌ VERGÜENZA HISTÓRICA: el ${score} de ${versus} dejó a la liga ENTERA pagando. Ni uno. CERO.`,
         ]), detail: 'Cero exactos. Una liga entera mirando para otro lado.' });
       } else {
-        stories.push({ priority: 2, tag: 'DATA', mood: 'exclusivo', emoji: '🎯', actors: exacts.map((p) => p.team), title: `🎯 Lluvia de exactos en ${versus}: ${exacts.map((p) => p.team).join(', ')} la clavaron con el ${score}`, detail: '3 puntos por cabeza. Sospechosamente fácil.' });
+        stories.push({ priority: 2, tag: 'DATA', mood: 'exclusivo', emoji: '🎯', actors: exacts.map((p) => p.team), title: `🎯 Lluvia de exactos en ${versus}: ${whoList(exacts.map((p) => p.team))} la clavaron con el ${score}`, detail: '3 puntos por cabeza. Sospechosamente fácil.' });
       }
       if (minority) {
         const hit = minoritySign === sign(match.home_score, match.away_score);
         stories.push({ priority: 1, tag: hit ? 'BATACAZO' : 'PAPELÓN', mood: hit ? 'batacazo' : 'crisis', emoji: hit ? '💣' : '🪦', actors: [minority.team], title: hit
           ? pickOne([
-              `💣 EL BATACAZO DEL AÑO: ${minority.team} desafió a todos en ${versus}... y les rompió el orgullo`,
-              `👑 SOLO CONTRA EL MUNDO: ${minority.team} fue el único que la vio en ${versus}`,
+              `💣 EL BATACAZO DEL AÑO: ${who(minority.team)} desafió a los ${picks.length - 1} restantes en ${versus}... y les arruinó el asado`,
+              `👑 SOLO CONTRA EL MUNDO: ${who(minority.team)} fue el ÚNICO que la vio en ${versus}. El resto, a llorar al campito`,
             ])
           : pickOne([
-              `📉 SE ESTRELLÓ: ${minority.team} quiso el batacazo en ${versus} y quedó en ridículo`,
-              `🪦 QEPD el batacazo de ${minority.team} en ${versus}. El resto de la liga se ríe`,
+              `📉 SE ESTRELLÓ MAL: ${who(minority.team)} quiso el batacazo en ${versus} y quedó en ridículo nacional`,
+              `🪦 QEPD el batacazo de ${who(minority.team)} en ${versus}. El grupo de WhatsApp no perdona`,
             ]), detail: `Puso ${minority.home}-${minority.away} cuando todos iban para el otro lado.` });
       }
     } else {
       if (minority) {
         stories.push({ priority: 2, tag: 'BATACAZO', mood: 'batacazo', emoji: '🚨', actors: [minority.team], title: pickOne([
-          `🚨 REBELDE SIN CAUSA: ${minority.team} puso ${minority.home}-${minority.away} en ${versus} y desafía a toda la liga`,
-          `💥 ${minority.team} va por el batacazo en ${versus}: ${minority.home}-${minority.away} mientras el resto se abraza`,
-        ]), detail: 'El pronóstico ya está cerrado. No hay vuelta atrás.' });
+          `🚨 REBELDE SIN CAUSA: ${who(minority.team)} puso ${minority.home}-${minority.away} en ${versus} y desafía a toda la liga. Valiente o inconsciente`,
+          `💥 ${who(minority.team)} va por el batacazo en ${versus}: ${minority.home}-${minority.away} mientras los demás se abrazan asustados`,
+        ]), detail: 'El pronóstico ya está cerrado. No hay vuelta atrás. Palomitas listas.' });
       } else if (sorted.length === 1 && picks.length > 2) {
-        stories.push({ priority: 3, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '🤝', actors: [], title: `🤝 UNANIMIDAD SOSPECHOSA: los ${picks.length} equipos pusieron lo mismo en ${versus}. ¿Cartel del prode?`, detail: 'Nadie quiso despeinarse. Aburridos.' });
+        stories.push({ priority: 3, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '🤝', actors: [], title: `🤝 UNANIMIDAD SOSPECHOSA: los ${picks.length} pusieron LO MISMO en ${versus}. ¿Cartel del prode o falta de personalidad?`, detail: 'Nadie quiso despeinarse. Aburridos.' });
       }
     }
   }
@@ -163,8 +170,8 @@ function buildProdeHeadlines(facts) {
     const versus = `${today.home} vs ${today.away}`;
     if (absent.length && absent.length <= 3) {
       stories.push({ priority: 2, tag: 'ESCÁNDALO', mood: 'escandalo', emoji: '😱', actors: absent, title: pickOne([
-        `😱 ESCÁNDALO: ${absent.join(', ')} ${absent.length === 1 ? 'todavía no cargó' : 'todavía no cargaron'} el prode para ${versus}`,
-        `⏰ ALARMA: ${versus} se juega hoy y ${absent.join(', ')} ${absent.length === 1 ? 'sigue dormido' : 'siguen dormidos'}`,
+        `😱 ESCÁNDALO: ${whoList(absent)} ${absent.length === 1 ? 'todavía no cargó' : 'todavía no cargaron'} el prode para ${versus}. La liga ya le está eligiendo apodo`,
+        `⏰ ALARMA MÁXIMA: ${versus} se juega HOY y ${whoList(absent)} ${absent.length === 1 ? 'sigue roncando' : 'siguen roncando'}. Insólito`,
       ]), detail: 'El reloj corre. Después no lloren.' });
     } else {
       // Previa para los días sin escándalos: que nunca falte material.
@@ -181,7 +188,7 @@ function buildProdeHeadlines(facts) {
   const earlyMatches = facts.earlyMatches || [];
   if (earlyMatches.length >= 3) {
     if (earlyMissing.length) {
-      const list = earlyMissing.join(', ');
+      const list = whoList(earlyMissing);
       const one = earlyMissing.length === 1;
       stories.push({ priority: 0, tag: 'ÚLTIMO MOMENTO', mood: 'siesta', emoji: '😴', actors: earlyMissing, scene: { sleeping: earlyMissing }, title: pickOne([
         `🚨 ESCÁNDALO MAYÚSCULO: ${list} ${one ? 'DUERME' : 'DUERMEN'} la siesta del siglo y ${one ? 'debe' : 'deben'} completar el prode de los primeros 3 partidos`,
@@ -189,7 +196,10 @@ function buildProdeHeadlines(facts) {
         `🛏️ ALERTA ROJA: la liga entera festeja el arranque mientras ${list} ${one ? 'duerme' : 'duermen'} sin cargar los primeros 3 partidos`,
       ]), detail: 'El resto ya cumplió y lo festeja en su cara. Qué papelón.' });
     } else {
-      stories.push({ priority: 0, tag: 'HISTÓRICO', mood: 'exclusivo', emoji: '🎉', actors: [], title: `🎉 MILAGRO DEPORTIVO: los ${(facts.standings || []).length} equipos completaron el prode de los primeros 3 partidos. Ni un solo dormido`, detail: 'La FIFA estudia el caso. Nadie lo puede creer.' });
+      stories.push({ priority: 0, tag: 'HISTÓRICO', mood: 'exclusivo', emoji: '🎉', actors: [], scene: { sleeping: [] }, title: pickOne([
+        `🎉 INSÓLITO PERO REAL: los ${(facts.standings || []).length} equipos completaron el prode de los primeros 3 partidos. Cero dormidos. La FIFA abrió un expediente por sospecha de seriedad`,
+        `🏆 MILAGRO DEPORTIVO: ni UN SOLO dormido en la liga. Los ${(facts.standings || []).length} cumplieron con los primeros 3 partidos. Científicos no lo pueden explicar`,
+      ]), detail: 'Festejan como campeones... con cero puntos todos. Papelón anticipado.' });
     }
   }
 
@@ -200,16 +210,16 @@ function buildProdeHeadlines(facts) {
   if (leader && second && leader.total > 0) {
     const gap = leader.total - second.total;
     stories.push({ priority: 4, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '👑', actors: gap === 0 ? [leader.team, second.team] : [leader.team], title: gap === 0
-      ? `🔥 INFARTO EN LA CIMA: ${leader.team} y ${second.team} empatados en ${leader.total}. Esto se define a las piñas`
+      ? `🔥 INFARTO EN LA CIMA: ${who(leader.team)} y ${who(second.team)} empatados en ${leader.total}. Esto se define a las piñas`
       : pickOne([
-          `👑 ${leader.team} manda con ${leader.total} puntos y ya se prueba la corona. ${second.team} a ${gap} y transpirando`,
-          `📊 ${leader.team} pisa fuerte: ${leader.total} puntos y mirando a todos desde arriba`,
+          `👑 ${who(leader.team)} manda con ${leader.total} puntos y ya pidió que le filmen el documental. ${who(second.team)} a ${gap} y transpirando`,
+          `📊 ${who(leader.team)} pisa fuerte: ${leader.total} puntos y mirando a todos por encima del hombro. Insoportable`,
         ]), detail: 'La tabla no miente. Por ahora.' });
     if (last && last.team !== leader.team && last.total < leader.total) {
       stories.push({ priority: 4, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
-        `🚑 CRISIS TOTAL en ${last.team}: último con ${last.total} puntos y sin reacción`,
-        `📉 ${last.team} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
-      ]), detail: '¿Hay proyecto? La dirigencia no responde.' });
+        `🚑 CRISIS TERMINAL en ${last.team}: ${who(last.team)} último con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
+        `📉 ${who(last.team)} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
+      ]), detail: '¿Hay proyecto? La dirigencia no responde llamados.' });
     }
   } else if (leader && leader.total === 0) {
     stories.push({ priority: 4, tag: 'URGENTE', mood: 'urgente', emoji: '⚔️', actors: [], title: '⚔️ TODOS EN CERO: arranca la guerra del prode y nadie quiere ser el primero en quedar pagando', detail: 'La calma antes de la tormenta.' });
@@ -323,7 +333,6 @@ function PressRoom({ members }) {
       else if (DEV_FACTS) setFacts(DEV_FACTS);
     });
   }, []);
-  const headlines = useMemo(() => buildProdeHeadlines(facts), [facts]);
   const byTeam = useMemo(() => {
     const map = {};
     (members || []).forEach((member) => {
@@ -332,6 +341,7 @@ function PressRoom({ members }) {
     });
     return map;
   }, [members]);
+  const headlines = useMemo(() => buildProdeHeadlines(facts, byTeam), [facts, byTeam]);
   if (!headlines.length) return null;
   return (
     <section className="panel">
