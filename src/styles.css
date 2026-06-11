@@ -1436,6 +1436,84 @@ select:focus {
   border-color: rgba(255, 255, 255, 0.45);
 }
 
+/* Prodes de la liga (visibles solo con el partido cerrado) */
+.picksToggle {
+  margin-top: 8px;
+  min-height: 42px;
+  font-size: 0.86rem;
+}
+
+.leaguePicks {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(231, 189, 85, 0.25);
+}
+
+.leaguePickRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(6, 16, 31, 0.3));
+  border: 1px solid var(--line);
+}
+
+.leaguePickRow.own {
+  border-color: rgba(231, 189, 85, 0.5);
+  background: linear-gradient(90deg, rgba(231, 189, 85, 0.14), rgba(6, 16, 31, 0.3));
+}
+
+.leaguePickRow.exact {
+  border-left: 3px solid var(--gold);
+}
+
+.leaguePickRow.winner {
+  border-left: 3px solid var(--blue);
+}
+
+.leaguePickRow.miss {
+  opacity: 0.78;
+}
+
+.leaguePickName {
+  min-width: 0;
+}
+
+.leaguePickName b {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.88rem;
+}
+
+.leaguePickName small {
+  color: var(--gold-2);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.leaguePickRow strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--gold-2);
+}
+
+.leaguePickRow em {
+  font-style: normal;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.leaguePickRow.exact em {
+  color: var(--gold-2);
+}
+
 /* Botón de guardado con estados */
 .saveButton.saved:disabled {
   opacity: 1;

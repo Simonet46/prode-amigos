@@ -592,7 +592,7 @@ function App() {
       <main className="layout">
         <section className="screen">
           {activeTab === 'dashboard' && <Dashboard profile={profile} ranking={ranking} matches={matches} firstKickoffAt={firstKickoffAt} />}
-          {activeTab === 'predictions' && <Predictions matches={matches} predictionByMatch={predictionByMatch} onSaved={loadData} setNotice={setNotice} />}
+          {activeTab === 'predictions' && <Predictions matches={matches} predictionByMatch={predictionByMatch} members={members} onSaved={loadData} setNotice={setNotice} />}
           {activeTab === 'points' && <MyPoints matches={matches} predictionByMatch={predictionByMatch} />}
           {activeTab === 'ranking' && <Ranking ranking={ranking} />}
           {activeTab === 'fixture' && <Fixture matches={matches} />}
@@ -915,7 +915,7 @@ function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
   );
 }
 
-function Predictions({ matches, predictionByMatch, onSaved, setNotice }) {
+function Predictions({ matches, predictionByMatch, members, onSaved, setNotice }) {
   const annotatedMatches = useMemo(() => annotateTeamMatchNumbers(matches), [matches]);
   const days = [...new Set(annotatedMatches.map((match) => dateKey(match.kickoff_at)))].sort();
   const [day, setDay] = useState(days[0] || 'sin-fecha');
@@ -937,21 +937,50 @@ function Predictions({ matches, predictionByMatch, onSaved, setNotice }) {
       <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio. Horarios en tu hora local (🇦🇷 entre paréntesis)." />
       <Segmented options={days} value={day} onChange={setDay} render={(item) => fmtDay(item)} />
       {visible.map((match) => (
-        <PredictionEditor key={match.id} match={match} prediction={predictionByMatch[match.id]} onSaved={onSaved} setNotice={setNotice} />
+        <PredictionEditor key={match.id} match={match} prediction={predictionByMatch[match.id]} members={members} onSaved={onSaved} setNotice={setNotice} />
       ))}
       {!visible.length && <Empty text="Cuando el admin cargue partidos, aparecen acá." />}
     </div>
   );
 }
 
-function PredictionEditor({ match, prediction, onSaved, setNotice }) {
+function PredictionEditor({ match, prediction, members, onSaved, setNotice }) {
   const [home, setHome] = useState(prediction?.home_score ?? 0);
   const [away, setAway] = useState(prediction?.away_score ?? 0);
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [leaguePicks, setLeaguePicks] = useState(null);
+  const [showPicks, setShowPicks] = useState(false);
   const editable = canEditMatch(match);
   const saved = Boolean(prediction);
   const dirty = !saved || Number(home) !== Number(prediction.home_score) || Number(away) !== Number(prediction.away_score);
+  const memberById = useMemo(() => Object.fromEntries((members || []).map((member) => [member.id, member])), [members]);
+  const finished = match.home_score !== null && match.away_score !== null;
+
+  const togglePicks = async () => {
+    if (!showPicks && leaguePicks === null) {
+      const { data, error } = await supabase.rpc('prode_match_picks', { match_uuid: match.id });
+      if (error) {
+        setNotice('No se pudieron cargar los prodes de la liga.');
+        return;
+      }
+      setLeaguePicks(data || []);
+    }
+    setShowPicks(!showPicks);
+  };
+
+  const sortedPicks = useMemo(() => {
+    if (!leaguePicks) return [];
+    return [...leaguePicks].sort((a, b) => {
+      if (finished) {
+        const diff = scoreMatch({ home_score: b.home, away_score: b.away }, match) - scoreMatch({ home_score: a.home, away_score: a.away }, match);
+        if (diff) return diff;
+      }
+      const nameA = memberById[a.user_id]?.team_name || '';
+      const nameB = memberById[b.user_id]?.team_name || '';
+      return nameA.localeCompare(nameB);
+    });
+  }, [leaguePicks, finished, match, memberById]);
 
   useEffect(() => {
     setHome(prediction?.home_score ?? 0);
@@ -1013,6 +1042,35 @@ function PredictionEditor({ match, prediction, onSaved, setNotice }) {
           <><Save size={17} /> Guardar</>
         )}
       </button>
+      {!editable && (
+        <>
+          <button className="secondary picksToggle" onClick={togglePicks}>
+            <Users size={16} /> {showPicks ? 'Ocultar prodes de la liga' : 'Ver qué puso la liga'}
+          </button>
+          {showPicks && (
+            <div className="leaguePicks">
+              {sortedPicks.map((pick) => {
+                const member = memberById[pick.user_id];
+                const points = finished ? scoreMatch({ home_score: pick.home, away_score: pick.away }, match) : null;
+                const kind = points === 3 ? 'exact' : points === 1 ? 'winner' : 'miss';
+                const own = prediction && pick.user_id === prediction.user_id;
+                return (
+                  <div key={pick.user_id} className={`leaguePickRow${own ? ' own' : ''}${finished ? ` ${kind}` : ''}`}>
+                    <Avatar profile={member} small />
+                    <div className="leaguePickName">
+                      <b>{member?.team_name || member?.real_name || 'Jugador'}</b>
+                      {own && <small>vos</small>}
+                    </div>
+                    <strong>{pick.home}-{pick.away}</strong>
+                    {finished && <em>{points === 3 ? '🎯 3 pts' : points === 1 ? '✓ 1 pt' : '0 pts'}</em>}
+                  </div>
+                );
+              })}
+              {!sortedPicks.length && <p className="muted">Nadie cargó pronóstico para este partido.</p>}
+            </div>
+          )}
+        </>
+      )}
     </article>
   );
 }
