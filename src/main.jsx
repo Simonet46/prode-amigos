@@ -451,10 +451,21 @@ function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
           <h2>Noticias del Mundial</h2>
           <div className="newsList">
             {news.items.map((item) => (
-              <a key={item.url} className="newsItem" href={item.url} target="_blank" rel="noreferrer">
-                <span className={`newsTag${item.tag === 'Argentina' ? ' arg' : ''}`}>{item.tag}</span>
-                <b>{item.title}</b>
-                <small>{item.source} · {timeAgo(item.publishedAt)}</small>
+              <a key={item.url} className={`newsItem${item.image ? ' hasImage' : ''}`} href={item.url} target="_blank" rel="noreferrer">
+                <div className="newsBody">
+                  <span className={`newsTag${item.tag === 'Argentina' ? ' arg' : ''}`}>{item.tag}</span>
+                  <b>{item.title}</b>
+                  <small>{item.source} · {timeAgo(item.publishedAt)}</small>
+                </div>
+                {item.image ? (
+                  <img
+                    className="newsThumb"
+                    src={item.image}
+                    alt=""
+                    loading="lazy"
+                    onError={(event) => { event.currentTarget.closest('.newsItem')?.classList.remove('hasImage'); event.currentTarget.remove(); }}
+                  />
+                ) : null}
               </a>
             ))}
           </div>

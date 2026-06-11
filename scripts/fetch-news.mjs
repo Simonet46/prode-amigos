@@ -1,21 +1,18 @@
-// Busca las noticias más relevantes del Mundial 2026 en Google News RSS
-// y escribe news.json (siempre incluye al menos una de la Selección Argentina).
-// Sin dependencias: parsea el RSS con regex.
+// Busca las noticias más relevantes del Mundial 2026 (con imagen) en los RSS
+// de medios deportivos y escribe news.json. Siempre incluye al menos una de
+// la Selección Argentina. Sin dependencias: parsea el RSS con regex.
 import { writeFileSync } from 'node:fs';
 
 const FEEDS = [
-  {
-    tag: 'Argentina',
-    url: `https://news.google.com/rss/search?q=${encodeURIComponent('"Selección Argentina" Mundial 2026')}&hl=es-419&gl=AR&ceid=AR:es-419`,
-  },
-  {
-    tag: 'Mundial',
-    url: `https://news.google.com/rss/search?q=${encodeURIComponent('"Mundial 2026" selecciones')}&hl=es-419&gl=AR&ceid=AR:es-419`,
-  },
+  { tag: 'Argentina', source: 'Olé', url: 'https://www.ole.com.ar/rss/seleccion/' },
+  { tag: 'Mundial', source: 'Olé', url: 'https://www.ole.com.ar/rss/mundial/' },
+  { tag: 'Mundial', source: 'ESPN', url: 'https://www.espn.com.ar/espn/rss/news', filter: /mundial|copa del mundo/i },
 ];
 
 const MAX_ITEMS = 3;
 const FRESH_WINDOW_MS = 48 * 3600 * 1000;
+const ARGENTINA_RE = /selecci[oó]n argentina|scaloni|messi|albiceleste/i;
+const UA = { 'user-agent': 'Mozilla/5.0 (ProdeAmigosBot)' };
 
 const decode = (value) =>
   value
@@ -32,25 +29,47 @@ const pickTag = (xml, tag) => {
   return match ? decode(match[1]) : '';
 };
 
-async function fetchFeed({ tag, url }) {
-  const res = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0 (ProdeAmigosBot)' } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} en ${url}`);
-  const xml = await res.text();
-  return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)]
-    .map(([, item]) => {
-      let title = pickTag(item, 'title');
-      const source = pickTag(item, 'source');
-      if (source && title.endsWith(` - ${source}`)) title = title.slice(0, -(source.length + 3));
-      const pubDate = new Date(pickTag(item, 'pubDate'));
-      return {
-        title,
-        url: pickTag(item, 'link'),
-        source,
-        publishedAt: Number.isNaN(pubDate.getTime()) ? new Date().toISOString() : pubDate.toISOString(),
-        tag,
-      };
-    })
-    .filter((item) => item.title && item.url);
+const pickImage = (item) => {
+  const match = item.match(/<(?:enclosure|media:content)[^>]*url="([^"]+)"/);
+  return match && /\.(jpe?g|png|webp)/i.test(match[1]) ? match[1] : '';
+};
+
+async function fetchFeed({ tag, source, url, filter }) {
+  try {
+    const res = await fetch(url, { headers: UA });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xml = await res.text();
+    return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)]
+      .map(([, item]) => {
+        const title = pickTag(item, 'title');
+        const pubDate = new Date(pickTag(item, 'pubDate'));
+        return {
+          title,
+          url: pickTag(item, 'link'),
+          source,
+          image: pickImage(item),
+          publishedAt: Number.isNaN(pubDate.getTime()) ? new Date().toISOString() : pubDate.toISOString(),
+          tag: tag === 'Mundial' && ARGENTINA_RE.test(title) ? 'Argentina' : tag,
+        };
+      })
+      .filter((item) => item.title && item.url && (!filter || filter.test(item.title)));
+  } catch (error) {
+    console.error(`Feed falló (${source}): ${error.message}`);
+    return [];
+  }
+}
+
+// Para feeds sin imagen en el RSS (ESPN): busca el og:image de la nota.
+async function resolveImage(item) {
+  if (item.image) return item;
+  try {
+    const res = await fetch(item.url, { headers: UA });
+    const html = (await res.text()).slice(0, 200000);
+    const match = html.match(/property="og:image"[^>]*content="([^"]+)"|content="([^"]+)"[^>]*property="og:image"/);
+    return { ...item, image: match ? (match[1] || match[2]) : '' };
+  } catch {
+    return item;
+  }
 }
 
 const preferFresh = (items) => {
@@ -60,9 +79,9 @@ const preferFresh = (items) => {
 
 const normalizeTitle = (title) => title.toLowerCase().replace(/[^a-záéíóúüñ0-9 ]/g, '').slice(0, 60);
 
-const [argentina, general] = await Promise.all(FEEDS.map(fetchFeed));
-const argentinaFresh = preferFresh(argentina);
-const generalFresh = preferFresh(general);
+const [seleccion, mundial, espn] = await Promise.all(FEEDS.map(fetchFeed));
+const argentinaPool = preferFresh(seleccion);
+const generalPool = preferFresh([...mundial, ...espn].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)));
 
 const chosen = [];
 const seen = new Set();
@@ -75,13 +94,14 @@ const add = (item) => {
 };
 
 // Regla: siempre al menos una de Argentina.
-add(argentinaFresh[0]);
-generalFresh.forEach(add);
-argentinaFresh.slice(1).forEach(add);
+add(argentinaPool[0]);
+generalPool.forEach(add);
+argentinaPool.slice(1).forEach(add);
 
-chosen.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+const withImages = await Promise.all(chosen.slice(0, MAX_ITEMS).map(resolveImage));
+withImages.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 
-const payload = JSON.stringify({ updatedAt: new Date().toISOString(), items: chosen.slice(0, MAX_ITEMS) }, null, 2);
+const payload = JSON.stringify({ updatedAt: new Date().toISOString(), items: withImages }, null, 2);
 writeFileSync('public/news.json', payload);
 writeFileSync('docs/news.json', payload);
 console.log(payload);

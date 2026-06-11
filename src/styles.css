@@ -1118,7 +1118,7 @@ select:focus {
 
 .newsItem {
   display: grid;
-  gap: 5px;
+  gap: 12px;
   padding: 12px;
   color: var(--ink);
   text-decoration: none;
@@ -1128,9 +1128,34 @@ select:focus {
   transition: transform 140ms ease, border-color 140ms ease;
 }
 
+.newsItem.hasImage {
+  grid-template-columns: minmax(0, 1fr) 96px;
+  align-items: center;
+}
+
+.newsBody {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.newsThumb {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+  transition: transform 140ms ease;
+}
+
 .newsItem:hover {
   transform: translateY(-1px);
   border-color: rgba(231, 189, 85, 0.42);
+}
+
+.newsItem:hover .newsThumb {
+  transform: scale(1.04);
 }
 
 .newsItem b {
