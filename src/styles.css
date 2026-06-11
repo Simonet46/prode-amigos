@@ -1638,7 +1638,7 @@ select:focus {
   place-items: center;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1400px) {
   .app {
     padding-right: 330px;
   }
@@ -1734,5 +1734,13 @@ select:focus {
 
   .rulesGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Con el chat fijo (≥1400px) el contenido se corre 330px: la nav acompaña.
+   Va al final del archivo para ganarle a la regla de ≥760px. */
+@media (min-width: 1400px) {
+  .bottomNav {
+    left: max(18px, calc((100vw - 330px - 1060px) / 2));
   }
 }
