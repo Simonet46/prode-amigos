@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import {
   Award,
@@ -8,14 +9,17 @@ import {
   GitBranch,
   LogOut,
   Medal,
+  MessageCircle,
   Plus,
   Save,
+  Send,
   Shield,
   Sparkles,
   Star,
   Trophy,
   UserRound,
   Users,
+  X,
 } from 'lucide-react';
 import { hasSupabaseConfig, supabase, usernameToEmail } from './lib/supabase';
 import './styles.css';
@@ -320,8 +324,126 @@ function App() {
           );
         })}
       </nav>
+      {profile && league && <ChatDock profile={profile} members={members} league={league} />}
       {busy && <div className="loadingLine" />}
     </div>
+  );
+}
+
+const fmtTime = (value) => new Intl.DateTimeFormat('es-AR', { timeStyle: 'short' }).format(new Date(value));
+
+function ChatDock({ profile, members, league }) {
+  const [open, setOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [draft, setDraft] = useState('');
+  const [unread, setUnread] = useState(0);
+  const listRef = useRef(null);
+  const openRef = useRef(false);
+  openRef.current = open;
+  const memberById = useMemo(() => Object.fromEntries(members.map((member) => [member.id, member])), [members]);
+
+  useEffect(() => {
+    if (!league?.id) return undefined;
+    let active = true;
+    supabase
+      .from('prode_chat_messages')
+      .select('*')
+      .eq('league_id', league.id)
+      .order('created_at', { ascending: false })
+      .limit(80)
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) return; // tabla todavía no creada: el chat queda oculto
+        setMessages((data || []).reverse());
+        setReady(true);
+      });
+    const channel = supabase
+      .channel(`prode-chat-${league.id}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'prode_chat_messages', filter: `league_id=eq.${league.id}` },
+        (payload) => {
+          setMessages((prev) => (prev.some((item) => item.id === payload.new.id) ? prev : [...prev, payload.new]));
+          if (!openRef.current && payload.new.user_id !== profile.id) setUnread((count) => count + 1);
+        },
+      )
+      .subscribe();
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, [league?.id, profile.id]);
+
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
+  }, [messages, open]);
+
+  const send = async (event) => {
+    event.preventDefault();
+    const content = draft.trim();
+    if (!content) return;
+    setDraft('');
+    const { error } = await supabase.from('prode_chat_messages').insert({ league_id: league.id, user_id: profile.id, content });
+    if (error) setDraft(content);
+  };
+
+  if (!ready) return null;
+
+  // Portal al body: .app tiene perspective, que rompe position:fixed adentro.
+  return createPortal(
+    <>
+      <button
+        className="chatFab"
+        aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
+        onClick={() => {
+          setOpen(!open);
+          setUnread(0);
+        }}
+      >
+        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        {unread > 0 && <em>{unread > 9 ? '9+' : unread}</em>}
+      </button>
+      <aside className={`chatPanel${open ? ' open' : ''}`} aria-label="Chat de la liga">
+        <header className="chatHeader">
+          <MessageCircle size={16} />
+          <b>Chat de la liga</b>
+          <button className="chatClose" aria-label="Cerrar" onClick={() => setOpen(false)}>
+            <X size={16} />
+          </button>
+        </header>
+        <div className="chatMessages" ref={listRef}>
+          {messages.map((message) => {
+            const author = memberById[message.user_id];
+            const own = message.user_id === profile.id;
+            return (
+              <div key={message.id} className={`chatMsg${own ? ' own' : ''}`}>
+                <Avatar profile={author} small />
+                <div className="chatBubble">
+                  <small>
+                    <b>{own ? 'Vos' : author?.team_name || author?.real_name || 'Jugador'}</b> · {fmtTime(message.created_at)}
+                  </small>
+                  <p>{message.content}</p>
+                </div>
+              </div>
+            );
+          })}
+          {!messages.length && <p className="muted chatEmpty">Todavía no hay mensajes. ¡Abrí el debate! ⚽</p>}
+        </div>
+        <form className="chatForm" onSubmit={send}>
+          <input
+            value={draft}
+            maxLength={500}
+            placeholder="Escribí algo..."
+            onChange={(event) => setDraft(event.target.value)}
+          />
+          <button className="primary chatSend" aria-label="Enviar" disabled={!draft.trim()}>
+            <Send size={17} />
+          </button>
+        </form>
+      </aside>
+    </>,
+    document.body,
   );
 }
 
@@ -1088,11 +1210,11 @@ function ProfileSticker({ profile, compact = false }) {
   );
 }
 
-function Avatar({ profile, large = false }) {
+function Avatar({ profile, large = false, small = false }) {
   const imageUrl = profile?.username ? `${import.meta.env.BASE_URL}avatars/${profile.username}.webp?v=2` : null;
   const initials = profile?.prode_avatars?.code || profile?.avatar_code || profile?.team_name?.slice(0, 2) || AVATAR_FALLBACK;
   return (
-    <div className={`avatar ${imageUrl ? 'photo' : ''} ${large ? 'large' : ''}`}>
+    <div className={`avatar ${imageUrl ? 'photo' : ''} ${large ? 'large' : ''} ${small ? 'small' : ''}`}>
       {imageUrl ? <img src={imageUrl} alt={profile?.real_name || 'Avatar'} onError={(event) => { event.currentTarget.remove(); }} /> : initials}
     </div>
   );
