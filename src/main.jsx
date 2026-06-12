@@ -603,7 +603,7 @@ function App() {
           {activeTab === 'dashboard' && <Dashboard profile={profile} ranking={ranking} matches={matches} firstKickoffAt={firstKickoffAt} />}
           {activeTab === 'predictions' && <Predictions matches={matches} predictionByMatch={predictionByMatch} members={members} onSaved={loadData} setNotice={setNotice} />}
           {activeTab === 'points' && <MyPoints matches={matches} predictionByMatch={predictionByMatch} />}
-          {activeTab === 'ranking' && <Ranking ranking={ranking} />}
+          {activeTab === 'ranking' && <Ranking ranking={ranking} setNotice={setNotice} />}
           {activeTab === 'fixture' && <Fixture matches={matches} />}
           {activeTab === 'rules' && <Rules />}
           {activeTab === 'qualifiers' && (
@@ -1109,13 +1109,39 @@ function MyPoints({ matches, predictionByMatch }) {
   );
 }
 
-function Ranking({ ranking }) {
+function Ranking({ ranking, setNotice }) {
+  const [expandedId, setExpandedId] = useState(null);
+  const [picksByUser, setPicksByUser] = useState({});
+
+  const toggle = async (member) => {
+    if (expandedId === member.id) {
+      setExpandedId(null);
+      return;
+    }
+    if (!picksByUser[member.id]) {
+      const { data, error } = await supabase.rpc('prode_user_picks', { target_user: member.id });
+      if (error) {
+        setNotice('No se pudo cargar el historial de ese equipo.');
+        return;
+      }
+      setPicksByUser((prev) => ({ ...prev, [member.id]: data || [] }));
+    }
+    setExpandedId(member.id);
+  };
+
   return (
     <div className="stack">
-      <Header title="Ranking" subtitle="Desempate: exactos, grupos, especiales y empate oficial." />
+      <Header title="Ranking" subtitle="Tocá un equipo para ver sus pronósticos partido a partido. Desempate: exactos, grupos, especiales y empate oficial." />
       <div className="rankingList">
         {ranking.map((item, index) => (
-          <article key={item.id} className={`rankingCard${index < 3 ? ` podium-${index + 1}` : ''}`}>
+          <article
+            key={item.id}
+            className={`rankingCard expandable${index < 3 ? ` podium-${index + 1}` : ''}${expandedId === item.id ? ' open' : ''}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => toggle(item)}
+            onKeyDown={(event) => { if (event.key === 'Enter') toggle(item); }}
+          >
             <span className="rank">{index === 0 ? <Crown size={19} strokeWidth={2.4} /> : `#${index + 1}`}</span>
             <Avatar profile={item} />
             <div className="rankName">
@@ -1124,10 +1150,30 @@ function Ranking({ ranking }) {
             </div>
             <div className="rankStats">
               <span>{item.exacts} exactos</span>
-              <span>{item.winners} signos</span>
+              <span>{item.winners} {item.winners === 1 ? 'ganador' : 'ganadores'}</span>
               <span>{item.groupPoints} grupos</span>
               <strong>{item.total} pts</strong>
             </div>
+            {expandedId === item.id && (
+              <div className="rankDetail" onClick={(event) => event.stopPropagation()}>
+                {(picksByUser[item.id] || []).map((pick) => {
+                  const played = pick.home_score !== null && pick.away_score !== null;
+                  const points = played ? scoreMatch({ home_score: pick.pick_home, away_score: pick.pick_away }, pick) : null;
+                  const kind = points === 3 ? 'exact' : points === 1 ? 'winner' : 'miss';
+                  const flag = (value) => (value?.startsWith?.('http') ? <img src={value} alt="" /> : value ? <em>{value}</em> : null);
+                  return (
+                    <div key={`${pick.home}-${pick.away}-${pick.kickoff_at}`} className={`rankDetailRow${played ? ` ${kind}` : ''}`}>
+                      <span className="rankDetailMatch">
+                        {flag(pick.home_flag)} {pick.home} {played ? `${pick.home_score}-${pick.away_score}` : 'vs'} {pick.away} {flag(pick.away_flag)}
+                      </span>
+                      <strong>puso {pick.pick_home}-{pick.pick_away}</strong>
+                      <em>{!played ? 'en juego' : points === 3 ? '🎯 3 pts' : points === 1 ? '✓ 1 pt' : '0 pts'}</em>
+                    </div>
+                  );
+                })}
+                {!(picksByUser[item.id] || []).length && <p className="muted">Todavía no hay partidos cerrados para mostrar.</p>}
+              </div>
+            )}
           </article>
         ))}
       </div>
@@ -1140,7 +1186,7 @@ function Rules() {
     ['Resultado exacto', '3 pts', 'Ejemplo: pronosticás 2-1 y termina 2-1.'],
     ['Ganador correcto', '1 pt', 'Ejemplo: ponés 1-0 y gana 3-1.'],
     ['Empate correcto', '1 pt', 'Ejemplo: ponés 2-2 y termina 0-0.'],
-    ['Incorrecto', '0 pts', 'No acertaste signo ni resultado exacto.'],
+    ['Incorrecto', '0 pts', 'No acertaste ni el ganador ni el resultado exacto.'],
   ];
   const specialRules = [
     ['Clasificados por grupo', '1 o 2 pts', 'Equipo correcto en puesto equivocado: 1. Equipo y puesto correcto: 2.'],

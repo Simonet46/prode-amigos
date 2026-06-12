@@ -1436,6 +1436,85 @@ select:focus {
   border-color: rgba(255, 255, 255, 0.45);
 }
 
+/* Detalle del ranking: historial de pronósticos al tocar un equipo */
+.rankingCard.expandable {
+  cursor: pointer;
+}
+
+.rankingCard.open {
+  border-color: rgba(231, 189, 85, 0.45);
+}
+
+.rankDetail {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(231, 189, 85, 0.25);
+  cursor: default;
+}
+
+.rankDetailRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(6, 16, 31, 0.3));
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.rankDetailRow.exact {
+  border-left: 3px solid var(--gold);
+}
+
+.rankDetailRow.winner {
+  border-left: 3px solid var(--blue);
+}
+
+.rankDetailRow.miss {
+  opacity: 0.75;
+}
+
+.rankDetailMatch {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rankDetailMatch img {
+  width: 18px;
+  height: 13px;
+  object-fit: cover;
+  border-radius: 2px;
+  vertical-align: -1px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.rankDetailMatch em {
+  font-style: normal;
+}
+
+.rankDetailRow strong {
+  color: var(--gold-2);
+  white-space: nowrap;
+}
+
+.rankDetailRow em {
+  font-style: normal;
+  font-size: 0.74rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.rankDetailRow.exact em {
+  color: var(--gold-2);
+}
+
 /* Prodes de la liga (visibles solo con el partido cerrado) */
 .picksToggle {
   margin-top: 8px;
