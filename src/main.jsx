@@ -548,7 +548,12 @@ function App() {
   }, [session?.user?.id]);
 
   const firstKickoffAt = settings?.first_kickoff_at || matches.filter((match) => match.kickoff_at).sort((a, b) => new Date(a.kickoff_at) - new Date(b.kickoff_at))[0]?.kickoff_at;
-  const specialLocked = firstKickoffAt ? new Date(firstKickoffAt).getTime() <= Date.now() : false;
+  // Los especiales cierran en el primer kickoff, salvo prórroga (specials_deadline).
+  const specialsCloseAt = [firstKickoffAt, settings?.specials_deadline]
+    .filter(Boolean)
+    .map((value) => new Date(value))
+    .sort((a, b) => b - a)[0] || null;
+  const specialLocked = specialsCloseAt ? specialsCloseAt.getTime() <= Date.now() : false;
   const profileReady = Boolean(profile?.team_name);
 
   const predictionByMatch = useMemo(
@@ -615,6 +620,7 @@ function App() {
               topScorerPick={topScorerPick}
               championPick={championPick}
               locked={specialLocked}
+              closesAt={specialsCloseAt}
               onSaved={loadData}
               setNotice={setNotice}
             />
@@ -1370,7 +1376,7 @@ function BracketTeam({ team, score, winner }) {
   );
 }
 
-function Specials({ league, teams, players, groupPredictions, topScorerPick, championPick, locked, onSaved, setNotice }) {
+function Specials({ league, teams, players, groupPredictions, topScorerPick, championPick, locked, closesAt, onSaved, setNotice }) {
   const groups = [...new Set(teams.map((team) => team.group_code).filter(Boolean))].sort();
   const [groupDraft, setGroupDraft] = useState({});
   const [playerId, setPlayerId] = useState(topScorerPick?.player_id || '');
@@ -1378,10 +1384,13 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
   const selectedPlayer = players.find((player) => player.id === playerId);
   const selectedChampion = teams.find((team) => team.id === championTeamId);
 
+  const lockedMessage = (message) => (message.includes('locked') ? 'Los especiales ya cerraron.' : message);
+
   const saveGroup = async (groupCode) => {
     const { data: user } = await supabase.auth.getUser();
-    const first = groupDraft[`${groupCode}-1`];
-    const second = groupDraft[`${groupCode}-2`];
+    const existing = groupPredictions.find((item) => item.group_code === groupCode);
+    const first = groupDraft[`${groupCode}-1`] ?? existing?.first_team_id;
+    const second = groupDraft[`${groupCode}-2`] ?? existing?.second_team_id;
     if (!first || !second || first === second) {
       setNotice('Elegí dos equipos distintos.');
       return;
@@ -1392,8 +1401,8 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       group_code: groupCode,
       first_team_id: first,
       second_team_id: second,
-    });
-    if (error) setNotice(error.message);
+    }, { onConflict: 'user_id,league_id,group_code' });
+    if (error) setNotice(lockedMessage(error.message));
     else {
       setNotice('Grupo guardado.');
       onSaved();
@@ -1402,25 +1411,43 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
 
   const saveTopScorer = async () => {
     const { data: user } = await supabase.auth.getUser();
-    const { error } = await supabase.from('prode_top_scorer_predictions').insert({ user_id: user.user.id, league_id: league.id, player_id: playerId });
-    if (error) setNotice(error.message.includes('duplicate') ? 'Ya elegiste goleador.' : error.message);
-    else onSaved();
+    const { error } = await supabase
+      .from('prode_top_scorer_predictions')
+      .upsert({ user_id: user.user.id, league_id: league.id, player_id: playerId }, { onConflict: 'user_id,league_id' });
+    if (error) setNotice(lockedMessage(error.message));
+    else {
+      setNotice('Goleador guardado.');
+      onSaved();
+    }
   };
 
   const saveChampion = async () => {
     const { data: user } = await supabase.auth.getUser();
-    const { error } = await supabase.from('prode_champion_predictions').insert({ user_id: user.user.id, league_id: league.id, team_id: championTeamId });
-    if (error) setNotice(error.message.includes('duplicate') ? 'Ya elegiste campeón.' : error.message);
-    else onSaved();
+    const { error } = await supabase
+      .from('prode_champion_predictions')
+      .upsert({ user_id: user.user.id, league_id: league.id, team_id: championTeamId }, { onConflict: 'user_id,league_id' });
+    if (error) setNotice(lockedMessage(error.message));
+    else {
+      setNotice('Campeón guardado.');
+      onSaved();
+    }
   };
 
   return (
     <div className="stack">
-      <Header title="Predicciones especiales" subtitle={locked ? 'Ya cerraron para el Mundial.' : 'Se guardan una sola vez.'} />
+      <Header
+        title="Predicciones especiales"
+        subtitle={locked
+          ? 'Ya cerraron para el Mundial.'
+          : closesAt
+            ? `⏰ Podés elegir o modificar hasta el ${fmtDate(closesAt)}.`
+            : 'Se guardan una sola vez.'}
+      />
       <section className="panel">
         <h2>Campeón</h2>
-        {championPick ? <PickLabel id={championPick.team_id} items={teams} /> : (
+        {championPick && locked ? <PickLabel id={championPick.team_id} items={teams} /> : (
           <div className="pickerForm">
+            {championPick && <p className="selectedPick">Tu elección actual: <PickLabel id={championPick.team_id} items={teams} /></p>}
             <SearchPicker
               disabled={locked}
               items={teams}
@@ -1434,14 +1461,17 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
               emptyText="No encontramos ese país."
             />
             {selectedChampion && <p className="selectedPick">Elegido: <PickLabel id={selectedChampion.id} items={teams} /></p>}
-            <button className="secondary" disabled={locked || !championTeamId} onClick={saveChampion}>Guardar</button>
+            <button className="secondary" disabled={locked || !championTeamId} onClick={saveChampion}>
+              {championPick ? 'Modificar campeón' : 'Guardar'}
+            </button>
           </div>
         )}
       </section>
       <section className="panel">
         <h2>Goleador de grupos</h2>
-        {topScorerPick ? <PickLabel id={topScorerPick.player_id} items={players} /> : (
+        {topScorerPick && locked ? <PickLabel id={topScorerPick.player_id} items={players} /> : (
           <div className="pickerForm">
+            {topScorerPick && <p className="selectedPick">Tu elección actual: <PickLabel id={topScorerPick.player_id} items={players} /></p>}
             <SearchPicker
               disabled={locked}
               items={players}
@@ -1455,7 +1485,9 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
               emptyText="No encontramos ese jugador."
             />
             {selectedPlayer && <p className="selectedPick">Elegido: <PickLabel id={selectedPlayer.id} items={players} /></p>}
-            <button className="secondary" disabled={locked || !playerId} onClick={saveTopScorer}>Guardar</button>
+            <button className="secondary" disabled={locked || !playerId} onClick={saveTopScorer}>
+              {topScorerPick ? 'Modificar goleador' : 'Guardar'}
+            </button>
           </div>
         )}
       </section>
@@ -1465,19 +1497,19 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
         return (
           <section className="panel" key={groupCode}>
             <h2>Grupo {groupCode}</h2>
-            {existing ? (
+            {existing && locked ? (
               <p><PickLabel id={existing.first_team_id} items={teams} /> y <PickLabel id={existing.second_team_id} items={teams} /></p>
             ) : (
               <div className="qualifierForm">
-                <select disabled={locked} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-1`]: event.target.value })}>
+                <select disabled={locked} value={groupDraft[`${groupCode}-1`] ?? existing?.first_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-1`]: event.target.value })}>
                   <option value="">1° puesto</option>
                   {groupTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
                 </select>
-                <select disabled={locked} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-2`]: event.target.value })}>
+                <select disabled={locked} value={groupDraft[`${groupCode}-2`] ?? existing?.second_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-2`]: event.target.value })}>
                   <option value="">2° puesto</option>
                   {groupTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
                 </select>
-                <button className="secondary" disabled={locked} onClick={() => saveGroup(groupCode)}>Guardar grupo</button>
+                <button className="secondary" disabled={locked} onClick={() => saveGroup(groupCode)}>{existing ? 'Modificar grupo' : 'Guardar grupo'}</button>
               </div>
             )}
           </section>
