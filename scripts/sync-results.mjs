@@ -72,6 +72,18 @@ const pending = await rest(
     `&home_score=is.null&kickoff_at=lte.${now}&kickoff_at=gte.${since}&order=kickoff_at`,
 );
 
+// Estado de los especiales (diagnóstico).
+async function printSpecialsStatus() {
+  try {
+    const open = await rest('rpc/prode_special_predictions_open', { method: 'POST', body: '{}' });
+    const settings = await rest('prode_admin_settings?key=eq.world_cup&select=value');
+    const deadline = settings?.[0]?.value?.specials_deadline || 'sin prórroga';
+    console.log(`Especiales: ${open ? 'ABIERTOS ✏️' : 'cerrados 🔒'} (deadline: ${deadline})`);
+  } catch (error) {
+    console.log(`Especiales: no se pudo consultar (${error.message})`);
+  }
+}
+
 // Tabla de posiciones (diagnóstico).
 async function printStandings() {
   const standings = await rest(
@@ -107,6 +119,7 @@ async function printMatchDetails() {
 
 if (!pending.length) {
   console.log('No hay partidos pendientes de resultado. Nada para hacer.');
+  await printSpecialsStatus();
   await printStandings();
   await printMatchDetails();
   process.exit(0);
