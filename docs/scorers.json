@@ -1,0 +1,30 @@
+{
+  "updatedAt": "2026-06-12T11:13:24.537Z",
+  "items": [
+    {
+      "name": "Hwang In-Beom",
+      "team": "South Korea",
+      "goals": 1
+    },
+    {
+      "name": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 1
+    },
+    {
+      "name": "Ladislav Krejcí",
+      "team": "Czechia",
+      "goals": 1
+    },
+    {
+      "name": "Oh Hyeon-Gyu",
+      "team": "South Korea",
+      "goals": 1
+    },
+    {
+      "name": "Raúl Jiménez",
+      "team": "Mexico",
+      "goals": 1
+    }
+  ]
+}

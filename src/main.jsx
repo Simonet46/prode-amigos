@@ -619,7 +619,7 @@ function App() {
               setNotice={setNotice}
             />
           )}
-          {activeTab === 'scorers' && <Scorers scorerStats={scorerStats} topScorerPick={topScorerPick} players={players} />}
+          {activeTab === 'scorers' && <Scorers scorerStats={scorerStats} topScorerPick={topScorerPick} players={players} teams={teams} />}
           {activeTab === 'profile' && (
             <ProfileCard profile={profile} rankingItem={ranking.find((item) => item.id === profile?.id)} championPick={championPick} topScorerPick={topScorerPick} teams={teams} players={players} matches={matches} predictionByMatch={predictionByMatch} />
           )}
@@ -1156,7 +1156,18 @@ function Ranking({ ranking, setNotice }) {
             </div>
             {expandedId === item.id && (
               <div className="rankDetail" onClick={(event) => event.stopPropagation()}>
-                {(picksByUser[item.id] || []).map((pick) => {
+                {(() => {
+                  const detail = picksByUser[item.id];
+                  const specials = Array.isArray(detail) ? {} : detail || {};
+                  if (!specials.topScorer && !specials.champion) return null;
+                  return (
+                    <div className="rankSpecials">
+                      {specials.topScorer && <span className="specialChip">🥅 Goleador: <b>{specials.topScorer.player}</b> ({specials.topScorer.team})</span>}
+                      {specials.champion && <span className="specialChip">🏆 Campeón: <b>{specials.champion.team}</b></span>}
+                    </div>
+                  );
+                })()}
+                {(Array.isArray(picksByUser[item.id]) ? picksByUser[item.id] : picksByUser[item.id]?.matches || []).map((pick) => {
                   const played = pick.home_score !== null && pick.away_score !== null;
                   const points = played ? scoreMatch({ home_score: pick.pick_home, away_score: pick.pick_away }, pick) : null;
                   const kind = points === 3 ? 'exact' : points === 1 ? 'winner' : 'miss';
@@ -1171,7 +1182,9 @@ function Ranking({ ranking, setNotice }) {
                     </div>
                   );
                 })}
-                {!(picksByUser[item.id] || []).length && <p className="muted">Todavía no hay partidos cerrados para mostrar.</p>}
+                {!(Array.isArray(picksByUser[item.id]) ? picksByUser[item.id] : picksByUser[item.id]?.matches || []).length && (
+                  <p className="muted">Todavía no hay partidos cerrados para mostrar.</p>
+                )}
               </div>
             )}
           </article>
@@ -1524,12 +1537,43 @@ function SearchPicker({ items, selectedId, onSelect, placeholder, disabled, getT
   );
 }
 
-function Scorers({ scorerStats, topScorerPick, players }) {
+function useScorers() {
+  const [scorers, setScorers] = useState(null);
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}scorers.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then(setScorers)
+      .catch(() => setScorers(null));
+  }, []);
+  return scorers;
+}
+
+const FLAG_ALIASES = { czechia: 'czech republic', 'united states': 'usa', 'korea republic': 'south korea', 'ir iran': 'iran', 'türkiye': 'turkey' };
+
+function Scorers({ scorerStats, topScorerPick, players, teams }) {
+  const scorers = useScorers();
+  const flagFor = (teamName) => {
+    const key = (teamName || '').toLowerCase();
+    const normalized = FLAG_ALIASES[key] || key;
+    const flag = (teams || []).find((team) => team.name?.toLowerCase() === normalized)?.flag;
+    return flag?.startsWith?.('http') ? <img src={flag} alt="" /> : flag ? <em>{flag}</em> : null;
+  };
   return (
     <div className="stack">
-      <Header title="Goleadores" subtitle="Cuenta solo fase de grupos para el bonus." />
+      <Header title="Goleadores" subtitle="Tabla oficial del Mundial. Para el bonus cuenta solo la fase de grupos." />
       {topScorerPick && <section className="panel"><h2>Tu elegido</h2><PickLabel id={topScorerPick.player_id} items={players} /></section>}
-      {scorerStats.map((row, index) => (
+      {(scorers?.items || []).map((row, index) => (
+        <article className="rankingCard scorerRow" key={`${row.name}-${row.team}`}>
+          <span className="rank">#{index + 1}</span>
+          <div className="rankName">
+            <b>{row.name}</b>
+            <small>{flagFor(row.team)} {row.team}</small>
+          </div>
+          <strong className="scorerGoals">{row.goals} {row.goals === 1 ? 'gol' : 'goles'}</strong>
+        </article>
+      ))}
+      {scorers?.updatedAt && <p className="muted scorerUpdated">Actualizado {timeAgo(scorers.updatedAt)} · fuente oficial ESPN</p>}
+      {!scorers?.items?.length && scorerStats.map((row, index) => (
         <article className="rankingCard" key={row.id}>
           <span className="rank">#{index + 1}</span>
           <div className="rankName">
@@ -1539,7 +1583,7 @@ function Scorers({ scorerStats, topScorerPick, players }) {
           <strong>{row.goals} goles</strong>
         </article>
       ))}
-      {!scorerStats.length && <Empty text="Todavía no hay goles cargados." />}
+      {!scorers?.items?.length && !scorerStats.length && <Empty text="Todavía no hay goles en el Mundial." />}
     </div>
   );
 }

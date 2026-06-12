@@ -1455,6 +1455,50 @@ select:focus {
   cursor: default;
 }
 
+.rankSpecials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.specialChip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--ink);
+  background: linear-gradient(180deg, rgba(231, 189, 85, 0.18), rgba(6, 16, 31, 0.4));
+  border: 1px solid rgba(231, 189, 85, 0.4);
+}
+
+.specialChip b {
+  color: var(--gold-2);
+}
+
+.scorerRow .rankName small em {
+  font-style: normal;
+}
+
+.scorerRow .rankName small img {
+  width: 18px;
+  height: 13px;
+  object-fit: cover;
+  border-radius: 2px;
+  vertical-align: -1px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.scorerGoals {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--gold-2);
+}
+
+.scorerUpdated {
+  margin: 0;
+  text-align: center;
+  font-size: 0.78rem;
+}
+
 .rankDetailRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
