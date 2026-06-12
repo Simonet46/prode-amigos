@@ -83,9 +83,32 @@ async function printStandings() {
   );
 }
 
+// Detalle por partido terminado: pick guardado y puntos otorgados (diagnóstico).
+async function printMatchDetails() {
+  const finished = await rest(
+    `prode_matches?select=id,home_score,away_score,home_team:prode_teams!prode_matches_home_team_id_fkey(name),away_team:prode_teams!prode_matches_away_team_id_fkey(name)` +
+      `&home_score=not.is.null&kickoff_at=gte.${weekAgo}&order=kickoff_at`,
+  );
+  if (!finished.length) return;
+  const profiles = await rest('prode_profiles?select=id,team_name');
+  const nameOf = Object.fromEntries(profiles.map((p) => [p.id, p.team_name || '(sin equipo)']));
+  for (const match of finished) {
+    console.log(`Detalle ${match.home_team?.name} ${match.home_score}-${match.away_score} ${match.away_team?.name}:`);
+    const [picks, points] = await Promise.all([
+      rest(`prode_predictions?select=user_id,home_score,away_score&match_id=eq.${match.id}`),
+      rest(`prode_match_points?select=user_id,points,result_type&match_id=eq.${match.id}`),
+    ]);
+    const ptsOf = Object.fromEntries(points.map((p) => [p.user_id, p]));
+    picks
+      .sort((a, b) => (ptsOf[b.user_id]?.points ?? -1) - (ptsOf[a.user_id]?.points ?? -1))
+      .forEach((p) => console.log(`  ${nameOf[p.user_id]}: puso ${p.home_score}-${p.away_score} -> ${ptsOf[p.user_id]?.points ?? 'SIN FILA'} pts (${ptsOf[p.user_id]?.result_type ?? '-'})`));
+  }
+}
+
 if (!pending.length) {
   console.log('No hay partidos pendientes de resultado. Nada para hacer.');
   await printStandings();
+  await printMatchDetails();
   process.exit(0);
 }
 console.log(`${pending.length} partido(s) esperando resultado.`);
