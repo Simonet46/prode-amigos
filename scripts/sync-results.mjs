@@ -47,6 +47,23 @@ async function rest(path, options = {}) {
   return res.status === 204 ? null : res.json();
 }
 
+// 0. Auto-reparación: partidos con resultado cargado pero sin puntos repartidos
+// (por ejemplo si una corrida anterior falló a mitad de camino).
+const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+const finishedMatches = await rest(
+  `prode_matches?select=id&home_score=not.is.null&away_score=not.is.null&kickoff_at=gte.${weekAgo}`,
+);
+if (finishedMatches.length) {
+  const ids = finishedMatches.map((m) => m.id);
+  const pointRows = await rest(`prode_match_points?select=match_id&match_id=in.(${ids.join(',')})`);
+  const withPoints = new Set(pointRows.map((r) => r.match_id));
+  for (const id of ids.filter((matchId) => !withPoints.has(matchId))) {
+    console.log(`  ♻ Reparando puntos faltantes del partido ${id}`);
+    await rest('rpc/prode_calculate_match_points', { method: 'POST', body: JSON.stringify({ match_uuid: id }) });
+    console.log('    ✔ puntos recalculados');
+  }
+}
+
 // 1. Partidos ya empezados (últimas 72h) que todavía no tienen resultado.
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
 const now = new Date().toISOString();

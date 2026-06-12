@@ -469,9 +469,9 @@ function App() {
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
 
-  const loadData = async () => {
+  const loadData = async (silent = false) => {
     if (!session || !supabase) return;
-    setBusy(true);
+    if (!silent) setBusy(true);
     try {
       const [
         profileRes,
@@ -521,12 +521,24 @@ function App() {
     } catch (error) {
       setNotice(error.message || 'No se pudo cargar Prode Amigos.');
     } finally {
-      setBusy(false);
+      if (!silent) setBusy(false);
     }
   };
 
   useEffect(() => {
     loadData();
+  }, [session?.user?.id]);
+
+  // Refresco automático: resultados y puntos entran solos, sin recargar la página.
+  useEffect(() => {
+    if (!session) return undefined;
+    const refresh = () => loadData(true);
+    const timer = setInterval(refresh, 180000);
+    window.addEventListener('focus', refresh);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', refresh);
+    };
   }, [session?.user?.id]);
 
   const firstKickoffAt = settings?.first_kickoff_at || matches.filter((match) => match.kickoff_at).sort((a, b) => new Date(a.kickoff_at) - new Date(b.kickoff_at))[0]?.kickoff_at;
