@@ -78,8 +78,14 @@ if (!pending.length) {
 }
 console.log(`${pending.length} partido(s) esperando resultado.`);
 
-// 2. Scoreboard de ESPN para los días (UTC) involucrados.
-const days = [...new Set(pending.map((m) => m.kickoff_at.slice(0, 10).replaceAll('-', '')))];
+// 2. Scoreboard de ESPN para los días involucrados. ESPN agrupa por fecha del
+// Este de EE.UU. (un partido de las 02:00 UTC cae en el día anterior), así que
+// consultamos esa fecha y también la UTC por las dudas.
+const easternDay = (iso) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .format(new Date(iso))
+    .replaceAll('-', '');
+const days = [...new Set(pending.flatMap((m) => [easternDay(m.kickoff_at), m.kickoff_at.slice(0, 10).replaceAll('-', '')]))];
 const finished = [];
 for (const day of days) {
   const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${day}`, {
