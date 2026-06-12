@@ -549,9 +549,14 @@ function App() {
 
   const firstKickoffAt = settings?.first_kickoff_at || matches.filter((match) => match.kickoff_at).sort((a, b) => new Date(a.kickoff_at) - new Date(b.kickoff_at))[0]?.kickoff_at;
   // Los especiales cierran en el primer kickoff, salvo prórroga (specials_deadline).
-  const specialsCloseAt = [firstKickoffAt, settings?.specials_deadline]
+  // Postgres serializa la zona horaria como "+00", que JS no parsea: se normaliza a "+00:00".
+  const parseTs = (value) => {
+    if (!value) return null;
+    const date = new Date(String(value).replace(/([+-]\d{2})$/, '$1:00'));
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
+  const specialsCloseAt = [parseTs(firstKickoffAt), parseTs(settings?.specials_deadline)]
     .filter(Boolean)
-    .map((value) => new Date(value))
     .sort((a, b) => b - a)[0] || null;
   const specialLocked = specialsCloseAt ? specialsCloseAt.getTime() <= Date.now() : false;
   const profileReady = Boolean(profile?.team_name);
