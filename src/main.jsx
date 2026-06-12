@@ -556,37 +556,28 @@ function App() {
     [predictions],
   );
 
+  // Fuente única de verdad: los totales que recalcula la base al cargar cada
+  // resultado. (Antes se sumaba además un cálculo local de los propios
+  // pronósticos, lo que duplicaba los puntos del usuario logueado.)
   const ranking = useMemo(() => {
     return members
       .map((member) => {
-        const userPredictions = member.id === session?.user?.id ? predictions : [];
-        const matchStats = matches.reduce(
-          (acc, match) => {
-            const prediction = userPredictions.find((item) => item.match_id === match.id);
-            const points = scoreMatch(prediction, match);
-            if (points === 3) acc.exacts += 1;
-            if (points === 1) acc.winners += 1;
-            acc.matchPoints += points;
-            return acc;
-          },
-          { exacts: member.exact_results_count || 0, winners: member.correct_winners_count || 0, matchPoints: member.match_points_total || 0 },
-        );
         const groupPoints = member.group_qualifier_points || 0;
         const topBonus = member.top_scorer_bonus || 0;
         const championBonus = member.champion_bonus || 0;
         return {
           ...member,
-          exacts: matchStats.exacts,
-          winners: matchStats.winners,
+          exacts: member.exact_results_count || 0,
+          winners: member.correct_winners_count || 0,
           groupPoints,
           topBonus,
           championBonus,
           specialPoints: topBonus + championBonus,
-          total: matchStats.matchPoints + groupPoints + topBonus + championBonus,
+          total: (member.match_points_total || 0) + groupPoints + topBonus + championBonus,
         };
       })
       .sort((a, b) => b.total - a.total || b.exacts - a.exacts || b.groupPoints - a.groupPoints || b.specialPoints - a.specialPoints || a.real_name.localeCompare(b.real_name));
-  }, [members, matches, predictions, session?.user?.id]);
+  }, [members]);
 
   if (!hasSupabaseConfig) return <ConfigMissing />;
   if (loading) return <ShellLoader />;
