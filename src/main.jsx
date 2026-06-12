@@ -530,14 +530,20 @@ function App() {
   }, [session?.user?.id]);
 
   // Refresco automático: resultados y puntos entran solos, sin recargar la página.
+  // Realtime para enterarse al instante + intervalo y focus como respaldo.
   useEffect(() => {
     if (!session) return undefined;
     const refresh = () => loadData(true);
     const timer = setInterval(refresh, 180000);
     window.addEventListener('focus', refresh);
+    const channel = supabase
+      .channel('prode-live')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'prode_matches' }, refresh)
+      .subscribe();
     return () => {
       clearInterval(timer);
       window.removeEventListener('focus', refresh);
+      supabase.removeChannel(channel);
     };
   }, [session?.user?.id]);
 
