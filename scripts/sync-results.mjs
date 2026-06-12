@@ -72,8 +72,20 @@ const pending = await rest(
     `&home_score=is.null&kickoff_at=lte.${now}&kickoff_at=gte.${since}&order=kickoff_at`,
 );
 
+// Tabla de posiciones (diagnóstico).
+async function printStandings() {
+  const standings = await rest(
+    'prode_profiles?select=team_name,match_points_total,exact_results_count,correct_winners_count&order=match_points_total.desc,exact_results_count.desc&limit=20',
+  );
+  console.log('Tabla:');
+  standings.forEach((p, i) =>
+    console.log(`  ${i + 1}. ${p.team_name || '(sin equipo)'} — ${p.match_points_total} pts (${p.exact_results_count} exactos, ${p.correct_winners_count} signos)`),
+  );
+}
+
 if (!pending.length) {
   console.log('No hay partidos pendientes de resultado. Nada para hacer.');
+  await printStandings();
   process.exit(0);
 }
 console.log(`${pending.length} partido(s) esperando resultado.`);
@@ -144,12 +156,4 @@ for (const match of pending) {
 }
 
 console.log(updated ? `Listo: ${updated} resultado(s) cargado(s) y puntos recalculados.` : 'Sin actualizaciones.');
-
-// Tabla de posiciones (diagnóstico).
-const standings = await rest(
-  'prode_profiles?select=team_name,match_points_total,exact_results_count,correct_winners_count&order=match_points_total.desc,exact_results_count.desc&limit=20',
-);
-console.log('Tabla:');
-standings.forEach((p, i) =>
-  console.log(`  ${i + 1}. ${p.team_name || '(sin equipo)'} — ${p.match_points_total} pts (${p.exact_results_count} exactos, ${p.correct_winners_count} signos)`),
-);
+await printStandings();
