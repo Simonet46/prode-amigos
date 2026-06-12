@@ -2,7 +2,7 @@ name: Sincronizar resultados
 
 on:
   schedule:
-    - cron: '20 */2 * * *' # cada 2 horas
+    - cron: '*/15 * * * *' # cada 15 minutos
   workflow_dispatch:
 
 jobs:
