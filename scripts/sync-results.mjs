@@ -19,15 +19,13 @@ const HEADERS = {
 };
 
 // ESPN usa algunos nombres distintos a openfootball (la fuente del fixture).
+// Claves ya normalizadas (solo letras, sin espacios ni signos).
 const ALIASES = {
-  czechia: 'czech republic',
-  'united states': 'usa',
-  'south korea': 'south korea',
-  'korea republic': 'south korea',
-  'ir iran': 'iran',
-  'côte d’ivoire': 'ivory coast',
-  "cote d'ivoire": 'ivory coast',
-  türkiye: 'turkey',
+  czechia: 'czechrepublic',
+  unitedstates: 'usa',
+  korearepublic: 'southkorea',
+  iriran: 'iran',
+  cotedivoire: 'ivorycoast',
   turkiye: 'turkey',
 };
 
@@ -36,8 +34,7 @@ const normalize = (name) => {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z ]/g, '')
-    .trim();
+    .replace(/[^a-z0-9]/g, '');
   return ALIASES[clean] || clean;
 };
 
