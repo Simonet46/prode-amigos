@@ -102,7 +102,7 @@ const seededRng = (seedStr) => {
 
 // Portada ilustrada con IA atada a un protagonista: solo se muestra si ese
 // equipo sigue liderando. Si lo superan, cae al diseño con avatares.
-const ORACLE_COVER = { team: 'Victor el Nazi', image: 'press-oracle.webp' };
+const ORACLE_COVER = { team: 'Victor', image: 'press-oracle.webp' };
 
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
@@ -307,7 +307,7 @@ function PressFigure({ story, byTeam }) {
 const DEV_FACTS = import.meta.env.DEV
   ? {
       standings: [
-        { team: 'Victor el Nazi', total: 9, exacts: 3 },
+        { team: 'Victor', total: 9, exacts: 3 },
         { team: 'La Scaloneta papá!!', total: 7, exacts: 2 },
         { team: 'El Diego FC', total: 4, exacts: 1 },
         { team: 'ElmedijoGorda', total: 0, exacts: 0 },
