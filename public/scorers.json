@@ -1,9 +1,29 @@
 {
-  "updatedAt": "2026-06-13T08:11:50.437Z",
+  "updatedAt": "2026-06-13T09:04:30.066Z",
   "items": [
+    {
+      "name": "Folarin Balogun",
+      "team": "United States",
+      "goals": 2
+    },
+    {
+      "name": "Cyle Larin",
+      "team": "Canada",
+      "goals": 1
+    },
+    {
+      "name": "Giovanni Reyna",
+      "team": "United States",
+      "goals": 1
+    },
     {
       "name": "Hwang In-Beom",
       "team": "South Korea",
+      "goals": 1
+    },
+    {
+      "name": "Jovo Lukic",
+      "team": "Bosnia-Herzegovina",
       "goals": 1
     },
     {
@@ -14,6 +34,11 @@
     {
       "name": "Ladislav Krejcí",
       "team": "Czechia",
+      "goals": 1
+    },
+    {
+      "name": "Maurício",
+      "team": "Paraguay",
       "goals": 1
     },
     {
