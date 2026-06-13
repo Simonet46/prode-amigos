@@ -1587,10 +1587,26 @@ function SearchPicker({ items, selectedId, onSelect, placeholder, disabled, getT
 function useScorers() {
   const [scorers, setScorers] = useState(null);
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}scorers.json`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then(setScorers)
-      .catch(() => setScorers(null));
+    let active = true;
+    const load = async () => {
+      // Fuente principal: la base (el robot la refresca cada 10 min sola).
+      const { data } = await supabase.from('prode_admin_settings').select('value').eq('key', 'scorers').maybeSingle();
+      if (active && data?.value?.items?.length) {
+        setScorers(data.value);
+        return;
+      }
+      // Respaldo: el JSON estático del workflow diario.
+      const fallback = await fetch(`${import.meta.env.BASE_URL}scorers.json`).then((res) => (res.ok ? res.json() : null)).catch(() => null);
+      if (active && fallback) setScorers(fallback);
+    };
+    load();
+    const timer = setInterval(load, 300000);
+    window.addEventListener('focus', load);
+    return () => {
+      active = false;
+      clearInterval(timer);
+      window.removeEventListener('focus', load);
+    };
   }, []);
   return scorers;
 }
