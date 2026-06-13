@@ -100,6 +100,10 @@ const seededRng = (seedStr) => {
   };
 };
 
+// Portada ilustrada con IA atada a un protagonista: solo se muestra si ese
+// equipo sigue liderando. Si lo superan, cae al diseño con avatares.
+const ORACLE_COVER = { team: 'Victor el Nazi', image: 'press-oracle.webp' };
+
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
   const rng = seededRng(dateKey(nowIso()));
@@ -195,11 +199,6 @@ function buildProdeHeadlines(facts, byTeam = {}) {
         `😴 PAPELÓN EN LA PREVIA: el Mundial ya está acá y ${list} ${one ? 'sigue roncando' : 'siguen roncando'}: ${one ? 'le faltan' : 'les faltan'} los primeros 3 partidos`,
         `🛏️ ALERTA ROJA: la liga entera festeja el arranque mientras ${list} ${one ? 'duerme' : 'duermen'} sin cargar los primeros 3 partidos`,
       ]), detail: 'El resto ya cumplió y lo festeja en su cara. Qué papelón.' });
-    } else {
-      stories.push({ priority: 0, tag: 'HISTÓRICO', mood: 'exclusivo', emoji: '🎉', actors: [], scene: { sleeping: [] }, title: pickOne([
-        `🎉 INSÓLITO PERO REAL: los ${(facts.standings || []).length} equipos completaron el prode de los primeros 3 partidos. Cero dormidos. La FIFA abrió un expediente por sospecha de seriedad`,
-        `🏆 MILAGRO DEPORTIVO: ni UN SOLO dormido en la liga. Los ${(facts.standings || []).length} cumplieron con los primeros 3 partidos. Científicos no lo pueden explicar`,
-      ]), detail: 'Festejan como campeones... con cero puntos todos. Papelón anticipado.' });
     }
   }
 
@@ -209,12 +208,20 @@ function buildProdeHeadlines(facts, byTeam = {}) {
   const last = standings[standings.length - 1];
   if (leader && second && leader.total > 0) {
     const gap = leader.total - second.total;
-    stories.push({ priority: 4, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '👑', actors: gap === 0 ? [leader.team, second.team] : [leader.team], title: gap === 0
-      ? `🔥 INFARTO EN LA CIMA: ${who(leader.team)} y ${who(second.team)} empatados en ${leader.total}. Esto se define a las piñas`
-      : pickOne([
-          `👑 ${who(leader.team)} manda con ${leader.total} puntos y ya pidió que le filmen el documental. ${who(second.team)} a ${gap} y transpirando`,
-          `📊 ${who(leader.team)} pisa fuerte: ${leader.total} puntos y mirando a todos por encima del hombro. Insoportable`,
-        ]), detail: 'La tabla no miente. Por ahora.' });
+    // Oráculo: líder con varios exactos y portada ilustrada propia.
+    if (leader.team === ORACLE_COVER.team && (leader.exacts || 0) >= 3) {
+      stories.push({ priority: 0, tag: 'EL ORÁCULO', mood: 'exclusivo', emoji: '🔮', actors: [leader.team], cover: ORACLE_COVER.image, title: pickOne([
+        `🔮 ESCALOFRIANTE: ${who(leader.team)} clavó ${leader.exacts} resultados EXACTOS y lidera con ${leader.total} puntos. ¿Vidente, brujo o tiene línea directa con la FIFA?`,
+        `👑 NADIE LO PARA: ${who(leader.team)} la ve TODA — ${leader.exacts} exactos, ${leader.total} puntos y el resto rezando para que falle`,
+      ]), detail: 'El oráculo del prode. La liga exige control antidopaje.' });
+    } else {
+      stories.push({ priority: 4, tag: 'EXCLUSIVO', mood: 'exclusivo', emoji: '👑', actors: gap === 0 ? [leader.team, second.team] : [leader.team], title: gap === 0
+        ? `🔥 INFARTO EN LA CIMA: ${who(leader.team)} y ${who(second.team)} empatados en ${leader.total}. Esto se define a las piñas`
+        : pickOne([
+            `👑 ${who(leader.team)} manda con ${leader.total} puntos y ya pidió que le filmen el documental. ${who(second.team)} a ${gap} y transpirando`,
+            `📊 ${who(leader.team)} pisa fuerte: ${leader.total} puntos y mirando a todos por encima del hombro. Insoportable`,
+          ]), detail: 'La tabla no miente. Por ahora.' });
+    }
     if (last && last.team !== leader.team && last.total < leader.total) {
       stories.push({ priority: 4, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
         `🚑 CRISIS TERMINAL en ${last.team}: ${who(last.team)} último con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
@@ -300,8 +307,9 @@ function PressFigure({ story, byTeam }) {
 const DEV_FACTS = import.meta.env.DEV
   ? {
       standings: [
+        { team: 'Victor el Nazi', total: 9, exacts: 3 },
+        { team: 'La Scaloneta papá!!', total: 7, exacts: 2 },
         { team: 'El Diego FC', total: 4, exacts: 1 },
-        { team: 'Clota FC', total: 3, exacts: 0 },
         { team: 'ElmedijoGorda', total: 0, exacts: 0 },
       ],
       lockedPicks: [
@@ -348,15 +356,17 @@ function PressRoom({ members }) {
       <h2>🗞️ Crónica del Prode</h2>
       <div className="pressList">
         {headlines.map((story) => (
-          <article key={story.title} className={`pressItem${story.scene ? ' withScene' : ''}`}>
+          <article key={story.title} className={`pressItem${story.scene || story.cover ? ' withScene' : ''}`}>
             <div className="pressBody">
               <span className="pressTag">{story.tag}</span>
               <b>{story.title}</b>
               {story.detail && <small>{story.detail}</small>}
             </div>
-            {story.scene
-              ? <PressScene sleeping={story.scene.sleeping} byTeam={byTeam} members={members} />
-              : <PressFigure story={story} byTeam={byTeam} />}
+            {story.cover
+              ? <img className="sceneCover" src={`${import.meta.env.BASE_URL}${story.cover}`} alt={story.title} loading="lazy" />
+              : story.scene
+                ? <PressScene sleeping={story.scene.sleeping} byTeam={byTeam} members={members} />
+                : <PressFigure story={story} byTeam={byTeam} />}
           </article>
         ))}
       </div>
