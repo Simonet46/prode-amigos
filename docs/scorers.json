@@ -1,10 +1,20 @@
 {
-  "updatedAt": "2026-06-13T13:48:07.783Z",
+  "updatedAt": "2026-06-14T12:53:55.403Z",
   "items": [
     {
       "name": "Folarin Balogun",
       "team": "United States",
       "goals": 2
+    },
+    {
+      "name": "Breel Embolo",
+      "team": "Switzerland",
+      "goals": 1
+    },
+    {
+      "name": "Connor Metcalfe",
+      "team": "Australia",
+      "goals": 1
     },
     {
       "name": "Cyle Larin",
@@ -19,6 +29,16 @@
     {
       "name": "Hwang In-Beom",
       "team": "South Korea",
+      "goals": 1
+    },
+    {
+      "name": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 1
+    },
+    {
+      "name": "John McGinn",
+      "team": "Scotland",
       "goals": 1
     },
     {
@@ -42,6 +62,11 @@
       "goals": 1
     },
     {
+      "name": "Nestory Irankunda",
+      "team": "Australia",
+      "goals": 1
+    },
+    {
       "name": "Oh Hyeon-Gyu",
       "team": "South Korea",
       "goals": 1
@@ -49,6 +74,11 @@
     {
       "name": "Raúl Jiménez",
       "team": "Mexico",
+      "goals": 1
+    },
+    {
+      "name": "Vinícius Júnior",
+      "team": "Brazil",
       "goals": 1
     }
   ]
