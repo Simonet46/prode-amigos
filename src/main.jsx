@@ -210,13 +210,16 @@ function buildProdeHeadlines(facts, byTeam = {}) {
   const last = standings[standings.length - 1];
   if (leader && second && leader.total > 0) {
     const gap = leader.total - second.total;
-    // Persecución: portada propia cuando Victor lidera y lo persigue La Scaloneta.
-    if (leader.team === CHASE_COVER.leader && second.team === CHASE_COVER.second) {
-      stories.push({ priority: 0, tag: 'LA PERSECUCIÓN', mood: 'exclusivo', emoji: '🏃', actors: [leader.team, second.team], cover: CHASE_COVER.image, title: pickOne([
-        `🏃 LE PISA LOS TALONES: ${who(second.team)} a ${gap} ${gap === 1 ? 'punto' : 'puntos'} del oráculo ${who(leader.team)}. "Lo alcanzo aunque sea en palomita", promete entre lágrimas`,
-        `💨 LA CACERÍA DEL AÑO: ${who(second.team)} corre desesperado detrás de ${who(leader.team)}, que se aleja flotando en su trono con la copa. ${gap} ${gap === 1 ? 'punto' : 'puntos'} de diferencia`,
-        `🔥 ${who(second.team)} NO AFLOJA: a ${gap} de ${who(leader.team)} y jurando que "esto todavía no terminó". El líder ni se da vuelta`,
-      ]), detail: 'El que va segundo transpira; el que va primero saluda. Por ahora.' });
+    // Persecución: portada propia cuando Victor lidera y lo persigue La Scaloneta
+    // (esté 2°, 3°, donde sea: la imagen es Victor vs Ezequiel).
+    const chaser = standings.find((item) => item.team === CHASE_COVER.second && item.team !== leader.team);
+    if (leader.team === CHASE_COVER.leader && chaser) {
+      const chaseGap = leader.total - chaser.total;
+      stories.push({ priority: 0, tag: 'LA PERSECUCIÓN', mood: 'exclusivo', emoji: '🏃', actors: [leader.team, chaser.team], cover: CHASE_COVER.image, title: pickOne([
+        `🏃 LE PISA LOS TALONES: ${who(chaser.team)} a ${chaseGap} ${chaseGap === 1 ? 'punto' : 'puntos'} del líder ${who(leader.team)}. "Lo alcanzo aunque sea en palomita", promete entre lágrimas`,
+        `💨 LA CACERÍA DEL AÑO: ${who(chaser.team)} corre desesperado detrás de ${who(leader.team)}, que se aleja flotando en su trono con la copa. ${chaseGap} ${chaseGap === 1 ? 'punto' : 'puntos'} de diferencia`,
+        `🔥 ${who(chaser.team)} NO AFLOJA: a ${chaseGap} de ${who(leader.team)} y jurando que "esto todavía no terminó". El líder ni se da vuelta`,
+      ]), detail: 'El perseguidor transpira; el líder saluda. Por ahora.' });
     } else if (leader.team === ORACLE_COVER.team && (leader.exacts || 0) >= 3) {
       stories.push({ priority: 0, tag: 'EL ORÁCULO', mood: 'exclusivo', emoji: '🔮', actors: [leader.team], cover: ORACLE_COVER.image, title: pickOne([
         `🔮 ESCALOFRIANTE: ${who(leader.team)} clavó ${leader.exacts} resultados EXACTOS y lidera con ${leader.total} puntos. ¿Vidente, brujo o tiene línea directa con la FIFA?`,
