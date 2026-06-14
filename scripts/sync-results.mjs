@@ -61,13 +61,6 @@ if (finishedMatches.length) {
   }
 }
 
-// Padrón completo (diagnóstico temporal).
-{
-  const roster = await rest('prode_profiles?select=id,real_name,team_name,username&order=real_name');
-  console.log('PADRON:');
-  roster.forEach((p) => console.log(`  ${p.id} | real=${p.real_name} | team=${p.team_name ?? '-'} | user=${p.username}`));
-}
-
 // 1. Partidos ya empezados (últimas 72h) que todavía no tienen resultado.
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
 const now = new Date().toISOString();
