@@ -147,6 +147,17 @@ function buildProdeHeadlines(facts, byTeam = {}) {
       } else {
         stories.push({ priority: 2, tag: 'DATA', mood: 'exclusivo', emoji: '🎯', actors: exacts.map((p) => p.team), title: `🎯 Lluvia de exactos en ${versus}: ${whoList(exacts.map((p) => p.team))} la clavaron con el ${score}`, detail: '3 puntos por cabeza. Sospechosamente fácil.' });
       }
+      // Goleada oficial: resultado escandaloso, sin importar los prodes.
+      const margin = Math.abs(match.home_score - match.away_score);
+      const totalGoals = Number(match.home_score) + Number(match.away_score);
+      if (margin >= 4 || totalGoals >= 6) {
+        const winner = match.home_score > match.away_score ? match.home : match.away;
+        const loser = match.home_score > match.away_score ? match.away : match.home;
+        stories.push({ priority: 2, tag: 'GOLEADA', mood: 'goleada', emoji: '💥', actors: [], title: pickOne([
+          `💥 MASACRE MUNDIALISTA: ${winner} le metió ${Math.max(match.home_score, match.away_score)} a ${loser} (${score}). El portero pidió el libro de quejas`,
+          `🌊 DILUVIO DE GOLES: ${score} en ${versus}. ${loser} todavía no terminó de sacar la pelota del arco`,
+        ]), detail: 'Resultado para el museo del horror. Ningún prode esperaba semejante baile.' });
+      }
       if (minority) {
         const hit = minoritySign === sign(match.home_score, match.away_score);
         stories.push({ priority: 1, tag: hit ? 'BATACAZO' : 'PAPELÓN', mood: hit ? 'batacazo' : 'crisis', emoji: hit ? '💣' : '🪦', actors: [minority.team], title: hit
@@ -238,6 +249,32 @@ function buildProdeHeadlines(facts, byTeam = {}) {
         `🚑 CRISIS TERMINAL en ${last.team}: ${who(last.team)} último con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
         `📉 ${who(last.team)} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
       ]), detail: '¿Hay proyecto? La dirigencia no responde llamados.' });
+    }
+
+    // El amarrete: el que junta puntos al signo pero nunca arriesga un exacto.
+    const stingy = standings
+      .map((row) => ({ row, m: byTeam[row.team] }))
+      .filter(({ m }) => m && (m.exact_results_count || 0) === 0 && (m.correct_winners_count || 0) >= 4)
+      .sort((a, b) => (b.m.correct_winners_count || 0) - (a.m.correct_winners_count || 0))[0];
+    if (stingy) {
+      stories.push({ priority: 3, tag: 'EL AMARRETE', mood: 'exclusivo', emoji: '🐔', actors: [stingy.row.team], title: pickOne([
+        `🐔 EL REY DEL PUNTITO: ${who(stingy.row.team)} acertó ${stingy.m.correct_winners_count} ganadores y CERO exactos. Juega al 1-0 como si le pagaran por aburrir`,
+        `🧤 MÍSTER AMARRETE: ${who(stingy.row.team)} nunca arriesga un resultado. ${stingy.m.correct_winners_count} signos, 0 exactos: el contador del prode`,
+      ]), detail: 'Especialista en el resultadito seguro. Riesgo: cero. Adrenalina: menos.' });
+    }
+
+    // El oráculo humano: el líder también pifia. Busca un partido cerrado donde sacó 0.
+    const leaderMiss = (facts.lockedPicks || []).find((m) => {
+      if (m.home_score === null || m.away_score === null) return false;
+      const p = (m.picks || []).find((x) => x.team === leader.team);
+      return p && scoreMatch({ home_score: p.home, away_score: p.away }, m) === 0;
+    });
+    if (leaderMiss) {
+      const lp = leaderMiss.picks.find((x) => x.team === leader.team);
+      stories.push({ priority: 3, tag: 'BOLA PINCHADA', mood: 'crisis', emoji: '🔮', actors: [leader.team], title: pickOne([
+        `🔮💨 SE LE PINCHÓ LA BOLA: hasta ${who(leader.team)} es humano — puso ${lp.home}-${lp.away} en ${leaderMiss.home} vs ${leaderMiss.away} y terminó ${leaderMiss.home_score}-${leaderMiss.away_score}. 0 puntos para el "vidente"`,
+        `😈 EL ORÁCULO FALLA: ${who(leader.team)} se comió un ${leaderMiss.home_score}-${leaderMiss.away_score} en ${leaderMiss.home} vs ${leaderMiss.away}. La liga festeja que no es de otro planeta`,
+      ]), detail: 'Hasta el mejor pincha. La esperanza de los demás renace.' });
     }
   } else if (leader && leader.total === 0) {
     stories.push({ priority: 4, tag: 'URGENTE', mood: 'urgente', emoji: '⚔️', actors: [], title: '⚔️ TODOS EN CERO: arranca la guerra del prode y nadie quiere ser el primero en quedar pagando', detail: 'La calma antes de la tormenta.' });

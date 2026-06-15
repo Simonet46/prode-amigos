@@ -1240,6 +1240,11 @@ select:focus {
   border-color: rgba(103, 183, 247, 0.4);
 }
 
+.pressFigure.mood-goleada {
+  background: radial-gradient(circle at 50% 40%, rgba(255, 90, 70, 0.42), rgba(120, 35, 25, 0.4) 60%, rgba(6, 16, 31, 0.6));
+  border-color: rgba(255, 110, 80, 0.5);
+}
+
 .sceneCover {
   display: block;
   width: 100%;
