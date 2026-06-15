@@ -105,6 +105,8 @@ const seededRng = (seedStr) => {
 const ORACLE_COVER = { team: 'Victor', image: 'press-oracle.webp' };
 // Persecución: portada propia cuando el líder es Victor y lo persigue La Scaloneta.
 const CHASE_COVER = { leader: 'Victor', second: 'La Scaloneta papá!!', image: 'press-chase.webp' };
+// El amarrete: portada propia para Yayo FC (Agustin) mientras sea el rey del puntito.
+const STINGY_COVER = { team: 'Yayo FC', image: 'press-amarrete.webp' };
 
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
@@ -257,7 +259,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
       .filter(({ m }) => m && (m.exact_results_count || 0) === 0 && (m.correct_winners_count || 0) >= 4)
       .sort((a, b) => (b.m.correct_winners_count || 0) - (a.m.correct_winners_count || 0))[0];
     if (stingy) {
-      stories.push({ priority: 3, tag: 'EL AMARRETE', mood: 'exclusivo', emoji: '🐔', actors: [stingy.row.team], title: pickOne([
+      stories.push({ priority: 3, tag: 'EL AMARRETE', mood: 'exclusivo', emoji: '🐔', actors: [stingy.row.team], cover: stingy.row.team === STINGY_COVER.team ? STINGY_COVER.image : undefined, title: pickOne([
         `🐔 EL REY DEL PUNTITO: ${who(stingy.row.team)} acertó ${stingy.m.correct_winners_count} ganadores y CERO exactos. Juega al 1-0 como si le pagaran por aburrir`,
         `🧤 MÍSTER AMARRETE: ${who(stingy.row.team)} nunca arriesga un resultado. ${stingy.m.correct_winners_count} signos, 0 exactos: el contador del prode`,
       ]), detail: 'Especialista en el resultadito seguro. Riesgo: cero. Adrenalina: menos.' });
