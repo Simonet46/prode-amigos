@@ -61,17 +61,6 @@ if (finishedMatches.length) {
   }
 }
 
-// Sonda temporal: ¿prode_user_picks devuelve los especiales (009) o el formato viejo (008)?
-{
-  try {
-    const probe = await rest('rpc/prode_user_picks', { method: 'POST', body: JSON.stringify({ target_user: '636a0b3d-a240-4268-b9b9-aa8e88da5ce5' }) });
-    const tipo = Array.isArray(probe) ? 'ARRAY (008 viejo, sin especiales)' : 'OBJETO (009 ok)';
-    console.log(`PROBE prode_user_picks -> ${tipo} | claves=${Array.isArray(probe) ? 'n/a' : Object.keys(probe || {}).join(',')}`);
-  } catch (error) {
-    console.log(`PROBE prode_user_picks -> error: ${error.message}`);
-  }
-}
-
 // 1. Partidos ya empezados (últimas 72h) que todavía no tienen resultado.
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
 const now = new Date().toISOString();
