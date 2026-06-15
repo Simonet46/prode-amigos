@@ -1450,7 +1450,11 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
   const selectedPlayer = players.find((player) => player.id === playerId);
   const selectedChampion = teams.find((team) => team.id === championTeamId);
 
-  const lockedMessage = (message) => (message.includes('locked') ? 'Los especiales ya cerraron.' : message);
+  // Cerrado solo para los que YA eligieron. El que no cargó puede hacerlo siempre.
+  const champLocked = locked && Boolean(championPick);
+  const scorerLocked = locked && Boolean(topScorerPick);
+
+  const lockedMessage = (message) => (message.includes('locked') ? 'Tu pronóstico ya está cerrado, no se puede cambiar.' : message);
 
   const saveGroup = async (groupCode) => {
     const { data: user } = await supabase.auth.getUser();
@@ -1504,18 +1508,18 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       <Header
         title="Predicciones especiales"
         subtitle={locked
-          ? 'Ya cerraron para el Mundial.'
+          ? '🔒 Cerrado para cambios. Pero si todavía NO cargaste tu campeón o goleador, ¡podés hacerlo ahora!'
           : closesAt
             ? `⏰ Podés elegir o modificar hasta el ${fmtDate(closesAt)}.`
             : 'Se guardan una sola vez.'}
       />
       <section className="panel">
         <h2>Campeón</h2>
-        {championPick && locked ? <PickLabel id={championPick.team_id} items={teams} /> : (
+        {champLocked ? <PickLabel id={championPick.team_id} items={teams} /> : (
           <div className="pickerForm">
             {championPick && <p className="selectedPick">Tu elección actual: <PickLabel id={championPick.team_id} items={teams} /></p>}
             <SearchPicker
-              disabled={locked}
+              disabled={champLocked}
               items={teams}
               placeholder="Buscar país..."
               selectedId={championTeamId}
@@ -1527,7 +1531,7 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
               emptyText="No encontramos ese país."
             />
             {selectedChampion && <p className="selectedPick">Elegido: <PickLabel id={selectedChampion.id} items={teams} /></p>}
-            <button className="secondary" disabled={locked || !championTeamId} onClick={saveChampion}>
+            <button className="secondary" disabled={champLocked || !championTeamId} onClick={saveChampion}>
               {championPick ? 'Modificar campeón' : 'Guardar'}
             </button>
           </div>
@@ -1535,11 +1539,11 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       </section>
       <section className="panel">
         <h2>Goleador de grupos</h2>
-        {topScorerPick && locked ? <PickLabel id={topScorerPick.player_id} items={players} /> : (
+        {scorerLocked ? <PickLabel id={topScorerPick.player_id} items={players} /> : (
           <div className="pickerForm">
             {topScorerPick && <p className="selectedPick">Tu elección actual: <PickLabel id={topScorerPick.player_id} items={players} /></p>}
             <SearchPicker
-              disabled={locked}
+              disabled={scorerLocked}
               items={players}
               placeholder="Buscar jugador o país..."
               selectedId={playerId}
@@ -1551,7 +1555,7 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
               emptyText="No encontramos ese jugador."
             />
             {selectedPlayer && <p className="selectedPick">Elegido: <PickLabel id={selectedPlayer.id} items={players} /></p>}
-            <button className="secondary" disabled={locked || !playerId} onClick={saveTopScorer}>
+            <button className="secondary" disabled={scorerLocked || !playerId} onClick={saveTopScorer}>
               {topScorerPick ? 'Modificar goleador' : 'Guardar'}
             </button>
           </div>
@@ -1560,22 +1564,23 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       {groups.map((groupCode) => {
         const existing = groupPredictions.find((item) => item.group_code === groupCode);
         const groupTeams = teams.filter((team) => team.group_code === groupCode);
+        const groupLocked = locked && Boolean(existing);
         return (
           <section className="panel" key={groupCode}>
             <h2>Grupo {groupCode}</h2>
-            {existing && locked ? (
+            {groupLocked ? (
               <p><PickLabel id={existing.first_team_id} items={teams} /> y <PickLabel id={existing.second_team_id} items={teams} /></p>
             ) : (
               <div className="qualifierForm">
-                <select disabled={locked} value={groupDraft[`${groupCode}-1`] ?? existing?.first_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-1`]: event.target.value })}>
+                <select disabled={groupLocked} value={groupDraft[`${groupCode}-1`] ?? existing?.first_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-1`]: event.target.value })}>
                   <option value="">1° puesto</option>
                   {groupTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
                 </select>
-                <select disabled={locked} value={groupDraft[`${groupCode}-2`] ?? existing?.second_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-2`]: event.target.value })}>
+                <select disabled={groupLocked} value={groupDraft[`${groupCode}-2`] ?? existing?.second_team_id ?? ''} onChange={(event) => setGroupDraft({ ...groupDraft, [`${groupCode}-2`]: event.target.value })}>
                   <option value="">2° puesto</option>
                   {groupTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
                 </select>
-                <button className="secondary" disabled={locked} onClick={() => saveGroup(groupCode)}>{existing ? 'Modificar grupo' : 'Guardar grupo'}</button>
+                <button className="secondary" disabled={groupLocked} onClick={() => saveGroup(groupCode)}>{existing ? 'Modificar grupo' : 'Guardar grupo'}</button>
               </div>
             )}
           </section>
