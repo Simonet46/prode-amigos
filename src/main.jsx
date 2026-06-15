@@ -1203,7 +1203,7 @@ function Ranking({ ranking, setNotice }) {
 
   return (
     <div className="stack">
-      <Header title="Ranking" subtitle="Tocá un equipo para ver sus pronósticos partido a partido. Desempate: exactos, grupos, especiales y empate oficial." />
+      <Header title="Ranking" subtitle="👆 Tocá un equipo para ver su goleador, su campeón y sus pronósticos partido a partido." />
       <div className="rankingList">
         {ranking.map((item, index) => (
           <article
