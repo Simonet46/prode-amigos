@@ -1,10 +1,30 @@
 {
-  "updatedAt": "2026-06-14T13:50:37.134Z",
+  "updatedAt": "2026-06-15T17:07:41.635Z",
   "items": [
     {
       "name": "Folarin Balogun",
       "team": "United States",
       "goals": 2
+    },
+    {
+      "name": "Kai Havertz",
+      "team": "Germany",
+      "goals": 2
+    },
+    {
+      "name": "Yasin Ayari",
+      "team": "Sweden",
+      "goals": 2
+    },
+    {
+      "name": "Alexander Isak",
+      "team": "Sweden",
+      "goals": 1
+    },
+    {
+      "name": "Amad Diallo",
+      "team": "Ivory Coast",
+      "goals": 1
     },
     {
       "name": "Breel Embolo",
@@ -17,8 +37,28 @@
       "goals": 1
     },
     {
+      "name": "Crysencio Summerville",
+      "team": "Netherlands",
+      "goals": 1
+    },
+    {
       "name": "Cyle Larin",
       "team": "Canada",
+      "goals": 1
+    },
+    {
+      "name": "Daichi Kamada",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
+      "name": "Deniz Undav",
+      "team": "Germany",
+      "goals": 1
+    },
+    {
+      "name": "Felix Nmecha",
+      "team": "Germany",
       "goals": 1
     },
     {
@@ -37,6 +77,11 @@
       "goals": 1
     },
     {
+      "name": "Jamal Musiala",
+      "team": "Germany",
+      "goals": 1
+    },
+    {
       "name": "John McGinn",
       "team": "Scotland",
       "goals": 1
@@ -52,8 +97,23 @@
       "goals": 1
     },
     {
+      "name": "Keito Nakamura",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "name": "Ladislav Krejcí",
       "team": "Czechia",
+      "goals": 1
+    },
+    {
+      "name": "Livano Comenencia",
+      "team": "Curaçao",
+      "goals": 1
+    },
+    {
+      "name": "Mattias Svanberg",
+      "team": "Sweden",
       "goals": 1
     },
     {
@@ -62,8 +122,18 @@
       "goals": 1
     },
     {
+      "name": "Nathaniel Brown",
+      "team": "Germany",
+      "goals": 1
+    },
+    {
       "name": "Nestory Irankunda",
       "team": "Australia",
+      "goals": 1
+    },
+    {
+      "name": "Nico Schlotterbeck",
+      "team": "Germany",
       "goals": 1
     },
     {
@@ -72,13 +142,28 @@
       "goals": 1
     },
     {
+      "name": "Omar Rekik",
+      "team": "Tunisia",
+      "goals": 1
+    },
+    {
       "name": "Raúl Jiménez",
       "team": "Mexico",
       "goals": 1
     },
     {
+      "name": "Viktor Gyökeres",
+      "team": "Sweden",
+      "goals": 1
+    },
+    {
       "name": "Vinícius Júnior",
       "team": "Brazil",
+      "goals": 1
+    },
+    {
+      "name": "Virgil van Dijk",
+      "team": "Netherlands",
       "goals": 1
     }
   ]
