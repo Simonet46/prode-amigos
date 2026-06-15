@@ -284,9 +284,10 @@ function buildProdeHeadlines(facts, byTeam = {}) {
 
   const chosen = [];
   const usedTags = new Set();
+  // Las noticias con portada IA (cover) van siempre primero: son las curadas.
   const ordered = stories
     .map((story) => ({ ...story, jitter: rng() }))
-    .sort((a, b) => a.priority - b.priority || a.jitter - b.jitter);
+    .sort((a, b) => (a.cover ? 0 : 1) - (b.cover ? 0 : 1) || a.priority - b.priority || a.jitter - b.jitter);
   for (const story of ordered) {
     if (chosen.length >= 3) break;
     if (usedTags.has(story.tag) && ordered.length > 3) continue;
