@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-06-15T17:07:41.635Z",
+  "updatedAt": "2026-06-16T16:40:52.154Z",
   "items": [
+    {
+      "name": "Elijah Just",
+      "team": "New Zealand",
+      "goals": 2
+    },
     {
       "name": "Folarin Balogun",
       "team": "United States",
@@ -15,6 +20,11 @@
       "name": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
+    },
+    {
+      "name": "Abdulelah Al-Amri",
+      "team": "Saudi Arabia",
+      "goals": 1
     },
     {
       "name": "Alexander Isak",
@@ -54,6 +64,11 @@
     {
       "name": "Deniz Undav",
       "team": "Germany",
+      "goals": 1
+    },
+    {
+      "name": "Emam Ashour",
+      "team": "Egypt",
       "goals": 1
     },
     {
@@ -122,6 +137,16 @@
       "goals": 1
     },
     {
+      "name": "Maxi Araújo",
+      "team": "Uruguay",
+      "goals": 1
+    },
+    {
+      "name": "Mohammad Mohebbi",
+      "team": "Iran",
+      "goals": 1
+    },
+    {
       "name": "Nathaniel Brown",
       "team": "Germany",
       "goals": 1
@@ -144,6 +169,11 @@
     {
       "name": "Omar Rekik",
       "team": "Tunisia",
+      "goals": 1
+    },
+    {
+      "name": "Ramin Rezaeian",
+      "team": "Iran",
       "goals": 1
     },
     {
