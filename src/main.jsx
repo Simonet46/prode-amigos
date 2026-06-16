@@ -999,12 +999,15 @@ function Dashboard({ profile, ranking, matches, firstKickoffAt }) {
 function Predictions({ matches, predictionByMatch, members, onSaved, setNotice }) {
   const annotatedMatches = useMemo(() => annotateTeamMatchNumbers(matches), [matches]);
   const days = [...new Set(annotatedMatches.map((match) => dateKey(match.kickoff_at)))].sort();
-  const [day, setDay] = useState(days[0] || 'sin-fecha');
+  // Día de arranque: hoy si hay partidos, si no el próximo día con partidos.
+  const today = dateKey(nowIso());
+  const defaultDay = days.includes(today) ? today : (days.find((value) => value >= today) || days[days.length - 1] || 'sin-fecha');
+  const [day, setDay] = useState(defaultDay);
   const visible = annotatedMatches.filter((match) => dateKey(match.kickoff_at) === day);
 
   useEffect(() => {
-    if (days.length && !days.includes(day)) setDay(days[0]);
-  }, [days.join('|'), day]);
+    if (days.length && !days.includes(day)) setDay(defaultDay);
+  }, [days.join('|')]);
 
   // Re-render periódico: bloquea las tarjetas en vivo cuando llega la hora del partido.
   const [, setNowTick] = useState(0);
