@@ -107,6 +107,8 @@ const ORACLE_COVER = { team: 'Victor', image: 'press-oracle.webp' };
 const CHASE_COVER = { leader: 'Victor', second: 'La Scaloneta papá!!', image: 'press-chase.webp' };
 // El amarrete: portada propia para Yayo FC (Agustin) mientras sea el rey del puntito.
 const STINGY_COVER = { team: 'Yayo FC', image: 'press-amarrete.webp' };
+// El equipo del creador del prode (para el autochiste cuando va mal).
+const CREATOR_TEAM = 'El Diego FC';
 
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
@@ -226,7 +228,14 @@ function buildProdeHeadlines(facts, byTeam = {}) {
     // Persecución: portada propia cuando Victor lidera y lo persigue La Scaloneta
     // (esté 2°, 3°, donde sea: la imagen es Victor vs Ezequiel).
     const chaser = standings.find((item) => item.team === CHASE_COVER.second && item.team !== leader.team);
-    if (leader.team === CHASE_COVER.leader && chaser) {
+    if (gap >= 6) {
+      // Coronación anticipada: el líder arrasa, que el resto entregue las medallas.
+      stories.push({ pin: true, priority: -1, tag: 'CORONACIÓN', mood: 'exclusivo', emoji: '👑', actors: [leader.team], title: pickOne([
+        `👑 QUE DEJEN DE JUGAR EL RESTO: ${who(leader.team)} YA GANÓ EL PRODE. ${leader.total} puntos, ${leader.exacts} exactos y +${gap} de luz. Entreguen las medallas, apaguen la cancha y váyanse a casa`,
+        `🏆 SE TERMINÓ EL TORNEO (FALTANDO MEDIO MUNDIAL): ${who(leader.team)} es CAMPEÓN con ${gap} puntos de ventaja. El resto que pelee el segundo puesto... si le da el cuero`,
+        `📢 COMUNICADO OFICIAL: ${who(leader.team)} solicita que el resto deje de hacer el ridículo. ${leader.total} pts. No lo alcanzan ni en un Mundial paralelo`,
+      ]), detail: 'Reserven la copa, graben su nombre. Esto ya está liquidado.' });
+    } else if (leader.team === CHASE_COVER.leader && chaser) {
       const chaseGap = leader.total - chaser.total;
       stories.push({ priority: 0, tag: 'LA PERSECUCIÓN', mood: 'exclusivo', emoji: '🏃', actors: [leader.team, chaser.team], cover: CHASE_COVER.image, title: pickOne([
         `🏃 LE PISA LOS TALONES: ${who(chaser.team)} a ${chaseGap} ${chaseGap === 1 ? 'punto' : 'puntos'} del líder ${who(leader.team)}. "Lo alcanzo aunque sea en palomita", promete entre lágrimas`,
@@ -247,10 +256,21 @@ function buildProdeHeadlines(facts, byTeam = {}) {
           ]), detail: 'La tabla no miente. Por ahora.' });
     }
     if (last && last.team !== leader.team && last.total < leader.total) {
-      stories.push({ priority: 4, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
-        `🚑 CRISIS TERMINAL en ${last.team}: ${who(last.team)} último con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
+      stories.push({ pin: true, priority: -1, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
+        `🚑 ${who(last.team)} EN TERAPIA INTENSIVA: último de la tabla con ${last.total} puntos. Monitores titilando, suero al palo y pronóstico reservado`,
+        `🪦 CRISIS TERMINAL: ${who(last.team)} farolito rojo con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
         `📉 ${who(last.team)} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
       ]), detail: '¿Hay proyecto? La dirigencia no responde llamados.' });
+    }
+
+    // El creador en llamas: el que programó el prode, hundido en la tabla.
+    const creator = standings.find((item) => item.team === CREATOR_TEAM);
+    const creatorPos = creator ? standings.indexOf(creator) + 1 : 0;
+    if (creator && creator.team !== last?.team && creatorPos >= Math.ceil(standings.length * 0.6)) {
+      stories.push({ pin: true, priority: -1, tag: 'EL CREADOR', mood: 'papelon', emoji: '🤡', actors: [creator.team], title: pickOne([
+        `🤡 EL COLMO: ${who(creator.team)} PROGRAMÓ todo este prode... y va ${creatorPos}° de ${standings.length}. El sistema anda perfecto; el dueño, no tanto`,
+        `💻 PAPELÓN DEL ARQUITECTO: ${who(creator.team)} creó la app, las reglas y el arbitraje. Lo único que no logró: acertar. Puesto ${creatorPos} de ${standings.length}`,
+      ]), detail: 'Zapatero a tus zapatos. Hizo la cancha pero no la mete ni de penal.' });
     }
 
     // El amarrete: el que junta puntos al signo pero nunca arriesga un exacto.
@@ -284,10 +304,10 @@ function buildProdeHeadlines(facts, byTeam = {}) {
 
   const chosen = [];
   const usedTags = new Set();
-  // Las noticias con portada IA (cover) van siempre primero: son las curadas.
+  // Orden: primero las fijadas (pin), después las que tienen portada IA, luego prioridad.
   const ordered = stories
     .map((story) => ({ ...story, jitter: rng() }))
-    .sort((a, b) => (a.cover ? 0 : 1) - (b.cover ? 0 : 1) || a.priority - b.priority || a.jitter - b.jitter);
+    .sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || (a.cover ? 0 : 1) - (b.cover ? 0 : 1) || a.priority - b.priority || a.jitter - b.jitter);
   for (const story of ordered) {
     if (chosen.length >= 3) break;
     if (usedTags.has(story.tag) && ordered.length > 3) continue;
