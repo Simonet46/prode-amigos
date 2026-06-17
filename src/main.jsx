@@ -1453,11 +1453,11 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
   const selectedPlayer = players.find((player) => player.id === playerId);
   const selectedChampion = teams.find((team) => team.id === championTeamId);
 
-  // Cerrado solo para los que YA eligieron. El que no cargó puede hacerlo siempre.
-  const champLocked = locked && Boolean(championPick);
-  const scorerLocked = locked && Boolean(topScorerPick);
+  // Cerrado para todos una vez vencida la ventana.
+  const champLocked = locked;
+  const scorerLocked = locked;
 
-  const lockedMessage = (message) => (message.includes('locked') ? 'Tu pronóstico ya está cerrado, no se puede cambiar.' : message);
+  const lockedMessage = (message) => (message.includes('locked') ? 'Los especiales ya cerraron.' : message);
 
   const saveGroup = async (groupCode) => {
     const { data: user } = await supabase.auth.getUser();
@@ -1511,7 +1511,7 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       <Header
         title="Predicciones especiales"
         subtitle={locked
-          ? '🔒 Cerrado para cambios. Pero si todavía NO cargaste tu campeón o goleador, ¡podés hacerlo ahora!'
+          ? '🔒 Cerrados para el Mundial. El que no cargó, se quedó afuera.'
           : closesAt
             ? `⏰ Podés elegir o modificar hasta el ${fmtDate(closesAt)}.`
             : 'Se guardan una sola vez.'}
@@ -1567,7 +1567,7 @@ function Specials({ league, teams, players, groupPredictions, topScorerPick, cha
       {groups.map((groupCode) => {
         const existing = groupPredictions.find((item) => item.group_code === groupCode);
         const groupTeams = teams.filter((team) => team.group_code === groupCode);
-        const groupLocked = locked && Boolean(existing);
+        const groupLocked = locked;
         return (
           <section className="panel" key={groupCode}>
             <h2>Grupo {groupCode}</h2>
