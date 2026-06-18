@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-17T15:13:51.470Z",
+  "updatedAt": "2026-06-18T14:56:18.927Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -22,6 +22,11 @@
       "goals": 2
     },
     {
+      "name": "Harry Kane",
+      "team": "England",
+      "goals": 2
+    },
+    {
       "name": "Kai Havertz",
       "team": "Germany",
       "goals": 2
@@ -35,6 +40,11 @@
       "name": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
+    },
+    {
+      "name": "Abbosbek Fayzullaev",
+      "team": "Uzbekistan",
+      "goals": 1
     },
     {
       "name": "Abdulelah Al-Amri",
@@ -52,23 +62,18 @@
       "goals": 1
     },
     {
-      "name": "Amad Diallo",
-      "team": "Ivory Coast",
-      "goals": 1
-    },
-    {
       "name": "Aymen Hussein",
       "team": "Iraq",
       "goals": 1
     },
     {
-      "name": "Bradley Barcola",
-      "team": "France",
+      "name": "Breel Embolo",
+      "team": "Switzerland",
       "goals": 1
     },
     {
-      "name": "Breel Embolo",
-      "team": "Switzerland",
+      "name": "Caleb Yirenkyi",
+      "team": "Ghana",
       "goals": 1
     },
     {
@@ -82,18 +87,13 @@
       "goals": 1
     },
     {
-      "name": "Cyle Larin",
-      "team": "Canada",
-      "goals": 1
-    },
-    {
       "name": "Daichi Kamada",
       "team": "Japan",
       "goals": 1
     },
     {
-      "name": "Deniz Undav",
-      "team": "Germany",
+      "name": "Daniel Muñoz",
+      "team": "Colombia",
       "goals": 1
     },
     {
@@ -107,18 +107,8 @@
       "goals": 1
     },
     {
-      "name": "Giovanni Reyna",
-      "team": "United States",
-      "goals": 1
-    },
-    {
       "name": "Hwang In-Beom",
       "team": "South Korea",
-      "goals": 1
-    },
-    {
-      "name": "Ibrahim Mbaye",
-      "team": "Senegal",
       "goals": 1
     },
     {
@@ -132,6 +122,11 @@
       "goals": 1
     },
     {
+      "name": "João Neves",
+      "team": "Portugal",
+      "goals": 1
+    },
+    {
       "name": "John McGinn",
       "team": "Scotland",
       "goals": 1
@@ -139,6 +134,11 @@
     {
       "name": "Jovo Lukic",
       "team": "Bosnia-Herzegovina",
+      "goals": 1
+    },
+    {
+      "name": "Jude Bellingham",
+      "team": "England",
       "goals": 1
     },
     {
@@ -157,13 +157,13 @@
       "goals": 1
     },
     {
-      "name": "Leo Østigard",
-      "team": "Norway",
+      "name": "Livano Comenencia",
+      "team": "Curaçao",
       "goals": 1
     },
     {
-      "name": "Livano Comenencia",
-      "team": "Curaçao",
+      "name": "Luis Díaz",
+      "team": "Colombia",
       "goals": 1
     },
     {
@@ -172,8 +172,8 @@
       "goals": 1
     },
     {
-      "name": "Mattias Svanberg",
-      "team": "Sweden",
+      "name": "Martin Baturina",
+      "team": "Croatia",
       "goals": 1
     },
     {
@@ -207,13 +207,13 @@
       "goals": 1
     },
     {
-      "name": "Oh Hyeon-Gyu",
-      "team": "South Korea",
+      "name": "Omar Rekik",
+      "team": "Tunisia",
       "goals": 1
     },
     {
-      "name": "Omar Rekik",
-      "team": "Tunisia",
+      "name": "Petar Musa",
+      "team": "Croatia",
       "goals": 1
     },
     {
@@ -244,6 +244,11 @@
     {
       "name": "Virgil van Dijk",
       "team": "Netherlands",
+      "goals": 1
+    },
+    {
+      "name": "Yoane Wissa",
+      "team": "Congo DR",
       "goals": 1
     }
   ]
