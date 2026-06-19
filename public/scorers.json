@@ -1,10 +1,20 @@
 {
-  "updatedAt": "2026-06-18T14:56:18.927Z",
+  "updatedAt": "2026-06-19T14:52:38.533Z",
   "items": [
+    {
+      "name": "Jonathan David",
+      "team": "Canada",
+      "goals": 3
+    },
     {
       "name": "Lionel Messi",
       "team": "Argentina",
       "goals": 3
+    },
+    {
+      "name": "Cyle Larin",
+      "team": "Canada",
+      "goals": 2
     },
     {
       "name": "Elijah Just",
@@ -24,6 +34,11 @@
     {
       "name": "Harry Kane",
       "team": "England",
+      "goals": 2
+    },
+    {
+      "name": "Johan Manzambi",
+      "team": "Switzerland",
       "goals": 2
     },
     {
@@ -82,11 +97,6 @@
       "goals": 1
     },
     {
-      "name": "Crysencio Summerville",
-      "team": "Netherlands",
-      "goals": 1
-    },
-    {
       "name": "Daichi Kamada",
       "team": "Japan",
       "goals": 1
@@ -97,13 +107,13 @@
       "goals": 1
     },
     {
-      "name": "Emam Ashour",
-      "team": "Egypt",
+      "name": "Felix Nmecha",
+      "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Felix Nmecha",
-      "team": "Germany",
+      "name": "Granit Xhaka",
+      "team": "Switzerland",
       "goals": 1
     },
     {
@@ -114,11 +124,6 @@
     {
       "name": "Ismael Saibari",
       "team": "Morocco",
-      "goals": 1
-    },
-    {
-      "name": "Jamal Musiala",
-      "team": "Germany",
       "goals": 1
     },
     {
@@ -167,18 +172,8 @@
       "goals": 1
     },
     {
-      "name": "Marko Arnautovic",
-      "team": "Austria",
-      "goals": 1
-    },
-    {
       "name": "Martin Baturina",
       "team": "Croatia",
-      "goals": 1
-    },
-    {
-      "name": "Maurício",
-      "team": "Paraguay",
       "goals": 1
     },
     {
@@ -187,18 +182,13 @@
       "goals": 1
     },
     {
+      "name": "Michal Sadílek",
+      "team": "Czechia",
+      "goals": 1
+    },
+    {
       "name": "Mohammad Mohebbi",
       "team": "Iran",
-      "goals": 1
-    },
-    {
-      "name": "Nathaniel Brown",
-      "team": "Germany",
-      "goals": 1
-    },
-    {
-      "name": "Nestory Irankunda",
-      "team": "Australia",
       "goals": 1
     },
     {
@@ -207,13 +197,13 @@
       "goals": 1
     },
     {
-      "name": "Omar Rekik",
-      "team": "Tunisia",
+      "name": "Oh Hyeon-Gyu",
+      "team": "South Korea",
       "goals": 1
     },
     {
-      "name": "Petar Musa",
-      "team": "Croatia",
+      "name": "Omar Rekik",
+      "team": "Tunisia",
       "goals": 1
     },
     {
@@ -229,6 +219,16 @@
     {
       "name": "Romano Schmid",
       "team": "Austria",
+      "goals": 1
+    },
+    {
+      "name": "Rubén Vargas",
+      "team": "Switzerland",
+      "goals": 1
+    },
+    {
+      "name": "Teboho Mokoena",
+      "team": "South Africa",
       "goals": 1
     },
     {
