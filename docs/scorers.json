@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-19T14:52:38.533Z",
+  "updatedAt": "2026-06-20T13:49:49.332Z",
   "items": [
     {
       "name": "Jonathan David",
@@ -37,6 +37,11 @@
       "goals": 2
     },
     {
+      "name": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 2
+    },
+    {
       "name": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 2
@@ -52,18 +57,28 @@
       "goals": 2
     },
     {
+      "name": "Matheus Cunha",
+      "team": "Brazil",
+      "goals": 2
+    },
+    {
+      "name": "Vinícius Júnior",
+      "team": "Brazil",
+      "goals": 2
+    },
+    {
       "name": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
     },
     {
-      "name": "Abbosbek Fayzullaev",
-      "team": "Uzbekistan",
+      "name": "Abdulelah Al-Amri",
+      "team": "Saudi Arabia",
       "goals": 1
     },
     {
-      "name": "Abdulelah Al-Amri",
-      "team": "Saudi Arabia",
+      "name": "Alex Freeman",
+      "team": "United States",
       "goals": 1
     },
     {
@@ -107,8 +122,8 @@
       "goals": 1
     },
     {
-      "name": "Felix Nmecha",
-      "team": "Germany",
+      "name": "Giovanni Reyna",
+      "team": "United States",
       "goals": 1
     },
     {
@@ -119,11 +134,6 @@
     {
       "name": "Hwang In-Beom",
       "team": "South Korea",
-      "goals": 1
-    },
-    {
-      "name": "Ismael Saibari",
-      "team": "Morocco",
       "goals": 1
     },
     {
@@ -139,11 +149,6 @@
     {
       "name": "Jovo Lukic",
       "team": "Bosnia-Herzegovina",
-      "goals": 1
-    },
-    {
-      "name": "Jude Bellingham",
-      "team": "England",
       "goals": 1
     },
     {
@@ -172,13 +177,8 @@
       "goals": 1
     },
     {
-      "name": "Martin Baturina",
-      "team": "Croatia",
-      "goals": 1
-    },
-    {
-      "name": "Maxi Araújo",
-      "team": "Uruguay",
+      "name": "Matías Galarza",
+      "team": "Paraguay",
       "goals": 1
     },
     {
@@ -189,6 +189,11 @@
     {
       "name": "Mohammad Mohebbi",
       "team": "Iran",
+      "goals": 1
+    },
+    {
+      "name": "Nestory Irankunda",
+      "team": "Australia",
       "goals": 1
     },
     {
@@ -234,11 +239,6 @@
     {
       "name": "Viktor Gyökeres",
       "team": "Sweden",
-      "goals": 1
-    },
-    {
-      "name": "Vinícius Júnior",
-      "team": "Brazil",
       "goals": 1
     },
     {
