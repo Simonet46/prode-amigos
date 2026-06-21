@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-06-20T13:49:49.332Z",
+  "updatedAt": "2026-06-21T13:57:18.229Z",
   "items": [
+    {
+      "name": "Deniz Undav",
+      "team": "Germany",
+      "goals": 3
+    },
     {
       "name": "Jonathan David",
       "team": "Canada",
@@ -12,8 +17,33 @@
       "goals": 3
     },
     {
+      "name": "Ayase Ueda",
+      "team": "Japan",
+      "goals": 2
+    },
+    {
+      "name": "Brian Brobbey",
+      "team": "Netherlands",
+      "goals": 2
+    },
+    {
+      "name": "Cody Gakpo",
+      "team": "Netherlands",
+      "goals": 2
+    },
+    {
+      "name": "Crysencio Summerville",
+      "team": "Netherlands",
+      "goals": 2
+    },
+    {
       "name": "Cyle Larin",
       "team": "Canada",
+      "goals": 2
+    },
+    {
+      "name": "Daichi Kamada",
+      "team": "Japan",
       "goals": 2
     },
     {
@@ -72,11 +102,6 @@
       "goals": 2
     },
     {
-      "name": "Abdulelah Al-Amri",
-      "team": "Saudi Arabia",
-      "goals": 1
-    },
-    {
       "name": "Alex Freeman",
       "team": "United States",
       "goals": 1
@@ -87,13 +112,13 @@
       "goals": 1
     },
     {
-      "name": "Ali Olwan",
-      "team": "Jordan",
+      "name": "Amad Diallo",
+      "team": "Ivory Coast",
       "goals": 1
     },
     {
-      "name": "Aymen Hussein",
-      "team": "Iraq",
+      "name": "Anthony Elanga",
+      "team": "Sweden",
       "goals": 1
     },
     {
@@ -102,23 +127,18 @@
       "goals": 1
     },
     {
-      "name": "Caleb Yirenkyi",
-      "team": "Ghana",
-      "goals": 1
-    },
-    {
       "name": "Connor Metcalfe",
       "team": "Australia",
       "goals": 1
     },
     {
-      "name": "Daichi Kamada",
-      "team": "Japan",
+      "name": "Felix Nmecha",
+      "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Daniel Muñoz",
-      "team": "Colombia",
+      "name": "Franck Kessié",
+      "team": "Ivory Coast",
       "goals": 1
     },
     {
@@ -137,8 +157,8 @@
       "goals": 1
     },
     {
-      "name": "João Neves",
-      "team": "Portugal",
+      "name": "Jamal Musiala",
+      "team": "Germany",
       "goals": 1
     },
     {
@@ -157,6 +177,11 @@
       "goals": 1
     },
     {
+      "name": "Junya Ito",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "name": "Keito Nakamura",
       "team": "Japan",
       "goals": 1
@@ -172,23 +197,13 @@
       "goals": 1
     },
     {
-      "name": "Luis Díaz",
-      "team": "Colombia",
-      "goals": 1
-    },
-    {
-      "name": "Matías Galarza",
-      "team": "Paraguay",
-      "goals": 1
-    },
-    {
       "name": "Michal Sadílek",
       "team": "Czechia",
       "goals": 1
     },
     {
-      "name": "Mohammad Mohebbi",
-      "team": "Iran",
+      "name": "Nathaniel Brown",
+      "team": "Germany",
       "goals": 1
     },
     {
@@ -212,18 +227,8 @@
       "goals": 1
     },
     {
-      "name": "Ramin Rezaeian",
-      "team": "Iran",
-      "goals": 1
-    },
-    {
       "name": "Raúl Jiménez",
       "team": "Mexico",
-      "goals": 1
-    },
-    {
-      "name": "Romano Schmid",
-      "team": "Austria",
       "goals": 1
     },
     {
@@ -244,11 +249,6 @@
     {
       "name": "Virgil van Dijk",
       "team": "Netherlands",
-      "goals": 1
-    },
-    {
-      "name": "Yoane Wissa",
-      "team": "Congo DR",
       "goals": 1
     }
   ]
