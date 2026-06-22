@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-21T13:57:18.229Z",
+  "updatedAt": "2026-06-22T16:45:20.547Z",
   "items": [
     {
       "name": "Deniz Undav",
@@ -92,6 +92,16 @@
       "goals": 2
     },
     {
+      "name": "Maxi Araújo",
+      "team": "Uruguay",
+      "goals": 2
+    },
+    {
+      "name": "Mikel Oyarzabal",
+      "team": "Spain",
+      "goals": 2
+    },
+    {
       "name": "Vinícius Júnior",
       "team": "Brazil",
       "goals": 2
@@ -102,22 +112,17 @@
       "goals": 2
     },
     {
+      "name": "Abdulelah Al-Amri",
+      "team": "Saudi Arabia",
+      "goals": 1
+    },
+    {
       "name": "Alex Freeman",
       "team": "United States",
       "goals": 1
     },
     {
       "name": "Alexander Isak",
-      "team": "Sweden",
-      "goals": 1
-    },
-    {
-      "name": "Amad Diallo",
-      "team": "Ivory Coast",
-      "goals": 1
-    },
-    {
-      "name": "Anthony Elanga",
       "team": "Sweden",
       "goals": 1
     },
@@ -132,18 +137,23 @@
       "goals": 1
     },
     {
+      "name": "Emam Ashour",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
       "name": "Felix Nmecha",
       "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Franck Kessié",
-      "team": "Ivory Coast",
+      "name": "Finn Surman",
+      "team": "New Zealand",
       "goals": 1
     },
     {
-      "name": "Giovanni Reyna",
-      "team": "United States",
+      "name": "Franck Kessié",
+      "team": "Ivory Coast",
       "goals": 1
     },
     {
@@ -157,18 +167,8 @@
       "goals": 1
     },
     {
-      "name": "Jamal Musiala",
-      "team": "Germany",
-      "goals": 1
-    },
-    {
       "name": "John McGinn",
       "team": "Scotland",
-      "goals": 1
-    },
-    {
-      "name": "Jovo Lukic",
-      "team": "Bosnia-Herzegovina",
       "goals": 1
     },
     {
@@ -177,13 +177,13 @@
       "goals": 1
     },
     {
-      "name": "Junya Ito",
+      "name": "Keito Nakamura",
       "team": "Japan",
       "goals": 1
     },
     {
-      "name": "Keito Nakamura",
-      "team": "Japan",
+      "name": "Kevin Pina",
+      "team": "Cape Verde",
       "goals": 1
     },
     {
@@ -197,8 +197,18 @@
       "goals": 1
     },
     {
-      "name": "Michal Sadílek",
-      "team": "Czechia",
+      "name": "Mohamed Salah",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
+      "name": "Mohammad Mohebbi",
+      "team": "Iran",
+      "goals": 1
+    },
+    {
+      "name": "Mostafa Zico",
+      "team": "Egypt",
       "goals": 1
     },
     {
@@ -207,18 +217,8 @@
       "goals": 1
     },
     {
-      "name": "Nestory Irankunda",
-      "team": "Australia",
-      "goals": 1
-    },
-    {
       "name": "Nico Schlotterbeck",
       "team": "Germany",
-      "goals": 1
-    },
-    {
-      "name": "Oh Hyeon-Gyu",
-      "team": "South Korea",
       "goals": 1
     },
     {
@@ -227,13 +227,13 @@
       "goals": 1
     },
     {
-      "name": "Raúl Jiménez",
-      "team": "Mexico",
+      "name": "Ramin Rezaeian",
+      "team": "Iran",
       "goals": 1
     },
     {
-      "name": "Rubén Vargas",
-      "team": "Switzerland",
+      "name": "Raúl Jiménez",
+      "team": "Mexico",
       "goals": 1
     },
     {
