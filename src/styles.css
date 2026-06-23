@@ -1253,6 +1253,39 @@ select:focus {
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
 }
 
+.sceneCoverWrap {
+  position: relative;
+}
+
+.namePlates {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: none;
+}
+
+/* Cartelito 3D con el nombre de la persona del recuadro */
+.namePlate {
+  padding: 5px 12px;
+  color: #1a1206;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  background: linear-gradient(180deg, #ffe9a8 0%, #e7bd55 55%, #b5821f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 3px 0 #7a5512,
+    0 6px 10px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  transform: translateZ(0);
+}
+
 /* Escena "siesta del siglo": dormidos al frente, fiesta detrás */
 .pressItem.withScene {
   grid-template-columns: 1fr;

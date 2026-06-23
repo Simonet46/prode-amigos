@@ -235,7 +235,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
     const rebel = standings.find((item) => item.team === SOLDIER_COVER.rebel);
     if (leader.team === SOLDIER_COVER.leader && rebel && rebel.team !== leader.team) {
       const rebelGap = leader.total - rebel.total;
-      stories.push({ pin: true, priority: -1, tag: 'EL ÚLTIMO REBELDE', mood: 'exclusivo', emoji: '⚔️', actors: [rebel.team], cover: SOLDIER_COVER.image, title: pickOne([
+      stories.push({ pin: true, priority: -1, tag: 'EL ÚLTIMO REBELDE', mood: 'exclusivo', emoji: '⚔️', actors: [rebel.team, leader.team], cover: SOLDIER_COVER.image, title: pickOne([
         `⚔️ EL ÚNICO QUE LE HACE SOMBRA: ${who(rebel.team)} es el ÚLTIMO rebelde de pie. Mientras todos se rindieron ante el rey ${who(leader.team)}, él carga espada en mano a ${rebelGap} puntos`,
         `🛡️ DAVID CONTRA GOLIAT: ${who(rebel.team)} se planta ante el trono de ${who(leader.team)} y jura que la remontada existe. El resto ya entregó las armas`,
       ]), detail: 'El rey ni se inmuta. El rebelde transpira. La épica más ridícula del prode.' });
@@ -471,7 +471,19 @@ function PressRoom({ members }) {
               {story.detail && <small>{story.detail}</small>}
             </div>
             {story.cover
-              ? <img className="sceneCover" src={`${import.meta.env.BASE_URL}${story.cover}`} alt={story.title} loading="lazy" />
+              ? (
+                <div className="sceneCoverWrap">
+                  <img className="sceneCover" src={`${import.meta.env.BASE_URL}${story.cover}`} alt={story.title} loading="lazy" />
+                  {(story.actors || []).length > 0 && (
+                    <div className="namePlates">
+                      {(story.actors || []).map((team) => {
+                        const member = byTeam[team];
+                        return <span key={team} className="namePlate">{member?.real_name || team}</span>;
+                      })}
+                    </div>
+                  )}
+                </div>
+              )
               : story.scene
                 ? <PressScene sleeping={story.scene.sleeping} byTeam={byTeam} members={members} />
                 : <PressFigure story={story} byTeam={byTeam} />}
