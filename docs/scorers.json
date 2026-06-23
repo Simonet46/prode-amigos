@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-06-22T16:45:20.547Z",
+  "updatedAt": "2026-06-23T14:37:06.483Z",
   "items": [
+    {
+      "name": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 5
+    },
+    {
+      "name": "Erling Haaland",
+      "team": "Norway",
+      "goals": 4
+    },
+    {
+      "name": "Kylian Mbappé",
+      "team": "France",
+      "goals": 4
+    },
     {
       "name": "Deniz Undav",
       "team": "Germany",
@@ -9,11 +24,6 @@
     {
       "name": "Jonathan David",
       "team": "Canada",
-      "goals": 3
-    },
-    {
-      "name": "Lionel Messi",
-      "team": "Argentina",
       "goals": 3
     },
     {
@@ -52,11 +62,6 @@
       "goals": 2
     },
     {
-      "name": "Erling Haaland",
-      "team": "Norway",
-      "goals": 2
-    },
-    {
       "name": "Folarin Balogun",
       "team": "United States",
       "goals": 2
@@ -72,6 +77,11 @@
       "goals": 2
     },
     {
+      "name": "Ismaïla Sarr",
+      "team": "Senegal",
+      "goals": 2
+    },
+    {
       "name": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 2
@@ -79,11 +89,6 @@
     {
       "name": "Kai Havertz",
       "team": "Germany",
-      "goals": 2
-    },
-    {
-      "name": "Kylian Mbappé",
-      "team": "France",
       "goals": 2
     },
     {
@@ -112,11 +117,6 @@
       "goals": 2
     },
     {
-      "name": "Abdulelah Al-Amri",
-      "team": "Saudi Arabia",
-      "goals": 1
-    },
-    {
       "name": "Alex Freeman",
       "team": "United States",
       "goals": 1
@@ -127,13 +127,13 @@
       "goals": 1
     },
     {
-      "name": "Breel Embolo",
-      "team": "Switzerland",
+      "name": "Ali Olwan",
+      "team": "Jordan",
       "goals": 1
     },
     {
-      "name": "Connor Metcalfe",
-      "team": "Australia",
+      "name": "Breel Embolo",
+      "team": "Switzerland",
       "goals": 1
     },
     {
@@ -207,18 +207,13 @@
       "goals": 1
     },
     {
-      "name": "Mostafa Zico",
-      "team": "Egypt",
-      "goals": 1
-    },
-    {
       "name": "Nathaniel Brown",
       "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Nico Schlotterbeck",
-      "team": "Germany",
+      "name": "Nizar Al-Rashdan",
+      "team": "Jordan",
       "goals": 1
     },
     {
@@ -234,6 +229,11 @@
     {
       "name": "Raúl Jiménez",
       "team": "Mexico",
+      "goals": 1
+    },
+    {
+      "name": "Romano Schmid",
+      "team": "Austria",
       "goals": 1
     },
     {
