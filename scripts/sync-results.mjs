@@ -61,6 +61,13 @@ if (finishedMatches.length) {
   }
 }
 
+// Sonda temporal: quiénes eligieron a Messi de goleador.
+{
+  const picks = await rest('prode_top_scorer_predictions?select=user_id,prode_players(name),prode_profiles(team_name)');
+  console.log('GOLEADOR PICKS:');
+  picks.forEach((p) => console.log(`  ${p.prode_profiles?.team_name} -> ${p.prode_players?.name}`));
+}
+
 // 1. Partidos ya empezados (últimas 72h) que todavía no tienen resultado.
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
 const now = new Date().toISOString();
