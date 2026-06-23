@@ -109,6 +109,10 @@ const CHASE_COVER = { leader: 'Victor', second: 'La Scaloneta papá!!', image: '
 const STINGY_COVER = { team: 'Yayo FC', image: 'press-amarrete.webp' };
 // El equipo del creador del prode (para el autochiste cuando va mal).
 const CREATOR_TEAM = 'El Diego FC';
+// Portadas curadas nuevas: el soldado rebelde (Juliancito vs Victor) y el que
+// puso a Messi de goleador (La Scaloneta).
+const SOLDIER_COVER = { rebel: 'Juliancito', leader: 'Victor', image: 'press-soldado.webp' };
+const MESSI_COVER = { picker: 'La Scaloneta papá!!', image: 'press-messi.webp' };
 
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
@@ -225,12 +229,45 @@ function buildProdeHeadlines(facts, byTeam = {}) {
   const last = standings[standings.length - 1];
   if (leader && second && leader.total > 0) {
     const gap = leader.total - second.total;
+
+    // === Noticias curadas pinneadas (top 3) ===
+    // 1) El soldado rebelde: Juliancito, el único que le pelea al líder Victor.
+    const rebel = standings.find((item) => item.team === SOLDIER_COVER.rebel);
+    if (leader.team === SOLDIER_COVER.leader && rebel && rebel.team !== leader.team) {
+      const rebelGap = leader.total - rebel.total;
+      stories.push({ pin: true, priority: -1, tag: 'EL ÚLTIMO REBELDE', mood: 'exclusivo', emoji: '⚔️', actors: [rebel.team], cover: SOLDIER_COVER.image, title: pickOne([
+        `⚔️ EL ÚNICO QUE LE HACE SOMBRA: ${who(rebel.team)} es el ÚLTIMO rebelde de pie. Mientras todos se rindieron ante el rey ${who(leader.team)}, él carga espada en mano a ${rebelGap} puntos`,
+        `🛡️ DAVID CONTRA GOLIAT: ${who(rebel.team)} se planta ante el trono de ${who(leader.team)} y jura que la remontada existe. El resto ya entregó las armas`,
+      ]), detail: 'El rey ni se inmuta. El rebelde transpira. La épica más ridícula del prode.' });
+    }
+    // 2) El que puso a Messi de goleador y la pegó.
+    const messiPicker = standings.find((item) => item.team === MESSI_COVER.picker);
+    if (messiPicker) {
+      stories.push({ pin: true, priority: -1, tag: 'LA PULGA', mood: 'exclusivo', emoji: '🐐', actors: [messiPicker.team], cover: MESSI_COVER.image, title: pickOne([
+        `🐐 ABRAZADO A LA GLORIA: ${who(messiPicker.team)} fue el ÚNICO que puso a Messi de goleador... y la Pulga lidera la bota de oro del Mundial. El resto, verde de envidia`,
+        `🥇 OLFATO DE CRACK: ${who(messiPicker.team)} se la jugó por Messi como goleador y le está saliendo redondo. Los demás se muerden los codos`,
+      ]), detail: 'El que la ve, la ve. El resto, a llorar al vestuario.' });
+    }
+    // 3) El pelotón del barro: 3+ equipos amontonados en mitad de tabla.
+    const midById = {};
+    standings.slice(2).forEach((item) => { (midById[item.total] = midById[item.total] || []).push(item.team); });
+    const cluster = Object.entries(midById).filter(([, list]) => list.length >= 3).sort((a, b) => b[1].length - a[1].length)[0];
+    if (cluster) {
+      const [clusterTotal, clusterTeams] = cluster;
+      const count = clusterTeams.length;
+      const word = { 3: 'TRIPLE', 4: 'CUÁDRUPLE', 5: 'QUÍNTUPLE', 6: 'SÉXTUPLE' }[count] || `${count} VÍAS`;
+      stories.push({ pin: true, priority: -1, tag: 'EL PELOTÓN', mood: 'papelon', emoji: '🟰', actors: clusterTeams, title: pickOne([
+        `🟰 ${word} EMPATE EN EL FANGO: ${whoList(clusterTeams)} — todos pegados en ${clusterTotal} puntos. Ninguno se anima a despegar`,
+        `🚜 ATASCADOS EN EL BARRO: ${count} equipos clavados en ${clusterTotal} puntos (${whoList(clusterTeams)}). Pelotón de la mediocridad, abrazo de náufragos`,
+      ]), detail: 'Tanta paridad que da sueño. Alguno tendría que arriesgar, ¿no?' });
+    }
+
     // Persecución: portada propia cuando Victor lidera y lo persigue La Scaloneta
     // (esté 2°, 3°, donde sea: la imagen es Victor vs Ezequiel).
     const chaser = standings.find((item) => item.team === CHASE_COVER.second && item.team !== leader.team);
     if (gap >= 6) {
       // Coronación anticipada: el líder arrasa, que el resto entregue las medallas.
-      stories.push({ pin: true, priority: -1, tag: 'CORONACIÓN', mood: 'exclusivo', emoji: '👑', actors: [leader.team], title: pickOne([
+      stories.push({ priority: 1, tag: 'CORONACIÓN', mood: 'exclusivo', emoji: '👑', actors: [leader.team], title: pickOne([
         `👑 QUE DEJEN DE JUGAR EL RESTO: ${who(leader.team)} YA GANÓ EL PRODE. ${leader.total} puntos, ${leader.exacts} exactos y +${gap} de luz. Entreguen las medallas, apaguen la cancha y váyanse a casa`,
         `🏆 SE TERMINÓ EL TORNEO (FALTANDO MEDIO MUNDIAL): ${who(leader.team)} es CAMPEÓN con ${gap} puntos de ventaja. El resto que pelee el segundo puesto... si le da el cuero`,
         `📢 COMUNICADO OFICIAL: ${who(leader.team)} solicita que el resto deje de hacer el ridículo. ${leader.total} pts. No lo alcanzan ni en un Mundial paralelo`,
@@ -256,7 +293,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
           ]), detail: 'La tabla no miente. Por ahora.' });
     }
     if (last && last.team !== leader.team && last.total < leader.total) {
-      stories.push({ pin: true, priority: -1, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
+      stories.push({ priority: 2, tag: 'CRISIS', mood: 'crisis', emoji: '🚑', actors: [last.team], title: pickOne([
         `🚑 ${who(last.team)} EN TERAPIA INTENSIVA: último de la tabla con ${last.total} puntos. Monitores titilando, suero al palo y pronóstico reservado`,
         `🪦 CRISIS TERMINAL: ${who(last.team)} farolito rojo con ${last.total} puntos. Los hinchas piden la renuncia del DT (que es él mismo)`,
         `📉 ${who(last.team)} en zona de descenso espiritual: ${last.total} puntos y el vestuario en llamas`,
@@ -267,7 +304,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
     const creator = standings.find((item) => item.team === CREATOR_TEAM);
     const creatorPos = creator ? standings.indexOf(creator) + 1 : 0;
     if (creator && creator.team !== last?.team && creatorPos >= Math.ceil(standings.length * 0.6)) {
-      stories.push({ pin: true, priority: -1, tag: 'EL CREADOR', mood: 'papelon', emoji: '🤡', actors: [creator.team], title: pickOne([
+      stories.push({ priority: 2, tag: 'EL CREADOR', mood: 'papelon', emoji: '🤡', actors: [creator.team], title: pickOne([
         `🤡 EL COLMO: ${who(creator.team)} PROGRAMÓ todo este prode... y va ${creatorPos}° de ${standings.length}. El sistema anda perfecto; el dueño, no tanto`,
         `💻 PAPELÓN DEL ARQUITECTO: ${who(creator.team)} creó la app, las reglas y el arbitraje. Lo único que no logró: acertar. Puesto ${creatorPos} de ${standings.length}`,
       ]), detail: 'Zapatero a tus zapatos. Hizo la cancha pero no la mete ni de penal.' });
