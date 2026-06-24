@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-23T14:37:06.483Z",
+  "updatedAt": "2026-06-24T14:15:41.836Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -42,6 +42,11 @@
       "goals": 2
     },
     {
+      "name": "Cristiano Ronaldo",
+      "team": "Portugal",
+      "goals": 2
+    },
+    {
       "name": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -54,6 +59,11 @@
     {
       "name": "Daichi Kamada",
       "team": "Japan",
+      "goals": 2
+    },
+    {
+      "name": "Daniel Muñoz",
+      "team": "Colombia",
       "goals": 2
     },
     {
@@ -137,8 +147,8 @@
       "goals": 1
     },
     {
-      "name": "Emam Ashour",
-      "team": "Egypt",
+      "name": "Caleb Yirenkyi",
+      "team": "Ghana",
       "goals": 1
     },
     {
@@ -167,6 +177,11 @@
       "goals": 1
     },
     {
+      "name": "João Neves",
+      "team": "Portugal",
+      "goals": 1
+    },
+    {
       "name": "John McGinn",
       "team": "Scotland",
       "goals": 1
@@ -182,11 +197,6 @@
       "goals": 1
     },
     {
-      "name": "Kevin Pina",
-      "team": "Cape Verde",
-      "goals": 1
-    },
-    {
       "name": "Ladislav Krejcí",
       "team": "Czechia",
       "goals": 1
@@ -197,18 +207,13 @@
       "goals": 1
     },
     {
-      "name": "Mohamed Salah",
-      "team": "Egypt",
+      "name": "Luis Díaz",
+      "team": "Colombia",
       "goals": 1
     },
     {
-      "name": "Mohammad Mohebbi",
-      "team": "Iran",
-      "goals": 1
-    },
-    {
-      "name": "Nathaniel Brown",
-      "team": "Germany",
+      "name": "Martin Baturina",
+      "team": "Croatia",
       "goals": 1
     },
     {
@@ -227,16 +232,6 @@
       "goals": 1
     },
     {
-      "name": "Raúl Jiménez",
-      "team": "Mexico",
-      "goals": 1
-    },
-    {
-      "name": "Romano Schmid",
-      "team": "Austria",
-      "goals": 1
-    },
-    {
       "name": "Teboho Mokoena",
       "team": "South Africa",
       "goals": 1
@@ -249,6 +244,11 @@
     {
       "name": "Virgil van Dijk",
       "team": "Netherlands",
+      "goals": 1
+    },
+    {
+      "name": "Yoane Wissa",
+      "team": "Congo DR",
       "goals": 1
     }
   ]
