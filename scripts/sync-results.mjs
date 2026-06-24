@@ -27,6 +27,7 @@ const ALIASES = {
   iriran: 'iran',
   cotedivoire: 'ivorycoast',
   turkiye: 'turkey',
+  congodr: 'drcongo',
 };
 
 const normalize = (name) => {
