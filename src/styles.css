@@ -1493,6 +1493,58 @@ select:focus {
   cursor: default;
 }
 
+.groupQualNotif {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(231, 189, 85, 0.07);
+  border: 1px solid rgba(231, 189, 85, 0.2);
+}
+
+.groupQualBadge {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(231, 189, 85, 0.15);
+}
+
+.groupQualBadge.hasPoints {
+  color: var(--ink);
+}
+
+.groupQualBadge b {
+  color: #5dbd7a;
+  font-size: 0.9rem;
+}
+
+.groupQualRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  flex-wrap: wrap;
+}
+
+.groupQualCode {
+  font-weight: 700;
+  color: var(--gold-2);
+  min-width: 48px;
+}
+
+.groupQualPtsPos {
+  margin-left: auto;
+  color: #5dbd7a;
+  font-size: 0.8rem;
+}
+
+.groupQualPtsZero {
+  margin-left: auto;
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+}
+
 .rankSpecials {
   display: flex;
   flex-wrap: wrap;

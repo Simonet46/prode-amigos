@@ -1303,6 +1303,34 @@ function Ranking({ ranking, setNotice }) {
                 {(() => {
                   const detail = picksByUser[item.id];
                   const specials = Array.isArray(detail) ? {} : detail || {};
+                  const groups = specials.groupQualifiers || [];
+                  if (!groups.length) return null;
+                  const totalGroupPts = groups.reduce((sum, g) => sum + (g.points || 0), 0);
+                  const pickStatus = (predictedPos, actualPos, groupDecided) => {
+                    if (actualPos === predictedPos) return '✅';
+                    if (actualPos !== null) return '↔️';
+                    if (groupDecided) return '❌';
+                    return '⏳';
+                  };
+                  return (
+                    <div className="groupQualNotif">
+                      <div className={`groupQualBadge${totalGroupPts > 0 ? ' hasPoints' : ''}`}>
+                        🏟️ <b>+{totalGroupPts} pts</b> por clasificados
+                      </div>
+                      {groups.map((g) => (
+                        <div key={g.group_code} className="groupQualRow">
+                          <span className="groupQualCode">Gr. {g.group_code}</span>
+                          <span>{pickStatus(1, g.first_actual_pos, g.group_decided)} 1° {g.first_team}</span>
+                          <span>{pickStatus(2, g.second_actual_pos, g.group_decided)} 2° {g.second_team}</span>
+                          <b className={g.points > 0 ? 'groupQualPtsPos' : 'groupQualPtsZero'}>{g.points > 0 ? `+${g.points}` : '0'} pts</b>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
+                {(() => {
+                  const detail = picksByUser[item.id];
+                  const specials = Array.isArray(detail) ? {} : detail || {};
                   if (!specials.topScorer && !specials.champion) return null;
                   return (
                     <div className="rankSpecials">
