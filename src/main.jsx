@@ -705,6 +705,8 @@ function App() {
         const groupPoints = member.group_qualifier_points || 0;
         const topBonus = member.top_scorer_bonus || 0;
         const championBonus = member.champion_bonus || 0;
+        // groupPoints se muestra aparte como notificación, no se suma al total
+        const total = (member.match_points_total || 0) + topBonus + championBonus;
         return {
           ...member,
           exacts: member.exact_results_count || 0,
@@ -713,10 +715,10 @@ function App() {
           topBonus,
           championBonus,
           specialPoints: topBonus + championBonus,
-          total: (member.match_points_total || 0) + groupPoints + topBonus + championBonus,
+          total,
         };
       })
-      .sort((a, b) => b.total - a.total || b.exacts - a.exacts || b.groupPoints - a.groupPoints || b.specialPoints - a.specialPoints || a.real_name.localeCompare(b.real_name));
+      .sort((a, b) => b.total - a.total || b.exacts - a.exacts || b.specialPoints - a.specialPoints || a.real_name.localeCompare(b.real_name));
   }, [members]);
 
   if (!hasSupabaseConfig) return <ConfigMissing />;
@@ -1295,9 +1297,11 @@ function Ranking({ ranking, setNotice }) {
             <div className="rankStats">
               <span>{item.exacts} exactos</span>
               <span>{item.winners} {item.winners === 1 ? 'ganador' : 'ganadores'}</span>
-              <span>{item.groupPoints} grupos</span>
               <strong>{item.total} pts</strong>
             </div>
+            {item.groupPoints > 0 && (
+              <div className="rankGroupBadge">🏟️ +{item.groupPoints} pts por grupos clasificados</div>
+            )}
             {expandedId === item.id && (
               <div className="rankDetail" onClick={(event) => event.stopPropagation()}>
                 {(() => {
