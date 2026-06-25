@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-24T14:15:41.836Z",
+  "updatedAt": "2026-06-25T14:14:25.260Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -17,13 +17,33 @@
       "goals": 4
     },
     {
+      "name": "Vinícius Júnior",
+      "team": "Brazil",
+      "goals": 4
+    },
+    {
       "name": "Deniz Undav",
       "team": "Germany",
       "goals": 3
     },
     {
+      "name": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 3
+    },
+    {
+      "name": "Johan Manzambi",
+      "team": "Switzerland",
+      "goals": 3
+    },
+    {
       "name": "Jonathan David",
       "team": "Canada",
+      "goals": 3
+    },
+    {
+      "name": "Matheus Cunha",
+      "team": "Brazil",
       "goals": 3
     },
     {
@@ -72,6 +92,11 @@
       "goals": 2
     },
     {
+      "name": "Ermin Mahmic",
+      "team": "Bosnia-Herzegovina",
+      "goals": 2
+    },
+    {
       "name": "Folarin Balogun",
       "team": "United States",
       "goals": 2
@@ -82,28 +107,18 @@
       "goals": 2
     },
     {
-      "name": "Ismael Saibari",
-      "team": "Morocco",
-      "goals": 2
-    },
-    {
       "name": "Ismaïla Sarr",
       "team": "Senegal",
       "goals": 2
     },
     {
-      "name": "Johan Manzambi",
-      "team": "Switzerland",
+      "name": "Julián Quiñones",
+      "team": "Mexico",
       "goals": 2
     },
     {
       "name": "Kai Havertz",
       "team": "Germany",
-      "goals": 2
-    },
-    {
-      "name": "Matheus Cunha",
-      "team": "Brazil",
       "goals": 2
     },
     {
@@ -117,8 +132,8 @@
       "goals": 2
     },
     {
-      "name": "Vinícius Júnior",
-      "team": "Brazil",
+      "name": "Rubén Vargas",
+      "team": "Switzerland",
       "goals": 2
     },
     {
@@ -127,18 +142,13 @@
       "goals": 2
     },
     {
+      "name": "Achraf Hakimi",
+      "team": "Morocco",
+      "goals": 1
+    },
+    {
       "name": "Alex Freeman",
       "team": "United States",
-      "goals": 1
-    },
-    {
-      "name": "Alexander Isak",
-      "team": "Sweden",
-      "goals": 1
-    },
-    {
-      "name": "Ali Olwan",
-      "team": "Jordan",
       "goals": 1
     },
     {
@@ -149,11 +159,6 @@
     {
       "name": "Caleb Yirenkyi",
       "team": "Ghana",
-      "goals": 1
-    },
-    {
-      "name": "Felix Nmecha",
-      "team": "Germany",
       "goals": 1
     },
     {
@@ -177,23 +182,13 @@
       "goals": 1
     },
     {
-      "name": "João Neves",
-      "team": "Portugal",
-      "goals": 1
-    },
-    {
       "name": "John McGinn",
       "team": "Scotland",
       "goals": 1
     },
     {
-      "name": "Julián Quiñones",
-      "team": "Mexico",
-      "goals": 1
-    },
-    {
-      "name": "Keito Nakamura",
-      "team": "Japan",
+      "name": "Kerim Alajbegovic",
+      "team": "Bosnia-Herzegovina",
       "goals": 1
     },
     {
@@ -202,23 +197,18 @@
       "goals": 1
     },
     {
-      "name": "Livano Comenencia",
-      "team": "Curaçao",
-      "goals": 1
-    },
-    {
-      "name": "Luis Díaz",
-      "team": "Colombia",
-      "goals": 1
-    },
-    {
-      "name": "Martin Baturina",
-      "team": "Croatia",
+      "name": "Michal Sadílek",
+      "team": "Czechia",
       "goals": 1
     },
     {
       "name": "Nizar Al-Rashdan",
       "team": "Jordan",
+      "goals": 1
+    },
+    {
+      "name": "Oh Hyeon-Gyu",
+      "team": "South Korea",
       "goals": 1
     },
     {
@@ -229,6 +219,11 @@
     {
       "name": "Ramin Rezaeian",
       "team": "Iran",
+      "goals": 1
+    },
+    {
+      "name": "Soufiane Rahimi",
+      "team": "Morocco",
       "goals": 1
     },
     {
@@ -244,6 +239,11 @@
     {
       "name": "Virgil van Dijk",
       "team": "Netherlands",
+      "goals": 1
+    },
+    {
+      "name": "Wilson Isidor",
+      "team": "Haiti",
       "goals": 1
     },
     {
