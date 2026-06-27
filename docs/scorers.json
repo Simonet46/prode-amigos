@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-26T14:12:21.269Z",
+  "updatedAt": "2026-06-27T13:21:27.565Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -13,6 +13,11 @@
     },
     {
       "name": "Kylian Mbappé",
+      "team": "France",
+      "goals": 4
+    },
+    {
+      "name": "Ousmane Dembélé",
       "team": "France",
       "goals": 4
     },
@@ -32,8 +37,18 @@
       "goals": 3
     },
     {
+      "name": "Elijah Just",
+      "team": "New Zealand",
+      "goals": 3
+    },
+    {
       "name": "Ismael Saibari",
       "team": "Morocco",
+      "goals": 3
+    },
+    {
+      "name": "Ismaïla Sarr",
+      "team": "Senegal",
       "goals": 3
     },
     {
@@ -92,11 +107,6 @@
       "goals": 2
     },
     {
-      "name": "Elijah Just",
-      "team": "New Zealand",
-      "goals": 2
-    },
-    {
       "name": "Ermin Mahmic",
       "team": "Bosnia-Herzegovina",
       "goals": 2
@@ -112,11 +122,6 @@
       "goals": 2
     },
     {
-      "name": "Ismaïla Sarr",
-      "team": "Senegal",
-      "goals": 2
-    },
-    {
       "name": "Julián Quiñones",
       "team": "Mexico",
       "goals": 2
@@ -124,6 +129,11 @@
     {
       "name": "Kai Havertz",
       "team": "Germany",
+      "goals": 2
+    },
+    {
+      "name": "Leandro Trossard",
+      "team": "Belgium",
       "goals": 2
     },
     {
@@ -142,6 +152,16 @@
       "goals": 2
     },
     {
+      "name": "Pape Gueye",
+      "team": "Senegal",
+      "goals": 2
+    },
+    {
+      "name": "Ramin Rezaeian",
+      "team": "Iran",
+      "goals": 2
+    },
+    {
       "name": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -154,11 +174,6 @@
     {
       "name": "Achraf Hakimi",
       "team": "Morocco",
-      "goals": 1
-    },
-    {
-      "name": "Alex Freeman",
-      "team": "United States",
       "goals": 1
     },
     {
@@ -177,13 +192,8 @@
       "goals": 1
     },
     {
-      "name": "Connor Metcalfe",
-      "team": "Australia",
-      "goals": 1
-    },
-    {
-      "name": "Felix Nmecha",
-      "team": "Germany",
+      "name": "Finn Surman",
+      "team": "New Zealand",
       "goals": 1
     },
     {
@@ -207,11 +217,6 @@
       "goals": 1
     },
     {
-      "name": "Jamal Musiala",
-      "team": "Germany",
-      "goals": 1
-    },
-    {
       "name": "Jan Paul van Hecke",
       "team": "Netherlands",
       "goals": 1
@@ -222,8 +227,8 @@
       "goals": 1
     },
     {
-      "name": "Keito Nakamura",
-      "team": "Japan",
+      "name": "Kevin Pina",
+      "team": "Cape Verde",
       "goals": 1
     },
     {
@@ -232,13 +237,8 @@
       "goals": 1
     },
     {
-      "name": "Leroy Sané",
-      "team": "Germany",
-      "goals": 1
-    },
-    {
-      "name": "Livano Comenencia",
-      "team": "Curaçao",
+      "name": "Mohammad Mohebbi",
+      "team": "Iran",
       "goals": 1
     },
     {
