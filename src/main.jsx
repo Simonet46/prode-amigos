@@ -1374,8 +1374,18 @@ function Ranking({ ranking, setNotice }) {
                   if (!specials.topScorer && !specials.champion) return null;
                   return (
                     <div className="rankSpecials">
-                      {specials.topScorer && <span className="specialChip">🥅 Goleador: <b>{specials.topScorer.player}</b> ({specials.topScorer.team})</span>}
-                      {specials.champion && <span className="specialChip">🏆 Campeón: <b>{specials.champion.team}</b></span>}
+                      {specials.topScorer && (
+                        <span className="specialChip">
+                          🥅 Goleador: <b>{specials.topScorer.player}</b> ({specials.topScorer.team})
+                          {item.topBonus > 0 && <b className="specialBonusPts"> +{item.topBonus} pts</b>}
+                        </span>
+                      )}
+                      {specials.champion && (
+                        <span className="specialChip">
+                          🏆 Campeón: <b>{specials.champion.team}</b>
+                          {item.championBonus > 0 && <b className="specialBonusPts"> +{item.championBonus} pts</b>}
+                        </span>
+                      )}
                     </div>
                   );
                 })()}

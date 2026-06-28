@@ -1578,6 +1578,11 @@ select:focus {
   color: var(--gold-2);
 }
 
+.specialBonusPts {
+  color: #5dbd7a;
+  margin-left: 4px;
+}
+
 .scorerRow .rankName small em {
   font-style: normal;
 }
