@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-06-27T13:21:27.565Z",
+  "updatedAt": "2026-06-28T13:25:25.188Z",
   "items": [
     {
       "name": "Lionel Messi",
       "team": "Argentina",
-      "goals": 5
+      "goals": 6
     },
     {
       "name": "Erling Haaland",
@@ -42,6 +42,11 @@
       "goals": 3
     },
     {
+      "name": "Harry Kane",
+      "team": "England",
+      "goals": 3
+    },
+    {
       "name": "Ismael Saibari",
       "team": "Morocco",
       "goals": 3
@@ -64,6 +69,11 @@
     {
       "name": "Matheus Cunha",
       "team": "Brazil",
+      "goals": 3
+    },
+    {
+      "name": "Yoane Wissa",
+      "team": "Congo DR",
       "goals": 3
     },
     {
@@ -117,7 +127,7 @@
       "goals": 2
     },
     {
-      "name": "Harry Kane",
+      "name": "Jude Bellingham",
       "team": "England",
       "goals": 2
     },
@@ -134,6 +144,11 @@
     {
       "name": "Leandro Trossard",
       "team": "Belgium",
+      "goals": 2
+    },
+    {
+      "name": "Marko Arnautovic",
+      "team": "Austria",
       "goals": 2
     },
     {
@@ -162,6 +177,11 @@
       "goals": 2
     },
     {
+      "name": "Riyad Mahrez",
+      "team": "Algeria",
+      "goals": 2
+    },
+    {
       "name": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -187,18 +207,8 @@
       "goals": 1
     },
     {
-      "name": "Breel Embolo",
-      "team": "Switzerland",
-      "goals": 1
-    },
-    {
       "name": "Finn Surman",
       "team": "New Zealand",
-      "goals": 1
-    },
-    {
-      "name": "Franck Kessié",
-      "team": "Ivory Coast",
       "goals": 1
     },
     {
@@ -212,23 +222,8 @@
       "goals": 1
     },
     {
-      "name": "Hwang In-Beom",
-      "team": "South Korea",
-      "goals": 1
-    },
-    {
       "name": "Jan Paul van Hecke",
       "team": "Netherlands",
-      "goals": 1
-    },
-    {
-      "name": "John McGinn",
-      "team": "Scotland",
-      "goals": 1
-    },
-    {
-      "name": "Kevin Pina",
-      "team": "Cape Verde",
       "goals": 1
     },
     {
@@ -237,8 +232,13 @@
       "goals": 1
     },
     {
-      "name": "Mohammad Mohebbi",
-      "team": "Iran",
+      "name": "Luis Díaz",
+      "team": "Colombia",
+      "goals": 1
+    },
+    {
+      "name": "Marcel Sabitzer",
+      "team": "Austria",
       "goals": 1
     },
     {
