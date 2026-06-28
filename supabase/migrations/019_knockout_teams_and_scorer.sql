@@ -1,7 +1,12 @@
--- Asigna equipos a los 15 partidos de 16avos de final (datos ESPN 28/06/2026)
+-- Asigna equipos a los 16 partidos de 16avos de final (datos ESPN 28/06/2026)
 -- y otorga 5 pts de goleador a quien eligió a Messi (Ezequiel Bruschi).
 
 -- 16avos de final: asignar home/away por kickoff_at
+UPDATE public.prode_matches SET
+  home_team_id = 'be8ae2cd-687f-4593-8a89-cd38c5a680fc',  -- Canada
+  away_team_id = 'b75f143c-8c53-41ad-83d5-e8420869aed1'   -- South Africa
+WHERE kickoff_at = '2026-06-28 19:00:00+00' AND home_team_id IS NULL;
+
 UPDATE public.prode_matches SET
   home_team_id = 'c8eaf025-c7e5-403b-acb1-75bc272f3975',  -- Brazil
   away_team_id = '0581ee71-e635-46de-b244-90d747eed075'   -- Japan
