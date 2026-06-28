@@ -3,8 +3,8 @@
 
 -- 16avos de final: asignar home/away por kickoff_at
 UPDATE public.prode_matches SET
-  home_team_id = 'be8ae2cd-687f-4593-8a89-cd38c5a680fc',  -- Canada
-  away_team_id = 'b75f143c-8c53-41ad-83d5-e8420869aed1'   -- South Africa
+  home_team_id = 'b75f143c-8c53-41ad-83d5-e8420869aed1',  -- South Africa
+  away_team_id = 'be8ae2cd-687f-4593-8a89-cd38c5a680fc'   -- Canada
 WHERE kickoff_at = '2026-06-28 19:00:00+00' AND home_team_id IS NULL;
 
 UPDATE public.prode_matches SET
