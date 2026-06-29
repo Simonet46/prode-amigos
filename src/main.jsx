@@ -344,7 +344,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
     const exactKing = exactsSorted[0];
     const exactRunner = exactsSorted[1];
     if (exactKing && (exactKing.exacts || 0) >= 2 && (exactKing.exacts || 0) > (exactRunner?.exacts || 0) + 2) {
-      stories.push({ pin: true, priority: -1, tag: 'EL EXACTÍSIMO', mood: 'exclusivo', emoji: '🎯', actors: [exactKing.team], cover: EXACTO_COVER, title: pickOne([
+      stories.push({ pin: true, priority: -2, tag: 'EL EXACTÍSIMO', mood: 'exclusivo', emoji: '🎯', actors: [exactKing.team], cover: EXACTO_COVER, title: pickOne([
         `🎯 ESCÁNDALO ESTADÍSTICO: ${who(exactKing.team)} tiene ${exactKing.exacts} EXACTOS. El segundo tiene ${exactRunner?.exacts ?? 0}. No es suerte, es conspiración. Pidan la VAR del prode`,
         `🧠 SOBREHUMANO: ${who(exactKing.team)} lleva ${exactKing.exacts} resultados exactos mientras el resto festeja con ${exactRunner?.exacts ?? 0}. Le mandaron el fixture impreso de antemano`,
         `🔮 NADIE LO EXPLICA: ${exactKing.exacts} exactos para ${who(exactKing.team)}. El runner-up tiene ${exactRunner?.exacts ?? 0}. Diferencia abismal. Se exige control antidopaje inmediato`,
@@ -356,7 +356,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
     const forgotten = standings.filter((s) => (s.groupPts || 0) === 0);
     if (hasGroupPts && forgotten.length > 0) {
       const forgetNames = forgotten.map((s) => s.team);
-      stories.push({ pin: true, priority: -1, tag: 'LOS DESMEMORIADOS', mood: 'escandalo', emoji: '🤦', actors: forgetNames, cover: DESMEMORIADOS_COVER, title: pickOne([
+      stories.push({ pin: true, priority: -2, tag: 'LOS DESMEMORIADOS', mood: 'escandalo', emoji: '🤦', actors: forgetNames, cover: DESMEMORIADOS_COVER, title: pickOne([
         `🤦 SE OLVIDARON: ${whoList(forgetNames)} no pusieron clasificados de grupos y ahora regalan hasta 35 puntos gratis. Los demás tampoco pueden creerlo`,
         `😱 PAPELÓN COLECTIVO: ${whoList(forgetNames)} no completaron los clasificados de grupos. Mientras el resto suma hasta 35 puntos de bonus, ellos miran el cielo`,
         `🙈 INCREÍBLE: ${whoList(forgetNames)} leen esto por primera vez y recién se enteran que había que poner clasificados. Tarde. Muy tarde`,
@@ -368,7 +368,7 @@ function buildProdeHeadlines(facts, byTeam = {}) {
       .filter((s) => (s.winners || 0) > 0 && s.team !== leader.team)
       .sort((a, b) => (b.winners || 0) - (a.winners || 0))[0];
     if (winnerKing && (winnerKing.winners || 0) >= 15) {
-      stories.push({ pin: true, priority: -1, tag: 'EL SIGNO VIVIENTE', mood: 'exclusivo', emoji: '✅', actors: [winnerKing.team], cover: SIGNO_COVER, title: pickOne([
+      stories.push({ pin: true, priority: -2, tag: 'EL SIGNO VIVIENTE', mood: 'exclusivo', emoji: '✅', actors: [winnerKing.team], cover: SIGNO_COVER, title: pickOne([
         `✅ SABE QUIÉN GANA, NUNCA EL RESULTADO: ${who(winnerKing.team)} acertó ${winnerKing.winners} ganadores — el récord de la liga — pero apenas ${winnerKing.exacts} exactos. Ve el futuro a medias`,
         `🧩 LE FALTA LA MITAD: ${who(winnerKing.team)} lleva ${winnerKing.winners} signos correctos (nadie más en el prode) y solo ${winnerKing.exacts} exactos. Sabe quién gana pero nunca el marcador. Talento raro`,
         `📡 ${who(winnerKing.team).toUpperCase()} CAPTA LA SEÑAL A MEDIAS: ${winnerKing.winners} ganadores acertados y ${winnerKing.exacts} exactos. El resultado le llega con interferencia`,
