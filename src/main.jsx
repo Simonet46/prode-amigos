@@ -2017,8 +2017,20 @@ function TeamName({ team, fallback, alignRight = false }) {
 }
 
 function Segmented({ options, value, onChange, render }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) activeRef.current.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'instant' });
+  }, [value]);
   if (!options.length) return null;
-  return <div className="segmented">{options.map((option) => <button key={option} className={value === option ? 'active' : ''} onClick={() => onChange(option)}>{render(option)}</button>)}</div>;
+  return (
+    <div className="segmented">
+      {options.map((option) => (
+        <button key={option} ref={option === value ? activeRef : null} className={value === option ? 'active' : ''} onClick={() => onChange(option)}>
+          {render(option)}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 function PickLabel({ id, items }) {
