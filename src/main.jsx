@@ -744,8 +744,7 @@ function App() {
         const groupPoints = member.group_qualifier_points || 0;
         const topBonus = member.top_scorer_bonus || 0;
         const championBonus = member.champion_bonus || 0;
-        // groupPoints se muestra aparte como notificación, no se suma al total
-        const total = (member.match_points_total || 0) + topBonus + championBonus;
+        const total = (member.match_points_total || 0) + groupPoints + topBonus + championBonus;
         return {
           ...member,
           exacts: member.exact_results_count || 0,
