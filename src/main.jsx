@@ -1113,10 +1113,16 @@ function Predictions({ matches, predictionByMatch, members, onSaved, setNotice }
   const defaultDay = days.includes(today) ? today : (days.find((value) => value >= today) || days[days.length - 1] || 'sin-fecha');
   const [day, setDay] = useState(defaultDay);
   const visible = annotatedMatches.filter((match) => dateKey(match.kickoff_at) === day);
+  const segmentedRef = useRef(null);
 
   useEffect(() => {
     if (days.length && !days.includes(day)) setDay(defaultDay);
   }, [days.join('|')]);
+
+  // Al montar, scroll vertical a la barra de fechas para mostrar los partidos de hoy.
+  useEffect(() => {
+    if (segmentedRef.current) segmentedRef.current.scrollIntoView({ block: 'start', behavior: 'instant' });
+  }, []);
 
   // Re-render periódico: bloquea las tarjetas en vivo cuando llega la hora del partido.
   const [, setNowTick] = useState(0);
@@ -1128,7 +1134,7 @@ function Predictions({ matches, predictionByMatch, members, onSaved, setNotice }
   return (
     <div className="stack">
       <Header title="Mi prode" subtitle="Todos arrancan 0-0. Podés editar hasta el horario de inicio. Horarios en tu hora local (🇦🇷 entre paréntesis)." />
-      <Segmented options={days} value={day} onChange={setDay} render={(item) => fmtDay(item)} />
+      <div ref={segmentedRef}><Segmented options={days} value={day} onChange={setDay} render={(item) => fmtDay(item)} /></div>
       {visible.map((match) => (
         <PredictionEditor key={match.id} match={match} prediction={predictionByMatch[match.id]} members={members} onSaved={onSaved} setNotice={setNotice} />
       ))}
