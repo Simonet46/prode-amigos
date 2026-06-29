@@ -614,6 +614,8 @@ select:focus {
 }
 
 .scoreEditor input {
+  min-width: 0;
+  width: 100%;
   height: 62px;
   text-align: center;
   font-size: 1.8rem;
