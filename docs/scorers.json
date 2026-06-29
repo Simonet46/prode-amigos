@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-28T20:38:52.253Z",
+  "updatedAt": "2026-06-29T13:17:24.840Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -197,11 +197,6 @@
       "goals": 1
     },
     {
-      "name": "Alexander Isak",
-      "team": "Sweden",
-      "goals": 1
-    },
-    {
       "name": "Arda Güler",
       "team": "Türkiye",
       "goals": 1
@@ -232,13 +227,18 @@
       "goals": 1
     },
     {
-      "name": "Luis Díaz",
-      "team": "Colombia",
+      "name": "Marcel Sabitzer",
+      "team": "Austria",
       "goals": 1
     },
     {
-      "name": "Marcel Sabitzer",
-      "team": "Austria",
+      "name": "Stephen Eustáquio",
+      "team": "Canada",
+      "goals": 1
+    },
+    {
+      "name": "Teboho Mokoena",
+      "team": "South Africa",
       "goals": 1
     },
     {
