@@ -2023,13 +2023,18 @@ function TeamName({ team, fallback, alignRight = false }) {
 }
 
 function Segmented({ options, value, onChange, render }) {
+  const containerRef = useRef(null);
   const activeRef = useRef(null);
   useEffect(() => {
-    if (activeRef.current) activeRef.current.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'instant' });
+    const container = containerRef.current;
+    const active = activeRef.current;
+    if (!container || !active) return;
+    const targetLeft = active.offsetLeft - (container.clientWidth - active.offsetWidth) / 2;
+    container.scrollLeft = Math.max(0, targetLeft);
   }, [value]);
   if (!options.length) return null;
   return (
-    <div className="segmented">
+    <div className="segmented" ref={containerRef}>
       {options.map((option) => (
         <button key={option} ref={option === value ? activeRef : null} className={value === option ? 'active' : ''} onClick={() => onChange(option)}>
           {render(option)}
