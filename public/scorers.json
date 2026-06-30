@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-29T15:37:21.814Z",
+  "updatedAt": "2026-06-30T14:07:29.046Z",
   "items": [
     {
       "name": "Lionel Messi",
@@ -28,6 +28,11 @@
     },
     {
       "name": "Brian Brobbey",
+      "team": "Netherlands",
+      "goals": 3
+    },
+    {
+      "name": "Cody Gakpo",
       "team": "Netherlands",
       "goals": 3
     },
@@ -67,6 +72,11 @@
       "goals": 3
     },
     {
+      "name": "Kai Havertz",
+      "team": "Germany",
+      "goals": 3
+    },
+    {
       "name": "Matheus Cunha",
       "team": "Brazil",
       "goals": 3
@@ -84,11 +94,6 @@
     {
       "name": "Ayase Ueda",
       "team": "Japan",
-      "goals": 2
-    },
-    {
-      "name": "Cody Gakpo",
-      "team": "Netherlands",
       "goals": 2
     },
     {
@@ -134,11 +139,6 @@
     {
       "name": "Julián Quiñones",
       "team": "Mexico",
-      "goals": 2
-    },
-    {
-      "name": "Kai Havertz",
-      "team": "Germany",
       "goals": 2
     },
     {
@@ -197,23 +197,18 @@
       "goals": 1
     },
     {
-      "name": "Arda Güler",
-      "team": "Türkiye",
+      "name": "Casemiro",
+      "team": "Brazil",
       "goals": 1
     },
     {
-      "name": "Finn Surman",
-      "team": "New Zealand",
+      "name": "Felix Nmecha",
+      "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Gonzalo Plata",
-      "team": "Ecuador",
-      "goals": 1
-    },
-    {
-      "name": "Granit Xhaka",
-      "team": "Switzerland",
+      "name": "Jamal Musiala",
+      "team": "Germany",
       "goals": 1
     },
     {
@@ -222,28 +217,33 @@
       "goals": 1
     },
     {
-      "name": "Ladislav Krejcí",
-      "team": "Czechia",
+      "name": "Julio Enciso",
+      "team": "Paraguay",
       "goals": 1
     },
     {
-      "name": "Marcel Sabitzer",
-      "team": "Austria",
+      "name": "Junya Ito",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
+      "name": "Keito Nakamura",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
+      "name": "Leroy Sané",
+      "team": "Germany",
+      "goals": 1
+    },
+    {
+      "name": "Soufiane Rahimi",
+      "team": "Morocco",
       "goals": 1
     },
     {
       "name": "Stephen Eustáquio",
       "team": "Canada",
-      "goals": 1
-    },
-    {
-      "name": "Teboho Mokoena",
-      "team": "South Africa",
-      "goals": 1
-    },
-    {
-      "name": "Viktor Gyökeres",
-      "team": "Sweden",
       "goals": 1
     },
     {
