@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-06-30T14:07:29.046Z",
+  "updatedAt": "2026-07-01T14:23:05.036Z",
   "items": [
+    {
+      "name": "Kylian Mbappé",
+      "team": "France",
+      "goals": 6
+    },
     {
       "name": "Lionel Messi",
       "team": "Argentina",
@@ -9,12 +14,7 @@
     {
       "name": "Erling Haaland",
       "team": "Norway",
-      "goals": 4
-    },
-    {
-      "name": "Kylian Mbappé",
-      "team": "France",
-      "goals": 4
+      "goals": 5
     },
     {
       "name": "Ousmane Dembélé",
@@ -72,6 +72,11 @@
       "goals": 3
     },
     {
+      "name": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 3
+    },
+    {
       "name": "Kai Havertz",
       "team": "Germany",
       "goals": 3
@@ -87,6 +92,11 @@
       "goals": 3
     },
     {
+      "name": "Amad Diallo",
+      "team": "Ivory Coast",
+      "goals": 2
+    },
+    {
       "name": "Anthony Elanga",
       "team": "Sweden",
       "goals": 2
@@ -94,6 +104,11 @@
     {
       "name": "Ayase Ueda",
       "team": "Japan",
+      "goals": 2
+    },
+    {
+      "name": "Bradley Barcola",
+      "team": "France",
       "goals": 2
     },
     {
@@ -137,11 +152,6 @@
       "goals": 2
     },
     {
-      "name": "Julián Quiñones",
-      "team": "Mexico",
-      "goals": 2
-    },
-    {
       "name": "Leandro Trossard",
       "team": "Belgium",
       "goals": 2
@@ -177,6 +187,11 @@
       "goals": 2
     },
     {
+      "name": "Raúl Jiménez",
+      "team": "Mexico",
+      "goals": 2
+    },
+    {
       "name": "Riyad Mahrez",
       "team": "Algeria",
       "goals": 2
@@ -197,18 +212,18 @@
       "goals": 1
     },
     {
-      "name": "Casemiro",
-      "team": "Brazil",
+      "name": "Alexander Isak",
+      "team": "Sweden",
       "goals": 1
     },
     {
-      "name": "Felix Nmecha",
-      "team": "Germany",
+      "name": "Franck Kessié",
+      "team": "Ivory Coast",
       "goals": 1
     },
     {
-      "name": "Jamal Musiala",
-      "team": "Germany",
+      "name": "Gonzalo Plata",
+      "team": "Ecuador",
       "goals": 1
     },
     {
@@ -222,28 +237,13 @@
       "goals": 1
     },
     {
-      "name": "Junya Ito",
-      "team": "Japan",
-      "goals": 1
-    },
-    {
-      "name": "Keito Nakamura",
-      "team": "Japan",
-      "goals": 1
-    },
-    {
       "name": "Leroy Sané",
       "team": "Germany",
       "goals": 1
     },
     {
-      "name": "Soufiane Rahimi",
-      "team": "Morocco",
-      "goals": 1
-    },
-    {
-      "name": "Stephen Eustáquio",
-      "team": "Canada",
+      "name": "Viktor Gyökeres",
+      "team": "Sweden",
       "goals": 1
     },
     {
