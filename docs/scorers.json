@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-01T14:23:05.036Z",
+  "updatedAt": "2026-07-02T13:46:55.349Z",
   "items": [
     {
       "name": "Kylian Mbappé",
@@ -15,6 +15,16 @@
       "name": "Erling Haaland",
       "team": "Norway",
       "goals": 5
+    },
+    {
+      "name": "Harry Kane",
+      "team": "England",
+      "goals": 5
+    },
+    {
+      "name": "Ismaïla Sarr",
+      "team": "Senegal",
+      "goals": 4
     },
     {
       "name": "Ousmane Dembélé",
@@ -47,18 +57,13 @@
       "goals": 3
     },
     {
-      "name": "Harry Kane",
-      "team": "England",
+      "name": "Folarin Balogun",
+      "team": "United States",
       "goals": 3
     },
     {
       "name": "Ismael Saibari",
       "team": "Morocco",
-      "goals": 3
-    },
-    {
-      "name": "Ismaïla Sarr",
-      "team": "Senegal",
       "goals": 3
     },
     {
@@ -142,8 +147,8 @@
       "goals": 2
     },
     {
-      "name": "Folarin Balogun",
-      "team": "United States",
+      "name": "Habib Diarra",
+      "team": "Senegal",
       "goals": 2
     },
     {
@@ -197,6 +202,11 @@
       "goals": 2
     },
     {
+      "name": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 2
+    },
+    {
       "name": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -204,6 +214,11 @@
     {
       "name": "Yasin Ayari",
       "team": "Sweden",
+      "goals": 2
+    },
+    {
+      "name": "Youri Tielemans",
+      "team": "Belgium",
       "goals": 2
     },
     {
@@ -217,11 +232,6 @@
       "goals": 1
     },
     {
-      "name": "Franck Kessié",
-      "team": "Ivory Coast",
-      "goals": 1
-    },
-    {
       "name": "Gonzalo Plata",
       "team": "Ecuador",
       "goals": 1
@@ -229,16 +239,6 @@
     {
       "name": "Jan Paul van Hecke",
       "team": "Netherlands",
-      "goals": 1
-    },
-    {
-      "name": "Julio Enciso",
-      "team": "Paraguay",
-      "goals": 1
-    },
-    {
-      "name": "Leroy Sané",
-      "team": "Germany",
       "goals": 1
     },
     {
