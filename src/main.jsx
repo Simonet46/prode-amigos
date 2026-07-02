@@ -116,6 +116,9 @@ const MESSI_COVER = { picker: 'La Scaloneta papá!!', image: 'press-messi.webp' 
 const EXACTO_COVER = 'press-exacto.webp';
 const DESMEMORIADOS_COVER = 'press-desmemoriados.webp';
 const SIGNO_COVER = 'press-signo.webp';
+const DIEGO_BELGICA_COVER = 'press-diego-belgica.png';
+const TOMAS_GLOBO_COVER = 'press-tomas-globo.png';
+const TANONETA_TEAM = 'La Tanoneta';
 
 function buildProdeHeadlines(facts, byTeam = {}) {
   if (!facts) return [];
@@ -223,6 +226,25 @@ function buildProdeHeadlines(facts, byTeam = {}) {
         `😴 PAPELÓN EN LA PREVIA: el Mundial ya está acá y ${list} ${one ? 'sigue roncando' : 'siguen roncando'}: ${one ? 'le faltan' : 'les faltan'} los primeros 3 partidos`,
         `🛏️ ALERTA ROJA: la liga entera festeja el arranque mientras ${list} ${one ? 'duerme' : 'duermen'} sin cargar los primeros 3 partidos`,
       ]), detail: 'El resto ya cumplió y lo festeja en su cara. Qué papelón.' });
+    }
+  }
+
+  // Noticias especiales con portada IA: Bélgica-Senegal 2-2
+  const belgSen = (facts.lockedPicks || []).find((m) => m.home === 'Belgium' && m.away === 'Senegal' && m.home_score === 2 && m.away_score === 2);
+  if (belgSen) {
+    const diegoPick = (belgSen.picks || []).find((p) => p.team === CREATOR_TEAM && Number(p.home) === 2 && Number(p.away) === 2);
+    if (diegoPick) {
+      stories.push({ pin: true, priority: -1, tag: 'EL VIDENTE', mood: 'vidente', emoji: '🎯', actors: [CREATOR_TEAM], cover: DIEGO_BELGICA_COVER, title: pickOne([
+        `🎯 DIEGO ABRAZA AL CAPITÁN BELGA: clavó el 2-2 de Bélgica-Senegal cuando NADIE lo vio venir. 3 puntos y un abrazo histórico en Guadalajara`,
+        `🤯 EL CREADOR TAMBIÉN LA VE: ${who(CREATOR_TEAM)} predijo el 2-2 exacto de Bélgica-Senegal. La app la programó él... ¿y el resultado también?`,
+      ]), detail: 'Único exacto del partido. El programador del prode sabía demasiado.' });
+    }
+    const tomasPick = (belgSen.picks || []).find((p) => p.team === TANONETA_TEAM);
+    if (tomasPick && !(Number(tomasPick.home) === 2 && Number(tomasPick.away) === 2)) {
+      stories.push({ pin: true, priority: -1, tag: 'GLOBO PINCHADO', mood: 'crisis', emoji: '🎈', actors: [TANONETA_TEAM], cover: TOMAS_GLOBO_COVER, title: pickOne([
+        `🎈 LA TANONETA CAE EN PICADA: puso ${tomasPick.home}-${tomasPick.away} en Bélgica-Senegal (fue 2-2) y el globo se desinfló solo. 0 puntos`,
+        `💨 DESINFLADO: ${who(TANONETA_TEAM)} apostó ${tomasPick.home}-${tomasPick.away} y Bélgica-Senegal terminó 2-2. La canasta del globo ya toca el piso`,
+      ]), detail: 'De las nubes al suelo en 90 minutos. Sin alargue ni paracaídas.' });
     }
   }
 
