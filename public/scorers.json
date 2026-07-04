@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-07-03T13:51:09.292Z",
+  "updatedAt": "2026-07-04T13:11:34.289Z",
   "items": [
-    {
-      "name": "Kylian Mbappé",
-      "team": "France",
-      "goals": 6
-    },
     {
       "name": "Lionel Messi",
       "team": "Argentina",
+      "goals": 7
+    },
+    {
+      "name": "Kylian Mbappé",
+      "team": "France",
       "goals": 6
     },
     {
@@ -152,6 +152,11 @@
       "goals": 2
     },
     {
+      "name": "Emam Ashour",
+      "team": "Egypt",
+      "goals": 2
+    },
+    {
       "name": "Ermin Mahmic",
       "team": "Bosnia-Herzegovina",
       "goals": 2
@@ -239,11 +244,6 @@
     {
       "name": "Jan Paul van Hecke",
       "team": "Netherlands",
-      "goals": 1
-    },
-    {
-      "name": "Viktor Gyökeres",
-      "team": "Sweden",
       "goals": 1
     },
     {
