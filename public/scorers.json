@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-07-04T13:11:34.289Z",
+  "updatedAt": "2026-07-05T13:19:40.332Z",
   "items": [
+    {
+      "name": "Kylian Mbappé",
+      "team": "France",
+      "goals": 7
+    },
     {
       "name": "Lionel Messi",
       "team": "Argentina",
       "goals": 7
-    },
-    {
-      "name": "Kylian Mbappé",
-      "team": "France",
-      "goals": 6
     },
     {
       "name": "Erling Haaland",
@@ -122,6 +122,11 @@
       "goals": 2
     },
     {
+      "name": "Azzedine Ounahi",
+      "team": "Morocco",
+      "goals": 2
+    },
+    {
       "name": "Bradley Barcola",
       "team": "France",
       "goals": 2
@@ -222,6 +227,11 @@
       "goals": 2
     },
     {
+      "name": "Soufiane Rahimi",
+      "team": "Morocco",
+      "goals": 2
+    },
+    {
       "name": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
@@ -237,18 +247,8 @@
       "goals": 1
     },
     {
-      "name": "Gonzalo Plata",
-      "team": "Ecuador",
-      "goals": 1
-    },
-    {
-      "name": "Jan Paul van Hecke",
-      "team": "Netherlands",
-      "goals": 1
-    },
-    {
-      "name": "Virgil van Dijk",
-      "team": "Netherlands",
+      "name": "Stephen Eustáquio",
+      "team": "Canada",
       "goals": 1
     }
   ]
