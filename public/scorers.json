@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-07-05T13:19:40.332Z",
+  "updatedAt": "2026-07-06T15:20:10.280Z",
   "items": [
+    {
+      "name": "Erling Haaland",
+      "team": "Norway",
+      "goals": 7
+    },
     {
       "name": "Kylian Mbappé",
       "team": "France",
@@ -12,18 +17,23 @@
       "goals": 7
     },
     {
-      "name": "Erling Haaland",
-      "team": "Norway",
-      "goals": 5
-    },
-    {
       "name": "Harry Kane",
       "team": "England",
-      "goals": 5
+      "goals": 6
     },
     {
       "name": "Ismaïla Sarr",
       "team": "Senegal",
+      "goals": 4
+    },
+    {
+      "name": "Jude Bellingham",
+      "team": "England",
+      "goals": 4
+    },
+    {
+      "name": "Julián Quiñones",
+      "team": "Mexico",
       "goals": 4
     },
     {
@@ -87,11 +97,6 @@
       "goals": 3
     },
     {
-      "name": "Julián Quiñones",
-      "team": "Mexico",
-      "goals": 3
-    },
-    {
       "name": "Kai Havertz",
       "team": "Germany",
       "goals": 3
@@ -99,6 +104,11 @@
     {
       "name": "Matheus Cunha",
       "team": "Brazil",
+      "goals": 3
+    },
+    {
+      "name": "Raúl Jiménez",
+      "team": "Mexico",
       "goals": 3
     },
     {
@@ -172,11 +182,6 @@
       "goals": 2
     },
     {
-      "name": "Jude Bellingham",
-      "team": "England",
-      "goals": 2
-    },
-    {
       "name": "Leandro Trossard",
       "team": "Belgium",
       "goals": 2
@@ -204,11 +209,6 @@
     {
       "name": "Ramin Rezaeian",
       "team": "Iran",
-      "goals": 2
-    },
-    {
-      "name": "Raúl Jiménez",
-      "team": "Mexico",
       "goals": 2
     },
     {
