@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-06T15:20:10.280Z",
+  "updatedAt": "2026-07-07T14:17:57.259Z",
   "items": [
     {
       "name": "Erling Haaland",
@@ -112,6 +112,11 @@
       "goals": 3
     },
     {
+      "name": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 3
+    },
+    {
       "name": "Yoane Wissa",
       "team": "Congo DR",
       "goals": 3
@@ -144,6 +149,11 @@
     {
       "name": "Breel Embolo",
       "team": "Switzerland",
+      "goals": 2
+    },
+    {
+      "name": "Charles De Ketelaere",
+      "team": "Belgium",
       "goals": 2
     },
     {
@@ -187,6 +197,11 @@
       "goals": 2
     },
     {
+      "name": "Malik Tillman",
+      "team": "United States",
+      "goals": 2
+    },
+    {
       "name": "Marko Arnautovic",
       "team": "Austria",
       "goals": 2
@@ -217,11 +232,6 @@
       "goals": 2
     },
     {
-      "name": "Romelu Lukaku",
-      "team": "Belgium",
-      "goals": 2
-    },
-    {
       "name": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -240,16 +250,6 @@
       "name": "Youri Tielemans",
       "team": "Belgium",
       "goals": 2
-    },
-    {
-      "name": "Achraf Hakimi",
-      "team": "Morocco",
-      "goals": 1
-    },
-    {
-      "name": "Stephen Eustáquio",
-      "team": "Canada",
-      "goals": 1
     }
   ]
 }
