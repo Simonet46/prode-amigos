@@ -757,6 +757,10 @@ function App() {
     [predictions],
   );
 
+  // Equipos de eliminatorias derivados de los ganadores de la ronda previa,
+  // para que cuartos/semis/final no muestren "Local/Visitante".
+  const enrichedMatches = useMemo(() => fillKnockoutTeams(matches), [matches]);
+
   // Fuente única de verdad: los totales que recalcula la base al cargar cada
   // resultado. (Antes se sumaba además un cálculo local de los propios
   // pronósticos, lo que duplicaba los puntos del usuario logueado.)
@@ -802,11 +806,11 @@ function App() {
 
       <main className="layout">
         <section className="screen">
-          {activeTab === 'dashboard' && <Dashboard profile={profile} ranking={ranking} matches={matches} firstKickoffAt={firstKickoffAt} />}
-          {activeTab === 'predictions' && <Predictions matches={matches} predictionByMatch={predictionByMatch} members={members} onSaved={loadData} setNotice={setNotice} />}
-          {activeTab === 'points' && <MyPoints matches={matches} predictionByMatch={predictionByMatch} />}
+          {activeTab === 'dashboard' && <Dashboard profile={profile} ranking={ranking} matches={enrichedMatches} firstKickoffAt={firstKickoffAt} />}
+          {activeTab === 'predictions' && <Predictions matches={enrichedMatches} predictionByMatch={predictionByMatch} members={members} onSaved={loadData} setNotice={setNotice} />}
+          {activeTab === 'points' && <MyPoints matches={enrichedMatches} predictionByMatch={predictionByMatch} />}
           {activeTab === 'ranking' && <Ranking ranking={ranking} setNotice={setNotice} />}
-          {activeTab === 'fixture' && <Fixture matches={matches} />}
+          {activeTab === 'fixture' && <Fixture matches={enrichedMatches} />}
           {activeTab === 'rules' && <Rules />}
           {activeTab === 'qualifiers' && (
             <Specials
@@ -1521,6 +1525,42 @@ function getLoserTeam(match) {
 
 function byKickoffThenId(a, b) {
   return new Date(a.kickoff_at || 0) - new Date(b.kickoff_at || 0) || Number(a.external_id || 0) - Number(b.external_id || 0);
+}
+
+// Rellena los equipos de las eliminatorias con el ganador de la ronda anterior,
+// usando la misma lógica que el árbol del fixture. Así "Mi prode", "Mis puntos"
+// y el tablero muestran a los clasificados (ej. cuartos) apenas se cargan los
+// resultados de octavos, en lugar de "Local/Visitante". No pisa un equipo ya
+// asignado en la base y deja los de fase de grupos intactos.
+function fillKnockoutTeams(matches) {
+  const stageOrder = ['Round of 32', 'Round of 16', 'Quarter-final', 'Semi-final', 'Final'];
+  const byStage = Object.fromEntries(
+    stageOrder.map((stage) => [stage, matches.filter((match) => match.stage === stage).sort(byKickoffThenId)]),
+  );
+  const resolved = new Map();
+  let previousWinners = [];
+  for (const stage of stageOrder) {
+    const games = byStage[stage].map((match, index) => {
+      const filled = {
+        ...match,
+        home_team: match.home_team || previousWinners[index * 2] || null,
+        away_team: match.away_team || previousWinners[index * 2 + 1] || null,
+      };
+      resolved.set(match.id, filled);
+      return filled;
+    });
+    previousWinners = games.map(getWinnerTeam);
+  }
+  const thirdPlace = matches.find((match) => match.stage === 'Match for third place');
+  if (thirdPlace) {
+    const semis = (byStage['Semi-final'] || []).map((match) => resolved.get(match.id));
+    resolved.set(thirdPlace.id, {
+      ...thirdPlace,
+      home_team: thirdPlace.home_team || getLoserTeam(semis[0]) || null,
+      away_team: thirdPlace.away_team || getLoserTeam(semis[1]) || null,
+    });
+  }
+  return matches.map((match) => resolved.get(match.id) || match);
 }
 
 function buildBracket(matches) {
