@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-07-07T14:17:57.259Z",
+  "updatedAt": "2026-07-08T13:49:56.104Z",
   "items": [
+    {
+      "name": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 8
+    },
     {
       "name": "Erling Haaland",
       "team": "Norway",
@@ -9,11 +14,6 @@
     {
       "name": "Kylian Mbappé",
       "team": "France",
-      "goals": 7
-    },
-    {
-      "name": "Lionel Messi",
-      "team": "Argentina",
       "goals": 7
     },
     {
@@ -182,11 +182,6 @@
       "goals": 2
     },
     {
-      "name": "Ermin Mahmic",
-      "team": "Bosnia-Herzegovina",
-      "goals": 2
-    },
-    {
       "name": "Habib Diarra",
       "team": "Senegal",
       "goals": 2
@@ -209,6 +204,11 @@
     {
       "name": "Maxi Araújo",
       "team": "Uruguay",
+      "goals": 2
+    },
+    {
+      "name": "Mostafa Zico",
+      "team": "Egypt",
       "goals": 2
     },
     {
