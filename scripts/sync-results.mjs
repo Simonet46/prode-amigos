@@ -45,6 +45,89 @@ async function rest(path, options = {}) {
   return res.status === 204 ? null : res.json();
 }
 
+// ESPN agrupa por fecha del Este de EE.UU. (un partido de las 02:00 UTC cae en el
+// día anterior), así que para cada partido consultamos esa fecha y la UTC.
+const easternDay = (iso) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .format(new Date(iso))
+    .replaceAll('-', '');
+
+async function espnEventsForDays(days) {
+  const events = [];
+  for (const day of days) {
+    const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${day}`, {
+      headers: { 'user-agent': 'Mozilla/5.0 (ProdeAmigosBot)' },
+    });
+    if (!res.ok) {
+      console.error(`ESPN ${day} -> HTTP ${res.status}, salteo el día`);
+      continue;
+    }
+    const data = await res.json();
+    for (const event of data.events || []) events.push(event);
+  }
+  return events;
+}
+
+// 0.5 Avance de clasificados: para las eliminatorias cuyos equipos todavía no
+// están cargados, tomamos el cruce real desde ESPN (que ya sabe quién avanzó,
+// incluso por penales) y lo asignamos al partido correcto. Así cuartos, semis y
+// final se completan solos, con el equipo correcto en el día correcto.
+async function advanceKnockoutTeams() {
+  const soon = new Date(Date.now() + 6 * 24 * 3600 * 1000).toISOString();
+  const emptyKnockouts = await rest(
+    `prode_matches?select=id,kickoff_at,stage,home_team_id,away_team_id` +
+      `&stage=neq.group&kickoff_at=lte.${soon}&or=(home_team_id.is.null,away_team_id.is.null)&order=kickoff_at`,
+  );
+  if (!emptyKnockouts.length) return;
+
+  // Traducción nombre-normalizado -> id de equipo de la base.
+  const teams = await rest('prode_teams?select=id,name');
+  const teamIdByName = Object.fromEntries(teams.map((t) => [normalize(t.name), t.id]));
+
+  // Cruces que ESPN ya muestra con equipos reales para esos días.
+  const days = [...new Set(emptyKnockouts.flatMap((m) => [easternDay(m.kickoff_at), m.kickoff_at.slice(0, 10).replaceAll('-', '')]))];
+  const espnGames = [];
+  for (const event of await espnEventsForDays(days)) {
+    const comp = event.competitions?.[0];
+    if (!comp) continue;
+    const home = comp.competitors.find((c) => c.homeAway === 'home');
+    const away = comp.competitors.find((c) => c.homeAway === 'away');
+    const homeKey = normalize(home?.team?.name);
+    const awayKey = normalize(away?.team?.name);
+    // Si ESPN todavía muestra "TBD"/placeholder, no hay id en la base: se saltea.
+    if (!teamIdByName[homeKey] || !teamIdByName[awayKey]) continue;
+    espnGames.push({ homeKey, awayKey, date: new Date(event.date), label: `${home.team.name} vs ${away.team.name}` });
+  }
+
+  let assigned = 0;
+  for (const match of emptyKnockouts) {
+    const kickoff = new Date(match.kickoff_at);
+    // El cruce de ESPN más cercano en horario (±4h) es el de este partido.
+    let game = null;
+    let bestDiff = 4 * 3600 * 1000;
+    for (const candidate of espnGames) {
+      const diff = Math.abs(candidate.date - kickoff);
+      if (diff < bestDiff) {
+        game = candidate;
+        bestDiff = diff;
+      }
+    }
+    if (!game) {
+      console.log(`  Cruce sin definir todavía: ${match.stage} ${match.kickoff_at}`);
+      continue;
+    }
+    const patch = {
+      home_team_id: match.home_team_id || teamIdByName[game.homeKey],
+      away_team_id: match.away_team_id || teamIdByName[game.awayKey],
+    };
+    console.log(`  ⇢ ${match.stage} ${match.kickoff_at}: ${game.label}${DRY_RUN ? ' [DRY RUN]' : ''}`);
+    if (DRY_RUN) continue;
+    await rest(`prode_matches?id=eq.${match.id}`, { method: 'PATCH', body: JSON.stringify(patch) });
+    assigned += 1;
+  }
+  if (assigned) console.log(`Avance: ${assigned} cruce(s) de eliminatoria asignado(s).`);
+}
+
 // 0. Auto-reparación: partidos con resultado cargado pero sin puntos repartidos
 // (por ejemplo si una corrida anterior falló a mitad de camino).
 const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
@@ -61,6 +144,10 @@ if (finishedMatches.length) {
     console.log('    ✔ puntos recalculados');
   }
 }
+
+// Avanzar clasificados de eliminatorias antes de mirar resultados (corre siempre,
+// incluso los días sin partidos, para dejar el cuadro listo).
+await advanceKnockoutTeams();
 
 // 1. Partidos ya empezados (últimas 72h) que todavía no tienen resultado.
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
@@ -124,13 +211,7 @@ if (!pending.length) {
 }
 console.log(`${pending.length} partido(s) esperando resultado.`);
 
-// 2. Scoreboard de ESPN para los días involucrados. ESPN agrupa por fecha del
-// Este de EE.UU. (un partido de las 02:00 UTC cae en el día anterior), así que
-// consultamos esa fecha y también la UTC por las dudas.
-const easternDay = (iso) =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
-    .format(new Date(iso))
-    .replaceAll('-', '');
+// 2. Scoreboard de ESPN para los días involucrados (easternDay definido arriba).
 const days = [...new Set(pending.flatMap((m) => [easternDay(m.kickoff_at), m.kickoff_at.slice(0, 10).replaceAll('-', '')]))];
 const finished = [];
 for (const day of days) {
