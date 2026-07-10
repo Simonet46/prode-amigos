@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-07-09T14:44:47.090Z",
+  "updatedAt": "2026-07-10T14:09:31.445Z",
   "items": [
+    {
+      "name": "Kylian Mbappé",
+      "team": "France",
+      "goals": 8
+    },
     {
       "name": "Lionel Messi",
       "team": "Argentina",
@@ -12,14 +17,14 @@
       "goals": 7
     },
     {
-      "name": "Kylian Mbappé",
-      "team": "France",
-      "goals": 7
-    },
-    {
       "name": "Harry Kane",
       "team": "England",
       "goals": 6
+    },
+    {
+      "name": "Ousmane Dembélé",
+      "team": "France",
+      "goals": 5
     },
     {
       "name": "Ismaïla Sarr",
@@ -39,11 +44,6 @@
     {
       "name": "Mikel Oyarzabal",
       "team": "Spain",
-      "goals": 4
-    },
-    {
-      "name": "Ousmane Dembélé",
-      "team": "France",
       "goals": 4
     },
     {
