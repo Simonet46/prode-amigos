@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T14:09:31.445Z",
+  "updatedAt": "2026-07-11T13:05:48.496Z",
   "items": [
     {
       "name": "Kylian Mbappé",
@@ -54,6 +54,11 @@
     {
       "name": "Brian Brobbey",
       "team": "Netherlands",
+      "goals": 3
+    },
+    {
+      "name": "Charles De Ketelaere",
+      "team": "Belgium",
       "goals": 3
     },
     {
@@ -152,11 +157,6 @@
       "goals": 2
     },
     {
-      "name": "Charles De Ketelaere",
-      "team": "Belgium",
-      "goals": 2
-    },
-    {
       "name": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -182,11 +182,6 @@
       "goals": 2
     },
     {
-      "name": "Habib Diarra",
-      "team": "Senegal",
-      "goals": 2
-    },
-    {
       "name": "Leandro Trossard",
       "team": "Belgium",
       "goals": 2
@@ -204,6 +199,11 @@
     {
       "name": "Maxi Araújo",
       "team": "Uruguay",
+      "goals": 2
+    },
+    {
+      "name": "Mikel Merino",
+      "team": "Spain",
       "goals": 2
     },
     {
