@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-11T13:05:48.496Z",
+  "updatedAt": "2026-07-12T13:06:50.138Z",
   "items": [
     {
       "name": "Kylian Mbappé",
@@ -22,6 +22,11 @@
       "goals": 6
     },
     {
+      "name": "Jude Bellingham",
+      "team": "England",
+      "goals": 6
+    },
+    {
       "name": "Ousmane Dembélé",
       "team": "France",
       "goals": 5
@@ -29,11 +34,6 @@
     {
       "name": "Ismaïla Sarr",
       "team": "Senegal",
-      "goals": 4
-    },
-    {
-      "name": "Jude Bellingham",
-      "team": "England",
       "goals": 4
     },
     {
@@ -172,6 +172,11 @@
       "goals": 2
     },
     {
+      "name": "Dan Ndoye",
+      "team": "Switzerland",
+      "goals": 2
+    },
+    {
       "name": "Daniel Muñoz",
       "team": "Colombia",
       "goals": 2
@@ -179,6 +184,11 @@
     {
       "name": "Emam Ashour",
       "team": "Egypt",
+      "goals": 2
+    },
+    {
+      "name": "Lautaro Martínez",
+      "team": "Argentina",
       "goals": 2
     },
     {
@@ -194,11 +204,6 @@
     {
       "name": "Marko Arnautovic",
       "team": "Austria",
-      "goals": 2
-    },
-    {
-      "name": "Maxi Araújo",
-      "team": "Uruguay",
       "goals": 2
     },
     {
@@ -219,11 +224,6 @@
     {
       "name": "Pape Gueye",
       "team": "Senegal",
-      "goals": 2
-    },
-    {
-      "name": "Ramin Rezaeian",
-      "team": "Iran",
       "goals": 2
     },
     {
