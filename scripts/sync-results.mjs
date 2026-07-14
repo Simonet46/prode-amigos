@@ -153,7 +153,7 @@ await advanceKnockoutTeams();
 const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();
 const now = new Date().toISOString();
 const pending = await rest(
-  `prode_matches?select=id,kickoff_at,home_score,home_team:prode_teams!prode_matches_home_team_id_fkey(name),away_team:prode_teams!prode_matches_away_team_id_fkey(name)` +
+  `prode_matches?select=id,kickoff_at,stage,home_score,home_team:prode_teams!prode_matches_home_team_id_fkey(name),away_team:prode_teams!prode_matches_away_team_id_fkey(name)` +
     `&home_score=is.null&kickoff_at=lte.${now}&kickoff_at=gte.${since}&order=kickoff_at`,
 );
 
@@ -228,13 +228,21 @@ for (const day of days) {
     if (!comp || !comp.status?.type?.completed) continue;
     const home = comp.competitors.find((c) => c.homeAway === 'home');
     const away = comp.competitors.find((c) => c.homeAway === 'away');
+    // ¿Se definió pasando los 90'? (alargue o penales). ESPN lo marca en el
+    // status (STATUS_FINAL_AET / _PEN), en el período (>2) o con shootoutScore.
+    const statusName = comp.status?.type?.name || '';
+    const beyondRegulation = /AET|PEN|EXTRA|SHOOTOUT/i.test(statusName)
+      || (comp.status?.period ?? 0) > 2
+      || home.shootoutScore != null
+      || away.shootoutScore != null;
     finished.push({
       home: normalize(home.team.name),
       away: normalize(away.team.name),
       homeScore: Number(home.score),
       awayScore: Number(away.score),
+      beyondRegulation,
       date: new Date(event.date),
-      label: `${home.team.name} ${home.score}-${away.score} ${away.team.name}`,
+      label: `${home.team.name} ${home.score}-${away.score} ${away.team.name}${beyondRegulation ? ` (${statusName.replace('STATUS_FINAL_', '').replace('STATUS_', '') || 'alargue'})` : ''}`,
     });
   }
 }
@@ -252,6 +260,13 @@ for (const match of pending) {
   );
   if (!result) {
     console.log(`  Sin resultado todavía: ${match.home_team?.name} vs ${match.away_team?.name}`);
+    continue;
+  }
+  // El prode puntúa el resultado de los 90'. Si la eliminatoria se definió en
+  // alargue/penales, ESPN da el marcador con alargue (equivocado para el prode):
+  // no lo cargamos automáticamente, avisamos para cargarlo a mano.
+  if (match.stage && match.stage !== 'group' && result.beyondRegulation) {
+    console.log(`  ⏸ ${match.home_team?.name} vs ${match.away_team?.name}: se definió pasando los 90' (ESPN: ${result.label}). Cargá a mano el resultado de los 90'.`);
     continue;
   }
   const reversed = result.home === away;
