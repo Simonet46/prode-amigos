@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-14T13:20:50.923Z",
+  "updatedAt": "2026-07-15T13:24:05.300Z",
   "items": [
     {
       "name": "Kylian Mbappé",
@@ -27,6 +27,11 @@
       "goals": 6
     },
     {
+      "name": "Mikel Oyarzabal",
+      "team": "Spain",
+      "goals": 5
+    },
+    {
       "name": "Ousmane Dembélé",
       "team": "France",
       "goals": 5
@@ -39,11 +44,6 @@
     {
       "name": "Julián Quiñones",
       "team": "Mexico",
-      "goals": 4
-    },
-    {
-      "name": "Mikel Oyarzabal",
-      "team": "Spain",
       "goals": 4
     },
     {
@@ -202,11 +202,6 @@
       "goals": 2
     },
     {
-      "name": "Marko Arnautovic",
-      "team": "Austria",
-      "goals": 2
-    },
-    {
       "name": "Mikel Merino",
       "team": "Spain",
       "goals": 2
@@ -224,6 +219,11 @@
     {
       "name": "Pape Gueye",
       "team": "Senegal",
+      "goals": 2
+    },
+    {
+      "name": "Pedro Porro",
+      "team": "Spain",
       "goals": 2
     },
     {
