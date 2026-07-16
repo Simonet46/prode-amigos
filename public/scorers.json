@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-15T13:24:05.300Z",
+  "updatedAt": "2026-07-16T13:38:33.104Z",
   "items": [
     {
       "name": "Kylian Mbappé",
@@ -107,6 +107,11 @@
       "goals": 3
     },
     {
+      "name": "Lautaro Martínez",
+      "team": "Argentina",
+      "goals": 3
+    },
+    {
       "name": "Matheus Cunha",
       "team": "Brazil",
       "goals": 3
@@ -125,11 +130,6 @@
       "name": "Yoane Wissa",
       "team": "Congo DR",
       "goals": 3
-    },
-    {
-      "name": "Amad Diallo",
-      "team": "Ivory Coast",
-      "goals": 2
     },
     {
       "name": "Anthony Elanga",
@@ -187,7 +187,7 @@
       "goals": 2
     },
     {
-      "name": "Lautaro Martínez",
+      "name": "Enzo Fernández",
       "team": "Argentina",
       "goals": 2
     },
