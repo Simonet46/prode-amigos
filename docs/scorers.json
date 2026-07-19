@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-07-18T13:01:39.562Z",
+  "updatedAt": "2026-07-19T13:03:59.623Z",
   "items": [
     {
       "name": "Kylian Mbappé",
       "team": "France",
-      "goals": 8
+      "goals": 10
     },
     {
       "name": "Lionel Messi",
@@ -17,23 +17,23 @@
       "goals": 7
     },
     {
+      "name": "Jude Bellingham",
+      "team": "England",
+      "goals": 7
+    },
+    {
       "name": "Harry Kane",
       "team": "England",
       "goals": 6
     },
     {
-      "name": "Jude Bellingham",
-      "team": "England",
+      "name": "Ousmane Dembélé",
+      "team": "France",
       "goals": 6
     },
     {
       "name": "Mikel Oyarzabal",
       "team": "Spain",
-      "goals": 5
-    },
-    {
-      "name": "Ousmane Dembélé",
-      "team": "France",
       "goals": 5
     },
     {
@@ -52,8 +52,18 @@
       "goals": 4
     },
     {
+      "name": "Bradley Barcola",
+      "team": "France",
+      "goals": 3
+    },
+    {
       "name": "Brian Brobbey",
       "team": "Netherlands",
+      "goals": 3
+    },
+    {
+      "name": "Bukayo Saka",
+      "team": "England",
       "goals": 3
     },
     {
@@ -147,11 +157,6 @@
       "goals": 2
     },
     {
-      "name": "Bradley Barcola",
-      "team": "France",
-      "goals": 2
-    },
-    {
       "name": "Breel Embolo",
       "team": "Switzerland",
       "goals": 2
@@ -159,11 +164,6 @@
     {
       "name": "Crysencio Summerville",
       "team": "Netherlands",
-      "goals": 2
-    },
-    {
-      "name": "Cyle Larin",
-      "team": "Canada",
       "goals": 2
     },
     {
