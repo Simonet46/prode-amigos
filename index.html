@@ -267,6 +267,31 @@ nav button:not(.on) .n{background:var(--field);color:var(--fg2);border:1px solid
 .defchecks{display:flex;gap:6px;flex-wrap:wrap}
 .defchecks label{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:9px;background:var(--field);border:1px solid var(--line);font-size:12.5px;cursor:pointer;text-transform:none;letter-spacing:0;color:var(--fg)}
 .defchecks input{width:auto;margin:0}
+.sheet{overflow:auto;max-height:72vh;border-radius:14px;border:1px solid var(--line);background:var(--glass-strong);position:relative}
+.sheet table{border-collapse:separate;border-spacing:0;font-size:12.5px;min-width:max-content}
+.sheet th,.sheet td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:0;height:30px;white-space:nowrap;background:var(--glass-strong)}
+.sheet th{position:sticky;top:0;z-index:2;background:var(--bg2);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2);font-weight:700;padding:0 8px;text-align:left;cursor:pointer;user-select:none}
+.sheet th:hover{color:var(--fg)}
+.sheet th.sorted::after{content:" ▲";font-size:9px}.sheet th.sorted.desc::after{content:" ▼"}
+.sheet th.rn,.sheet td.rn{position:sticky;left:0;z-index:3;background:var(--bg2);color:var(--muted);text-align:center;width:38px;min-width:38px;font-variant-numeric:tabular-nums;padding:0}
+.sheet th.rn{z-index:5}
+.sheet th.st,.sheet td.st{position:sticky;z-index:3}
+.sheet th.st{z-index:5}
+.sheet td.st{background:var(--glass-strong)}
+.sheet td input,.sheet td select{border:0;border-radius:0;background:transparent;height:30px;padding:0 8px;width:100%;min-width:0;box-sizing:border-box;font-size:12.5px;color:var(--fg)}
+.sheet td{overflow:hidden;text-overflow:ellipsis}
+.sheet.nostick tfoot td{position:static}
+.sheet td input:focus,.sheet td select:focus{outline:2px solid var(--accent);outline-offset:-2px;background:rgba(28,79,209,.10)}
+.sheet td.ro{padding:0 8px;color:var(--fg2);background:var(--field)}
+.sheet td.num,.sheet td input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+.sheet td input[type=checkbox]{width:16px;height:16px;margin:7px auto;display:block;accent-color:var(--accent)}
+.sheet tfoot td{font-weight:700;background:var(--bg2);position:sticky;bottom:0;z-index:2;padding:0 8px}
+.sheet tfoot td.rn{z-index:4}
+.sheet td.del{width:30px;min-width:30px;text-align:center}
+.sheet td.del button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:12px;padding:0 6px;height:30px}
+.sheet td.del button:hover{color:var(--crit)}
+.sheet td.money{padding:0 8px;text-align:right;font-variant-numeric:tabular-nums}
+.sheet-hint{font-size:12px;color:var(--muted)}
 .bench{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
 .bench .pcard .pn,.bench .pcard .zl{color:var(--fg);text-shadow:none}
 .bench .pcard .ph{background:var(--field);color:var(--fg2);border-color:var(--line);box-shadow:none}
@@ -348,8 +373,9 @@ const DEFL={D1:'1 · Extremo izq.',D2:'2 · Lateral izq.',D3:'3 · Central izq.'
 const defL=c=>c==='POR'?t('Arquero'):t(DEFL[c]||c);
 const defShort=c=>c==='POR'?'A':c.replace('D','');
 Object.assign(FR,{'1 · Extremo izq.':'1 · Ailier g.','2 · Lateral izq.':'2 · Arrière g.','3 · Central izq.':'3 · Central g.','4 · Central der.':'4 · Central d.','5 · Lateral der.':'5 · Arrière d.','6 · Extremo der.':'6 · Ailier d.','Ataque':'Attaque','Defensa':'Défense','Posiciones defensivas':'Postes défensifs','Especialista defensivo':'Spécialiste défensif','Especialista':'Spécialiste','Agregar a':'Ajouter à','Agregar en':'Ajouter en','Bajo contrato esta temporada':'Sous contrat cette saison','Otros jugadores del club':'Autres joueurs du club','Objetivos':'Cibles','Nuevo jugador en este puesto':'Nouveau joueur à ce poste','Nuevo objetivo en este puesto':'Nouvelle cible à ce poste','Buscar…':'Rechercher…','Quitar de la cancha':'Retirer du terrain','Agregado':'Ajouté','Quitado':'Retiré','Ubicado a mano':'Placé manuellement','Puede defender en':'Peut défendre en','Vista desde el arco: 1 y 6 son los extremos, 2 y 5 los laterales, 3 y 4 los centrales.':'Vue depuis le but : 1 et 6 les ailiers, 2 et 5 les arrières, 3 et 4 les centraux.','Tocá + en un puesto para agregar a quien quieras: eso marca que el jugador puede defender ahí.':'Touchez + sur un poste pour ajouter qui vous voulez : cela indique que le joueur peut défendre là.','Tocá + en un puesto para ubicar a mano a un jugador u objetivo en esa temporada.':'Touchez + sur un poste pour placer manuellement un joueur ou une cible sur cette saison.','Def.':'Déf.'});
+Object.assign(FR,{'Planilla':'Tableur','Temporadas':'Saisons','Fila':'Ligne','Pegar desde Excel':'Coller depuis Excel','Importar .xlsx':'Importer .xlsx','Exportar .xlsx':'Exporter .xlsx','Copiar tabla':'Copier le tableau','Editá como en Excel: Tab o Enter para moverte, se guarda solo. Clic en un título ordena.':'Modifiez comme dans Excel : Tab ou Entrée pour vous déplacer, enregistrement automatique. Cliquez sur un titre pour trier.','Pegá acá las celdas copiadas de Excel, con la fila de títulos. Se actualiza por ID o por nombre y apellido; lo que no existe se crea.':'Collez ici les cellules copiées d’Excel, avec la ligne d’en-têtes. Mise à jour par ID ou par prénom et nom ; ce qui n’existe pas est créé.','Importar':'Importer','nuevos':'nouveaux','actualizados':'mis à jour','Total':'Total','Eliminar fila':'Supprimer la ligne','Nuevo':'Nouveau','Pos. 2':'Poste 2','Nacimiento':'Naissance','Límite opc.':'Limite opt.','Años opc.':'Années opt.','Cláusula':'Clause','Valor':'Valeur','Tel. agente':'Tél. agent','Club origen':'Club d’origine','Cedido en':'Prêté à','Esp. def.':'Spéc. déf.','Observaciones':'Observations','Copiado':'Copié','No se pudo cargar el módulo Excel; se exportó CSV.':'Module Excel indisponible ; export CSV.','Comprometido':'Engagé','Sin filas.':'Aucune ligne.','filas':'lignes','Texto próximo paso':'Texte prochaine étape','Traspaso':'Transfert','Pedido/mes':'Demandé/mois','Edad':'Âge','columnas no reconocidas':'colonnes non reconnues'});
 const ROLES=['Entrenador principal','Entrenador adjunto','Preparador físico','Entrenador de arqueros','Fisioterapeuta','Médico','Analista de video','Director deportivo','Team manager','Otro rol'];
-let lang='es', TF='all', courtSeason=null, courtMode='ataque', pickQ='';
+let lang='es', TF='all', courtSeason=null, courtMode='ataque', pickQ='', sheetTab='players', gridSort={}, gridDirty=false, focusAfter=null;
 try{const p=JSON.parse(localStorage.getItem(LS_PREF)||'{}'); if(p.lang) lang=p.lang; if(p.team) TF=p.team;}catch(e){}
 const t=k=>lang==='fr'?(FR[k]||k):k;
 const POSL={es:{POR:'Arquero',EI:'Extremo izq.',LI:'Lateral izq.',CE:'Central',LD:'Lateral der.',ED:'Extremo der.',PV:'Pivote'}};
@@ -407,10 +433,11 @@ const ICONS={panel:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height=
  salarios:'<svg viewBox="0 0 24 24"><path d="M4 19h16M6 16V9M11 16V5M16 16v-7"/></svg>',
  agenda:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
  ajustes:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'};
-const NAV=[['panel','Panel'],['cancha','Cancha'],['plantel','Plantel'],['staff','Cuerpo técnico'],['contratos','Contratos'],['planificacion','Planificación'],['reclutamiento','Reclutamiento'],['salarios','Masa salarial'],['agenda','Agenda'],['ajustes','Ajustes']];
+const NAV=[['panel','Panel'],['cancha','Cancha'],['plantel','Plantel'],['planilla','Planilla'],['staff','Cuerpo técnico'],['contratos','Contratos'],['planificacion','Planificación'],['reclutamiento','Reclutamiento'],['salarios','Masa salarial'],['agenda','Agenda'],['ajustes','Ajustes']];
 
 /* ---------- store ---------- */
 ICONS.cancha='<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="3"/></svg>';
+ICONS.planilla='<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/></svg>';
 ICONS.staff='<svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/><path d="M16 3.5a3.5 3.5 0 0 1 0 7"/></svg>';
 const defaultSettings=()=>({presupuesto:{},moneda:'EUR'});
 const store={
@@ -801,6 +828,122 @@ function staffForm(s){ const p=D.staff.find(x=>x.id===s.id)||{};
 }
 function resizeImage(file,w,h){ return new Promise((res,rej)=>{ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; const g=c.getContext('2d'); const r=Math.max(w/img.width,h/img.height); const dw=img.width*r, dh=img.height*r; g.drawImage(img,(w-dw)/2,0,dw,dh); URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg',0.82)); }; img.onerror=rej; img.src=url; }); }
 
+/* ---------- planilla (spreadsheet) ---------- */
+const optL=(o,v)=>{ const m=o.find(x=>String(x[0])===String(v??'')); return m?m[1]:(v??''); };
+function sheetCols(coll){
+  const posO=POS.map(p=>[p,posL(p)]);
+  if(coll==='players') return [
+    {k:'id',l:'ID',t:'text',hide:true},
+    {k:'equipo',l:'Equipo',t:'select',o:[['M','M'],['F','F']]},
+    {k:'dorsal',l:'Dorsal',t:'text',w:60},
+    {k:'nombre',l:'Nombre',t:'text',w:130,st:38},
+    {k:'apellido',l:'Apellido',t:'text',w:150,st:168},
+    {k:'posicion',l:'Puesto',t:'select',o:posO},
+    {k:'posicion2',l:'Pos. 2',t:'select',o:[['',''],...posO]},
+    {k:'nacimiento',l:'Nacimiento',t:'date'},
+    {k:'edad',l:'Edad',calc:p=>age(p.nacimiento),w:55},
+    {k:'nacionalidad',l:'Nac.',t:'text',w:60},
+    {k:'mano',l:'Mano',t:'select',o:[['D','D'],['I','I'],['A','A']],w:60},
+    {k:'altura',l:'Altura',t:'number',w:70},{k:'peso',l:'Peso',t:'number',w:60},
+    {k:'categoria',l:'Categoría',t:'select',o:[['pro','Pro'],['formacion',t('Formación')]]},
+    {k:'estado',l:'Estado',t:'select',o:STATUS.map(x=>[x,stL(x)]),w:160},
+    {k:'contratoInicio',l:'Inicio',t:'date'},{k:'contratoFin',l:'Fin',t:'date'},{k:'finEstimado',l:'≈',t:'bool',w:40},
+    {k:'meses',l:'Meses',calc:p=>monthsUntil(p.contratoFin),w:60},
+    {k:'salarioMensual',l:'Salario/mes',t:'number',sum:true,w:110},
+    {k:'salarioAnual',l:'Salario/año',calc:p=>p.salarioMensual?p.salarioMensual*12:null,sum:true,money:true,w:110},
+    {k:'opcion',l:'Opción',t:'select',o:[['',''],['club','Club'],['jugador',t('Jugador')],['mutua','Mutua']]},
+    {k:'opcionAnios',l:'Años opc.',t:'number',w:70},{k:'opcionFecha',l:'Límite opc.',t:'date'},
+    {k:'clausula',l:'Cláusula',t:'number',w:100},{k:'valorMercado',l:'Valor',t:'number',w:100},
+    {k:'agente',l:'Agente',t:'text',w:150},{k:'agenteTel',l:'Tel. agente',t:'text',w:110},
+    {k:'clubOrigen',l:'Club origen',t:'text',w:140},{k:'cedidoClub',l:'Cedido en',t:'text',w:140},
+    {k:'defensa',l:'Def.',t:'defs',w:80},{k:'especialistaDef',l:'Esp. def.',t:'bool',w:60},
+    {k:'observaciones',l:'Observaciones',t:'text',w:320}];
+  if(coll==='staff') return [
+    {k:'id',l:'ID',t:'text',hide:true},{k:'equipo',l:'Equipo',t:'select',o:[['M','M'],['F','F']]},
+    {k:'nombre',l:'Nombre',t:'text',w:130,st:38},{k:'apellido',l:'Apellido',t:'text',w:150,st:168},
+    {k:'rol',l:'Rol',t:'select',o:ROLES.map(r=>[r,t(r)]),w:170},{k:'nacionalidad',l:'Nac.',t:'text',w:60},{k:'nacimiento',l:'Nacimiento',t:'date'},
+    {k:'contratoInicio',l:'Inicio',t:'date'},{k:'contratoFin',l:'Fin',t:'date'},{k:'finEstimado',l:'≈',t:'bool',w:40},{k:'meses',l:'Meses',calc:p=>monthsUntil(p.contratoFin),w:60},
+    {k:'salarioMensual',l:'Salario/mes',t:'number',sum:true,w:110},{k:'salarioAnual',l:'Salario/año',calc:p=>p.salarioMensual?p.salarioMensual*12:null,sum:true,money:true,w:110},
+    {k:'telefono',l:'Teléfono',t:'text',w:110},{k:'observaciones',l:'Observaciones',t:'text',w:320}];
+  return [
+    {k:'id',l:'ID',t:'text',hide:true},{k:'equipo',l:'Equipo',t:'select',o:[['M','M'],['F','F']]},
+    {k:'nombre',l:'Nombre',t:'text',w:130,st:38},{k:'apellido',l:'Apellido',t:'text',w:150,st:168},
+    {k:'posicion',l:'Puesto',t:'select',o:posO},{k:'nacimiento',l:'Nacimiento',t:'date'},{k:'edad',l:'Edad',calc:p=>age(p.nacimiento),w:55},
+    {k:'nacionalidad',l:'Nac.',t:'text',w:60},{k:'mano',l:'Mano',t:'select',o:[['D','D'],['I','I'],['A','A']],w:60},{k:'altura',l:'Altura',t:'number',w:70},
+    {k:'clubActual',l:'Club actual',t:'text',w:160},{k:'liga',l:'Liga',t:'text',w:130},{k:'finContrato',l:'Fin contrato actual',t:'date'},
+    {k:'etapa',l:'Etapa',t:'select',o:STAGES.map(x=>[x,stgL(x)]),w:130},{k:'prioridad',l:'Prioridad',t:'select',o:PRIO.map(x=>[x,t(PRL[x])]),w:90},
+    {k:'costoTraspaso',l:'Traspaso',t:'number',sum:true,w:100},{k:'salarioPedido',l:'Pedido/mes',t:'number',w:100},
+    {k:'agente',l:'Agente',t:'text',w:150},{k:'scout',l:'Scout responsable',t:'text',w:130},{k:'proximoPaso',l:'Próximo paso',t:'date'},{k:'proximoPasoTexto',l:'Texto próximo paso',t:'text',w:220},
+    {k:'defensa',l:'Def.',t:'defs',w:80},{k:'observaciones',l:'Observaciones',t:'text',w:320}];
+}
+const cellVal=(o,c)=>c.calc?c.calc(o):o[c.k];
+function cellHtml(o,c,r,ci,coll){
+  if(c.calc){ const v=c.calc(o); return `<td class="ro ${c.money||typeof v==='number'?'num':''}" style="${c.w?'min-width:'+c.w+'px':''}">${v===null||v===undefined?'':c.money?fmtEUR(v):esc(v)}</td>`; }
+  const common=`class="gi" data-coll="${coll}" data-id="${o.id}" data-k="${c.k}" data-r="${r}" data-c="${ci}"`;
+  let inner='';
+  if(c.t==='select') inner=`<select ${common}>${c.o.map(([v,l])=>`<option value="${esc(v)}" ${String(o[c.k]??'')===String(v)?'selected':''}>${esc(l)}</option>`).join('')}</select>`;
+  else if(c.t==='bool') inner=`<input type="checkbox" ${common} ${o[c.k]?'checked':''}>`;
+  else if(c.t==='defs') inner=`<input type="text" ${common} value="${esc((o.defensa||[]).map(defShort).join(' '))}" placeholder="1 3">`;
+  else if(c.t==='number') inner=`<input type="number" ${common} value="${o[c.k]??''}" step="any">`;
+  else if(c.t==='date') inner=`<input type="date" ${common} value="${esc(o[c.k]||'')}">`;
+  else inner=`<input type="text" ${common} value="${esc(o[c.k]??'')}">`;
+  return `<td class="${c.st!==undefined?'st':''}" style="${c.w?'min-width:'+c.w+'px;':''}${c.st!==undefined?'left:'+c.st+'px':''}">${inner}</td>`;
+}
+function sheetRows(coll){ let rows=[...byTeam(D[coll])]; const cols=sheetCols(coll); const srt=gridSort[coll];
+  if(srt){ const c=cols.find(x=>x.k===srt.k); if(c){ rows.sort((a,b)=>{ const va=cellVal(a,c), vb=cellVal(b,c); const na=va===null||va===undefined||va==='', nb=vb===null||vb===undefined||vb===''; if(na&&nb) return 0; if(na) return 1; if(nb) return -1; const r=typeof va==='number'&&typeof vb==='number'?va-vb:String(va).localeCompare(String(vb),loc()); return srt.dir==='desc'?-r:r; }); } }
+  else rows.sort((a,b)=>String(a.apellido||'').localeCompare(String(b.apellido||''),loc()));
+  return rows; }
+function sheetHtml(coll){ const cols=sheetCols(coll).filter(c=>!c.hide); const rows=sheetRows(coll); const srt=gridSort[coll]||{};
+  const cw=c=>c.w||(c.t==='date'?140:c.t==='select'?120:110); const totalW=38+sum(cols.map(cw))+(store.canWrite?30:0);
+  const head=`<tr><th class="rn" style="width:38px">#</th>${cols.map(c=>`<th class="${c.st!==undefined?'st':''} ${srt.k===c.k?'sorted '+(srt.dir||''):''}" style="width:${cw(c)}px;${c.st!==undefined?'left:'+c.st+'px':''}" data-action="grid-sort" data-id="${c.k}" data-coll="${coll}">${esc(t(c.l))}</th>`).join('')}${store.canWrite?'<th style="width:30px"></th>':''}</tr>`;
+  const body=rows.map((o,r)=>`<tr>${`<td class="rn">${r+1}</td>`}${cols.map((c,ci)=>cellHtml(o,c,r,ci,coll)).join('')}${store.canWrite?`<td class="del"><button data-action="del-row" data-coll="${coll}" data-id="${o.id}" data-confirm="1" aria-label="${t('Eliminar fila')}" title="${t('Eliminar fila')}">✕</button></td>`:''}</tr>`).join('');
+  const foot=`<tr><td class="rn">Σ</td>${cols.map(c=>{ if(c.sum){ const v=sum(rows.map(o=>Number(cellVal(o,c))||0)); return `<td class="money">${fmtEUR(v)}</td>`; } if(c.k==='nombre') return `<td class="st" style="left:38px">${rows.length} ${t('filas')}</td>`; return `<td class="${c.st!==undefined?'st':''}" style="${c.st!==undefined?'left:'+c.st+'px':''}"></td>`; }).join('')}${store.canWrite?'<td></td>':''}</tr>`;
+  return `<div class="sheet" id="gridWrap"><table style="table-layout:fixed;width:${totalW}px"><thead>${head}</thead><tbody>${body||''}</tbody><tfoot>${foot}</tfoot></table>${rows.length?'':`<p class="mini" style="padding:12px">${t('Sin filas.')}</p>`}</div>`; }
+function seasonsSheet(){ const ys=seasons(5); const ps=[...players()].sort((a,b)=>POS.indexOf(a.posicion)-POS.indexOf(b.posicion)||String(a.apellido).localeCompare(String(b.apellido)));
+  const cell=(p,y)=>{ if(!covers(p,y)) return '<td class="ro"></td>'; const c=seasonCost(p,y); return `<td class="money" style="background:rgba(28,79,209,.08)">${c?fmtEUR(c):'✓'}</td>`; };
+  const tot=y=>sum(ps.map(p=>seasonCost(p,y))); const ts=teamsToShow(); const bud=y=>sum(ts.map(tm=>budget(y,tm))); const stf=y=>sum(ts.map(tm=>committedStaff(y,tm)));
+  return `<div class="sheet nostick" id="gridWrap"><table><thead><tr><th class="rn">#</th><th class="st" style="left:38px">${t('Jugador')}</th><th>${t('Puesto')}</th><th>${t('Fin')}</th>${ys.map(y=>`<th class="num">${seasonLabel(y)}</th>`).join('')}</tr></thead>
+  <tbody>${ps.map((p,r)=>`<tr><td class="rn">${r+1}</td><td class="st ro" style="left:38px;color:var(--fg)">${esc(fullName(p))} ${teamTag(p.equipo)}</td><td class="ro">${esc(posL(p.posicion))}</td><td class="ro">${endL(p)}</td>${ys.map(y=>cell(p,y)).join('')}</tr>`).join('')}</tbody>
+  <tfoot><tr><td class="rn">Σ</td><td class="st" style="left:38px">${t('Jugadores')}</td><td></td><td></td>${ys.map(y=>`<td class="money">${fmtEUR(tot(y))}</td>`).join('')}</tr>
+  <tr><td class="rn"></td><td class="st" style="left:38px">${t('Staff')}</td><td></td><td></td>${ys.map(y=>`<td class="money">${fmtEUR(stf(y))}</td>`).join('')}</tr>
+  <tr><td class="rn"></td><td class="st" style="left:38px">${t('Presupuesto')}</td><td></td><td></td>${ys.map(y=>`<td class="money">${bud(y)?fmtEUR(bud(y)):'—'}</td>`).join('')}</tr>
+  <tr><td class="rn"></td><td class="st" style="left:38px">${t('Margen')}</td><td></td><td></td>${ys.map(y=>`<td class="money ${bud(y)&&bud(y)-tot(y)-stf(y)<0?'months crit':''}">${bud(y)?fmtEUR(bud(y)-tot(y)-stf(y)):'—'}</td>`).join('')}</tr></tfoot></table></div>`; }
+VIEWS.planilla=()=>{
+  const tabs=[['players','Jugadores'],['staff','Staff'],['targets','Objetivos'],['seasons','Temporadas']];
+  const body=sheetTab==='seasons'?seasonsSheet():sheetHtml(sheetTab);
+  return `<div class="vhead"><div><h1>${t('Planilla')}</h1><div class="sub">${t('Editá como en Excel: Tab o Enter para moverte, se guarda solo. Clic en un título ordena.')}</div></div>
+  <div class="actions">${store.canWrite&&sheetTab!=='seasons'?`<button class="btn primary" data-action="add-row" data-id="${sheetTab}">+ ${t('Fila')}</button><button class="btn" data-action="open-paste" data-id="${sheetTab}">${t('Pegar desde Excel')}</button><label class="btn"><input type="file" id="xlsxFile" data-coll="${sheetTab}" accept=".xlsx,.xls,.csv" class="sr">${t('Importar .xlsx')}</label>`:''}<button class="btn" data-action="copy-sheet" data-id="${sheetTab}">${t('Copiar tabla')}</button><button class="btn" data-action="export-xlsx">${t('Exportar .xlsx')}</button></div></div>
+  <div class="tabs" style="max-width:520px">${tabs.map(([k,l])=>`<button data-action="sheet-tab" data-id="${k}" class="${sheetTab===k?'on':''}">${t(l)}</button>`).join('')}</div>
+  ${body}`;
+};
+function parseNum(v){ if(v===null||v===undefined||v==='') return null; if(typeof v==='number') return v; let x=String(v).replace(/[€$\s]/g,''); if(/,\d{1,2}$/.test(x)&&x.includes('.')) x=x.replace(/\./g,'').replace(',','.'); else if(/,\d{1,2}$/.test(x)) x=x.replace(',','.'); else x=x.replace(/[.,](?=\d{3})/g,''); const n=Number(x); return isNaN(n)?null:n; }
+function parseDateAny(v){ if(!v) return null; if(v instanceof Date) return isNaN(v)?null:isoD(v); if(typeof v==='number'){ if(v>20000&&v<80000){ const d=new Date(Math.round((v-25569)*864e5)); return isoD(new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())); } return null; } const x=String(v).trim(); let m=x.match(/^(\d{4})-(\d{2})-(\d{2})/); if(m) return `${m[1]}-${m[2]}-${m[3]}`; m=x.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/); if(m){ let y=m[3]; if(y.length===2) y=(Number(y)>50?'19':'20')+y; return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`; } return null; }
+function coerce(c,v,o){ if(c.calc) return undefined; if(c.t==='number') return parseNum(v); if(c.t==='date') return parseDateAny(v); if(c.t==='bool') return /^(1|true|sí|si|oui|x|✓|yes)$/i.test(String(v??'').trim()); if(c.t==='defs') return String(v??'').split(/[\s,;]+/).map(x=>x.trim()).filter(Boolean).map(x=>x.toUpperCase().startsWith('D')?x.toUpperCase():'D'+x).filter(x=>/^D[1-6]$/.test(x));
+  if(c.t==='select'){ const sv=String(v??'').trim(); const hit=c.o.find(([val,lab])=>String(val).toLowerCase()===sv.toLowerCase()||String(lab).toLowerCase()===sv.toLowerCase()); return hit?hit[0]:(c.k==='equipo'?(sv.toLowerCase().startsWith('f')?'F':'M'):(c.o[0]?c.o[0][0]:'')); }
+  return String(v??'').trim(); }
+function headerMap(coll,headers){ const cols=sheetCols(coll); const norm=x=>String(x||'').trim().toLowerCase().replace(/\s+/g,' '); return headers.map(h=>{ const n=norm(h); return cols.find(c=>norm(c.k)===n||norm(c.l)===n||norm(t(c.l))===n||norm(FR[c.l]||'')===n)||null; }); }
+async function importRows(coll,headers,rows){ const map=headerMap(coll,headers); const cols=sheetCols(coll); const unknown=headers.filter((h,i)=>!map[i]&&String(h).trim()); let created=0,updated=0;
+  for(const r of rows){ if(!r.some(v=>v!==null&&v!==undefined&&String(v).trim()!=='')) continue; const patch={}; map.forEach((c,i)=>{ if(c&&!c.calc){ const v=coerce(c,r[i]); if(v!==undefined) patch[c.k]=v; } });
+    let prev=null; if(patch.id) prev=D[coll].find(o=>o.id===patch.id); if(!prev&&(patch.nombre||patch.apellido)) prev=D[coll].find(o=>String(o.nombre||'').toLowerCase()===String(patch.nombre||'').toLowerCase()&&String(o.apellido||'').toLowerCase()===String(patch.apellido||'').toLowerCase());
+    if(!prev&&!patch.nombre&&!patch.apellido) continue;
+    const base=prev?{...prev}:Object.assign({id:uid(),equipo:TF==='F'?'F':'M',notas:[],historial:[],demo:false},coll==='players'?{posicion:'CE',estado:'activo',mano:'D',categoria:'pro',opcion:'',opcionAnios:1,defensa:[]}:coll==='staff'?{rol:'Otro rol'}:{posicion:'CE',etapa:'observado',prioridad:'media',mano:'D',defensa:[]});
+    delete patch.id; const obj={...base,...patch}; await store.save(coll,obj); if(prev) updated++; else created++; }
+  await store.log(`${t('Importar')}: ${created} ${t('nuevos')}, ${updated} ${t('actualizados')}`); toast(`${created} ${t('nuevos')} · ${updated} ${t('actualizados')}${unknown.length?' · '+unknown.length+' '+t('columnas no reconocidas'):''}`); }
+function parseTSV(txt){ const lines=txt.replace(/\r/g,'').split('\n').filter(l=>l.trim()!==''); const sep=lines[0].includes('\t')?'\t':lines[0].includes(';')?';':','; return lines.map(l=>l.split(sep).map(x=>x.replace(/^"|"$/g,'').trim())); }
+function sheetTSV(coll){ const cols=sheetCols(coll).filter(c=>!c.hide); const rows=sheetRows(coll); const val=(o,c)=>{ const v=cellVal(o,c); if(c.t==='select') return optL(c.o,v); if(c.t==='defs') return (o.defensa||[]).map(defShort).join(' '); if(c.t==='bool') return v?'1':''; return v===null||v===undefined?'':String(v); }; return [cols.map(c=>t(c.l)).join('\t'),...rows.map(o=>cols.map(c=>val(o,c)).join('\t'))].join('\n'); }
+function loadXLSX(){ return new Promise((res,rej)=>{ if(window.XLSX) return res(window.XLSX); const sc=document.createElement('script'); sc.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; sc.onload=()=>res(window.XLSX); sc.onerror=rej; (document.head||document.body).appendChild(sc); }); }
+async function deliverBlob(filename,blob){ let dl=null; try{ dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null; }catch(e){}
+  if(dl){ try{ await dl.save({filename,data:blob}); toast(t('Archivo guardado')); return true; }catch(e){ return false; } }
+  if(!window.claude){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000); toast(t('Archivo guardado')); return true; } return false; }
+async function exportXLSX(){ let X=null; try{ X=await loadXLSX(); }catch(e){} if(!X){ toast(t('No se pudo cargar el módulo Excel; se exportó CSV.')); exportCSV(); return; }
+  const wb=X.utils.book_new(); const sheet=(coll)=>{ const cols=sheetCols(coll); const rows=[...D[coll]].sort((a,b)=>String(a.equipo).localeCompare(String(b.equipo))||String(a.apellido||'').localeCompare(String(b.apellido||''))); return X.utils.json_to_sheet(rows.map(o=>{ const row={}; cols.forEach(c=>{ let v=cellVal(o,c); if(c.t==='select') v=optL(c.o,v); else if(c.t==='defs') v=(o.defensa||[]).map(defShort).join(' '); else if(c.t==='bool') v=v?1:''; row[t(c.l)]=v===null||v===undefined?'':v; }); return row; })); };
+  X.utils.book_append_sheet(wb,sheet('players'),t('Jugadores')); X.utils.book_append_sheet(wb,sheet('staff'),'Staff'); X.utils.book_append_sheet(wb,sheet('targets'),t('Objetivos'));
+  const ys=seasons(5); const ms=D.players.map(p=>{ const row={[t('Jugador')]:fullName(p),[t('Equipo')]:p.equipo,[t('Puesto')]:posL(p.posicion),[t('Fin')]:p.contratoFin||''}; ys.forEach(y=>{ row[seasonLabel(y)]=covers(p,y)?(seasonCost(p,y)||'✓'):''; }); return row; }); X.utils.book_append_sheet(wb,X.utils.json_to_sheet(ms),t('Temporadas'));
+  const sal=[]; for(const tm of ['M','F']) for(const y of ys){ const b=budget(y,tm), c=committed(y,tm); sal.push({[t('Temporada')]:seasonLabel(y),[t('Equipo')]:teamL(tm),[t('Presupuesto')]:b||'',[t('Comprometido')]:c,[t('Jugadores')]:D.players.filter(p=>p.equipo===tm&&covers(p,y)).length,[t('Uso')+' %']:b?Math.round(c/b*100):'',[t('Margen')]:b?b-c:''}); } X.utils.book_append_sheet(wb,X.utils.json_to_sheet(sal),t('Masa salarial'));
+  const out=X.write(wb,{type:'array',bookType:'xlsx'}); const ok=await deliverBlob('mhb-direccion-deportiva.xlsx',new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})); if(!ok){ await deliver('mhb-plantel.csv',sheetTSV('players'),'text/tab-separated-values'); } }
+async function importXLSXFile(file,coll){ if(/\.csv$/i.test(file.name)){ const rows=parseTSV(await file.text()); return importRows(coll,rows[0],rows.slice(1)); } let X=null; try{ X=await loadXLSX(); }catch(e){} if(!X){ toast(t('No se pudo guardar')); return; } const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true}); const names=wb.SheetNames; const want=coll==='players'?[t('Jugadores'),'Jugadores','Joueurs']:coll==='staff'?['Staff']:[t('Objetivos'),'Objetivos','Cibles']; const sn=names.find(n=>want.includes(n))||names[0]; const aoa=X.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true}); return importRows(coll,aoa[0]||[],aoa.slice(1)); }
+function pasteView(s){ return `<div class="ph"><div><h2>${t('Pegar desde Excel')}</h2><div class="mini">${t(s.coll==='players'?'Jugadores':s.coll==='staff'?'Staff':'Objetivos')}</div></div>${closeBtn()}</div><p class="mini">${t('Pegá acá las celdas copiadas de Excel, con la fila de títulos. Se actualiza por ID o por nombre y apellido; lo que no existe se crea.')}</p><form id="pasteForm" data-coll="${s.coll}" class="form"><div class="f full"><textarea id="pasteText" name="texto" style="min-height:260px;font-family:ui-monospace,Menlo,monospace;font-size:12px" placeholder="Nombre\tApellido\tPuesto\tFin\tSalario/mes"></textarea></div><div class="fbar full"><button class="btn" type="button" data-action="close">${t('Cancelar')}</button><button class="btn primary" type="submit">${t('Importar')}</button></div></form>`; }
+
 /* ---------- drawer: player / target ---------- */
 const COUNTRIES='FR ES AR DE DK NO SE PT HR SI PL HU BR UA NL IS CH IT RO RU SN NG EG TN MA QA JP KR BE AT CZ SK ME MK RS BA GR TR GB US CA CL UY'.split(' ');
 const f=(label,inner,full)=>`<div class="f ${full?'full':''}"><label>${esc(label)}</label>${inner}</div>`;
@@ -812,6 +955,7 @@ function renderDrawer(){ const s=drawerState; if(!s) return; const el=$('#panel'
   if(s.type==='player') el.innerHTML=s.mode==='edit'?playerForm(s):playerView(s);
   else if(s.type==='staff') el.innerHTML=s.mode==='edit'?staffForm(s):staffView(s);
   else if(s.type==='pick') el.innerHTML=pickView(s);
+  else if(s.type==='paste') el.innerHTML=pasteView(s);
   else el.innerHTML=s.mode==='edit'?targetForm(s):targetView(s);
   if(keepQ){ const q=$('#pickQ'); if(q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); } } else el.scrollTop=0; }
 const closeBtn=()=>`<button class="btn ghost x" data-action="close" aria-label="${t('Cerrar')}">✕</button>`;
@@ -870,7 +1014,9 @@ function render(){
   document.querySelector('.brand-s').textContent=t('Dirección deportiva');
   $('#sideFoot').innerHTML=`<b>${t('Temporada')} ${seasonLabel(CUR)}</b><br>${store.mode==='db'?'☁︎ '+t('Conexión'):'⌂ Local'}${store.canWrite?'':' · '+t('Solo lectura: tu acceso no permite modificar datos.').split(':')[0]}`;
   const b=$('#banner'); b.innerHTML=store.mode==='db'&&!store.ready&&!store.stale?`<div class="banner info">${t('Conectando con la base compartida…')}</div>`:store.stale?`<div class="banner">${t('No se pudo conectar con la base compartida todavía. Los datos pueden estar desactualizados.')}</div>`:'';
-  $('#view').innerHTML=(VIEWS[route]||VIEWS.panel)();
+  const gridActive=route==='planilla'&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#gridWrap');
+  if(gridActive){ gridDirty=true; } else { $('#view').innerHTML=(VIEWS[route]||VIEWS.panel)(); gridDirty=false; }
+  if(focusAfter){ const el=document.querySelector(`#gridWrap .gi[data-id="${focusAfter.id}"][data-k="${focusAfter.k}"]`); if(el){ el.focus(); el.scrollIntoView({block:'nearest',inline:'nearest'}); } focusAfter=null; }
   if(drawerState&&drawerState.mode!=='edit') renderDrawer();
 }
 function go(r){ route=NAV.some(n=>n[0]===r)?r:'panel'; if(location.hash!=='#'+route) history.replaceState(null,'',location.pathname+'#'+route); render(); window.scrollTo({top:0}); }
@@ -896,6 +1042,13 @@ document.addEventListener('click',async e=>{
     case 'del-staff': { const p=D.staff.find(x=>x.id===id); closeDrawer(); await store.remove('staff',id); store.log(`${t('Eliminado')}: ${staffL(p)} (${roleL(p.rol)})`); toast(t('Eliminado')); break; }
     case 'court-season': courtSeason=Number(id); render(); break;
     case 'court-mode': courtMode=id; render(); break;
+    case 'sheet-tab': sheetTab=id; render(); break;
+    case 'grid-sort': { const coll=el.dataset.coll; const cur=gridSort[coll]||{}; gridSort[coll]={k:id,dir:cur.k===id&&cur.dir==='asc'?'desc':'asc'}; render(); break; }
+    case 'add-row': { const coll=id; const o=Object.assign({id:uid(),equipo:TF==='F'?'F':'M',nombre:'',apellido:t('Nuevo'),notas:[],historial:[],demo:false},coll==='players'?{posicion:'CE',estado:'activo',mano:'D',categoria:'pro',opcion:'',opcionAnios:1,defensa:[],contratoInicio:isoD(sStart(CUR)),contratoFin:isoD(sEnd(CUR+1))}:coll==='staff'?{rol:'Otro rol'}:{posicion:'CE',etapa:'observado',prioridad:'media',mano:'D',defensa:[]}); gridSort[coll]=null; focusAfter={id:o.id,k:'nombre'}; await store.save(coll,o); if(store.mode==='db'){ setTimeout(()=>{ if(focusAfter) render(); },400); } break; }
+    case 'del-row': { const coll=el.dataset.coll; const o=D[coll].find(x=>x.id===id); await store.remove(coll,id); store.log(`${t('Eliminado')}: ${fullName(o)}`); toast(t('Eliminado')); break; }
+    case 'open-paste': openDrawer({type:'paste',coll:id}); break;
+    case 'copy-sheet': { const txt=id==='seasons'?[...document.querySelectorAll('#gridWrap tr')].map(tr=>[...tr.children].map(td=>td.textContent.trim()).join('\t')).join('\n'):sheetTSV(id); try{ await navigator.clipboard.writeText(txt); toast(t('Copiado')); }catch(err){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast(t('Copiado')); } break; }
+    case 'export-xlsx': await exportXLSX(); break;
     case 'zone-add': pickQ=''; openDrawer({type:'pick',pos:id,mode:courtMode,team:TF==='F'?'F':'M',y:courtSeason??CUR}); break;
     case 'new-player-pos': openDrawer({type:'player',mode:'edit',pos:id,team:TF==='F'?'F':'M'}); break;
     case 'new-target-pos': openDrawer({type:'target',mode:'edit',pos:id,team:TF==='F'?'F':'M'}); break;
@@ -936,6 +1089,7 @@ document.addEventListener('submit',async e=>{
   else if(form.id==='staffForm'){ const o=fd(form); const prev=o.id?D.staff.find(x=>x.id===o.id):null;
     const p={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,rol:o.rol,equipo:o.equipo,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),contratoInicio:o.contratoInicio||null,contratoFin:o.contratoFin||null,finEstimado:!!o.finEstimado,salarioMensual:numOrNull(o.salarioMensual),telefono:o.telefono||'',observaciones:o.observaciones||'',foto:o.foto||null,notas:(prev&&prev.notas)||[],demo:prev?!!prev.demo:false};
     await store.save('staff',p); store.log(`${prev?t('Editar'):t('Nuevo miembro del staff')}: ${staffL(p)} (${roleL(p.rol)})`); toast(t('Guardado')); openDrawer({type:'staff',id:p.id}); }
+  else if(form.id==='pasteForm'){ const rows=parseTSV($('#pasteText').value||''); if(rows.length<2){ toast(t('Sin filas.')); return; } closeDrawer(); await importRows(form.dataset.coll,rows[0],rows.slice(1)); }
   else if(form.id==='noteForm'){ const coll=form.dataset.coll, id=form.dataset.id; const o=fd(form); if(!o.texto) return; const obj={...D[coll].find(x=>x.id===id)}; obj.notas=[...(obj.notas||[]),{f:isoD(today),t:o.texto}]; await store.save(coll,obj); store.log(`${t('Notas')} · ${fullName(obj)}: ${o.texto.slice(0,60)}`); form.reset(); toast(t('Guardado')); if(store.mode==='local') renderDrawer(); }
   else if(form.id==='histForm'){ const o=fd(form); const p={...D.players.find(x=>x.id===form.dataset.id)}; p.historial=[...(p.historial||[]),{desde:o.desde||null,hasta:o.hasta||null,club:o.club||'',detalle:o.detalle||''}]; await store.save('players',p); form.reset(); toast(t('Guardado')); if(store.mode==='local') renderDrawer(); }
   else if(form.id==='taskForm'){ const o=fd(form); await store.save('tasks',{id:uid(),titulo:o.titulo,fecha:o.fecha,tipo:o.tipo,hecho:false}); form.reset(); $('#tFecha').value=isoD(today); toast(t('Guardado')); }
@@ -945,12 +1099,18 @@ document.addEventListener('submit',async e=>{
 document.addEventListener('change',async e=>{
   const el=e.target;
   if(el.dataset.filter){ plantelF[el.dataset.filter]=el.value; render(); }
+  if(el.classList.contains('gi')){ const coll=el.dataset.coll, k=el.dataset.k; const cols=sheetCols(coll); const c=cols.find(x=>x.k===k); const prev=D[coll].find(x=>x.id===el.dataset.id); if(!c||!prev) return; let v; if(c.t==='bool') v=el.checked; else if(c.t==='number') v=numOrNull(el.value); else if(c.t==='date') v=el.value||null; else if(c.t==='defs') v=coerce(c,el.value); else v=el.value; const o={...prev,[k]:v}; if(k==='nacionalidad') o[k]=String(v||'').toUpperCase(); setTimeout(async()=>{ try{ await store.save(coll,o); }catch(err){} },0); }
+  if(el.id==='xlsxFile'&&el.files[0]){ try{ await importXLSXFile(el.files[0],el.dataset.coll); }catch(err){ console.warn(err); toast(t('No se pudo guardar')); } el.value=''; }
   if(el.id==='in-fotoFile'&&el.files[0]){ try{ const data=await resizeImage(el.files[0],120,180); const h=$('#in-foto'); if(h) h.value=data; const pv=$('#photoPreview'); if(pv) pv.innerHTML=`<img src="${data}" alt="">`; }catch(err){ toast(t('No se pudo guardar')); } }
   if(el.id==='importFile'&&el.files[0]){ try{ const txt=await el.files[0].text(); const d=JSON.parse(txt); for(const p of d.players||[]) await store.save('players',p); for(const x of d.targets||[]) await store.save('targets',x); for(const k of d.tasks||[]) await store.save('tasks',k); for(const k of d.staff||[]) await store.save('staff',k); for(const k of d.plan||[]) await store.save('plan',k); if(d.settings) await store.saveSettings(Object.assign(defaultSettings(),d.settings)); toast(t('Importado')); }catch(err){ toast(t('No se pudo guardar')); } }
 });
 document.addEventListener('input',e=>{ if(e.target.id==='pickQ'){ pickQ=e.target.value; renderDrawer(); } });
 $('#q').addEventListener('input',e=>{ q=e.target.value; if(route!=='plantel'&&q) go('plantel'); else render(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&drawerState) closeDrawer(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&drawerState) closeDrawer();
+  const g=e.target.classList&&e.target.classList.contains('gi')?e.target:null; if(!g) return;
+  const move=(dr)=>{ const r=Number(g.dataset.r)+dr, c=g.dataset.c; const n=document.querySelector(`#gridWrap .gi[data-r="${r}"][data-c="${c}"]`); if(n){ e.preventDefault(); n.focus(); if(n.select&&n.type==='text') n.select(); } };
+  if(e.key==='Enter'){ if(g.tagName==='SELECT') return; move(e.shiftKey?-1:1); } else if(e.key==='ArrowDown'&&g.tagName!=='SELECT'){ move(1); } else if(e.key==='ArrowUp'&&g.tagName!=='SELECT'){ move(-1); } });
+document.addEventListener('focusout',e=>{ if(!gridDirty) return; const to=e.relatedTarget; if(to&&to.closest&&to.closest('#gridWrap')) return; setTimeout(()=>{ if(gridDirty&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#gridWrap'))) render(); },50); });
 $('#drawer').addEventListener('click',e=>{ if(e.target.id==='drawer') closeDrawer(); });
 window.addEventListener('hashchange',()=>{ const r=location.hash.slice(1); if(r&&r!==route) go(r); });
 /* drag & drop kanban */
