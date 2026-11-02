@@ -73,7 +73,7 @@ nav button:not(.on) .n{background:var(--field);color:var(--fg2);border:1px solid
 .top .search{flex:1 1 220px;min-width:160px;position:relative}
 .top .search input{padding-left:34px;border-radius:12px}
 .top .search svg{position:absolute;left:11px;top:10px;width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2}
-.seg{display:inline-flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px}
+.seg{display:inline-flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .seg button{border:0;background:transparent;padding:6px 13px;border-radius:9px;font-weight:600;color:var(--fg2);white-space:nowrap}
 .seg button.on{background:var(--glass-strong);color:var(--fg);box-shadow:0 1px 5px rgba(0,0,0,.10)}
 .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--field);padding:8px 13px;border-radius:11px;font-weight:600;color:var(--fg);white-space:nowrap}
@@ -112,6 +112,7 @@ nav button:not(.on) .n{background:var(--field);color:var(--fg2);border:1px solid
 .tbl tr.row{cursor:pointer}
 .tbl tr.row:hover td{background:var(--hover)}
 .tbl th.r,.tbl td.r{text-align:right;font-variant-numeric:tabular-nums}
+.tbl td.num{white-space:nowrap}
 .tbl .name{font-weight:600;white-space:nowrap}
 .who{display:flex;align-items:center;gap:10px;min-width:0}
 .av{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;font-weight:700;font-size:12.5px;color:#fff;background:linear-gradient(145deg,var(--accent),var(--navy))}
@@ -231,6 +232,31 @@ nav button:not(.on) .n{background:var(--field);color:var(--fg2);border:1px solid
 .budget-grid{display:grid;grid-template-columns:110px 1fr 1fr;gap:8px;align-items:center;max-width:520px}
 .budget-grid .h{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.av img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:inherit;display:block}
+.est{font-size:11px;color:var(--muted);font-weight:700}
+.court-wrap{display:flex;flex-direction:column;gap:12px}
+.court{position:relative;width:100%;aspect-ratio:20/18.5;max-width:1100px;margin:0 auto;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#1b56d6 0%,#2a6fe6 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 12px 40px rgba(10,31,92,.25)}
+.court svg{position:absolute;inset:0;width:100%;height:100%}
+.zone{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;transform:translate(-50%,0)}
+.zone .zl{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.85);text-shadow:0 1px 4px rgba(0,0,0,.4);display:flex;align-items:center;gap:6px}
+.zone .zl b{background:rgba(255,255,255,.22);padding:0 6px;border-radius:999px}
+.zone .zc{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:100%}
+.pcard{width:74px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-align:center}
+.pcard .ph{width:62px;height:84px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.18);border:2.5px solid rgba(255,255,255,.9);box-shadow:0 6px 18px rgba(0,0,0,.35);display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.pcard .pn{font-size:11px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6);line-height:1.15;max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard .pb{font-size:9.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.35);padding:1px 6px;border-radius:999px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.pcard.warn .ph{border-color:var(--warn)}.pcard.crit .ph{border-color:#ff6b6b}.pcard.good .ph{border-color:#5fe37a}.pcard.neutral .ph{border-color:rgba(255,255,255,.5)}
+.pcard.dashed .ph{border-style:dashed;border-color:#ffd166}.pcard.dashed .pb{background:rgba(255,209,102,.9);color:#0b1733}
+.pcard.dotted{opacity:.72}.pcard.dotted .ph{border-style:dotted;border-color:rgba(255,255,255,.8)}.pcard.dotted .pb{background:rgba(255,255,255,.25)}
+.pcard:hover .ph{transform:translateY(-2px)}
+.bench{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.bench .pcard .pn,.bench .pcard .zl{color:var(--fg);text-shadow:none}
+.bench .pcard .ph{background:var(--field);color:var(--fg2);border-color:var(--line);box-shadow:none}
+.bench .pcard .pb{background:var(--field);color:var(--fg2);border:1px solid var(--line)}
+.court-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--fg2)}
+.court-legend i{display:inline-block;width:14px;height:14px;border-radius:5px;border:2.5px solid var(--accent);vertical-align:-3px;margin-right:4px}
+@media (max-width:700px){.court{aspect-ratio:auto;display:flex;flex-direction:column;gap:14px;padding:14px 10px}.court svg{display:none}.zone{position:static;transform:none;width:100%!important;padding:8px;border-radius:14px;background:rgba(255,255,255,.08)}.zone .zc{justify-content:flex-start}.pcard{width:64px}.pcard .ph{width:54px;height:72px;font-size:15px}.pcard .pn{font-size:10px;max-width:66px}}
 @media (max-width:980px){
   .app{grid-template-columns:1fr}
   .side{position:static;height:auto;margin:12px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));padding:12px;gap:10px}
@@ -299,7 +325,9 @@ const FR={
  'Demo':'Démo','cm':'cm','kg':'kg','años':'ans','meses':'mois','Secundaria':'Secondaire','Renovar':'Prolonger','Sin contrato':'Sans contrat','Todas las posiciones':'Tous les postes','Todos los estados':'Tous les statuts','Ordenar: vencimiento':'Tri : échéance','Ordenar: nombre':'Tri : nom','Ordenar: salario':'Tri : salaire','Ordenar: edad':'Tri : âge','Ordenar: puesto':'Tri : poste',
  'Decidir renovación':'Décider de la prolongation','vence en':'échéance dans','Opción a ejercer antes del':'Option à lever avant le','Seguimiento vencido':'Suivi en retard','Tarea vencida':'Tâche en retard','Sin cobertura en':'Aucune couverture en','Llega en':'Arrive en','desde':'depuis','Ver todos':'Voir tout','Puesto más caro':'Poste le plus cher','Promedio':'Moyenne','Lateral derecho zurdo':'Arrière droit gaucher','Ver plantel':'Voir l’effectif','Ver agenda':'Voir l’agenda','Ver pipeline':'Voir le pipeline','Zurdo':'Gaucher','Diestro':'Droitier','Ambidiestro':'Ambidextre','Por temporada':'Par saison','Por puesto':'Par poste','Jugador por jugador':'Joueur par joueur','Antes de agregar el plantel real, borrá los datos de demostración desde Ajustes.':'Avant de charger l’effectif réel, supprimez les données de démonstration depuis Réglages.','Cómo quedaría la plantilla con los objetivos en acuerdo o negociación (punteados).':'Effectif projeté avec les cibles en accord ou négociation (pointillés).'
 };
-let lang='es', TF='all';
+Object.assign(FR,{'Cancha':'Terrain','Cuerpo técnico':'Staff technique','Equipo en cancha':'Équipe sur le terrain','Bajo contrato en':'Sous contrat en','En negociación':'En négociation','Deseado':'Souhaité','Llega':'Arrive','Último año':'Dernière année','Banquillo · cuerpo técnico':'Banc · staff technique','Foto':'Photo','Quitar foto':'Retirer la photo','Rol':'Rôle','Nuevo miembro del staff':'Nouveau membre du staff','Entrenador principal':'Entraîneur principal','Entrenador adjunto':'Entraîneur adjoint','Preparador físico':'Préparateur physique','Entrenador de arqueros':'Entraîneur des gardiens','Fisioterapeuta':'Kinésithérapeute','Médico':'Médecin','Analista de video':'Analyste vidéo','Director deportivo':'Directeur sportif','Team manager':'Team manager','Otro rol':'Autre','Fecha de fin estimada (a confirmar)':'Date de fin estimée (à confirmer)','Contratos del cuerpo técnico':'Contrats du staff technique','Jugadores':'Joueurs','Staff':'Staff','Sin miembros del staff cargados.':'Aucun membre du staff chargé.','Temporada en cancha':'Saison affichée','Solo se muestra un equipo por vez: elegí Masculino o Femenino arriba.':'Un seul effectif à la fois : choisissez Masculin ou Féminin en haut.','Posible':'Possible','Arquero':'Gardien','Plantel y objetivos ubicados por puesto. Cambiá la temporada para ver quién queda bajo contrato, quién llega y a quién se está siguiendo.':'Effectif et cibles placés par poste. Changez de saison pour voir qui reste sous contrat, qui arrive et qui est suivi.'});
+const ROLES=['Entrenador principal','Entrenador adjunto','Preparador físico','Entrenador de arqueros','Fisioterapeuta','Médico','Analista de video','Director deportivo','Team manager','Otro rol'];
+let lang='es', TF='all', courtSeason=null;
 try{const p=JSON.parse(localStorage.getItem(LS_PREF)||'{}'); if(p.lang) lang=p.lang; if(p.team) TF=p.team;}catch(e){}
 const t=k=>lang==='fr'?(FR[k]||k):k;
 const POSL={es:{POR:'Arquero',EI:'Extremo izq.',LI:'Lateral izq.',CE:'Central',LD:'Lateral der.',ED:'Extremo der.',PV:'Pivote'}};
@@ -340,6 +368,10 @@ const flag=c=>{c=String(c||'').trim().toUpperCase(); if(!/^[A-Z]{2}$/.test(c)) r
 const initials=p=>((p.nombre||'')[0]||'')+((p.apellido||'')[0]||'');
 const fullName=p=>[p.nombre,p.apellido].filter(Boolean).join(' ')||'—';
 const shortName=p=>((p.nombre||'')[0]?(p.nombre[0]+'. '):'')+(p.apellido||p.nombre||'');
+const avatar=(p,cls,style)=>`<div class="av ${cls||''} ${p.equipo==='F'?'f':''}"${style?' style="'+style+'"':''}>${p.foto?`<img src="${p.foto}" alt="">`:esc(initials(p))}</div>`;
+const staffL=p=>[p.nombre,p.apellido].filter(Boolean).join(' ')||'—';
+const roleL=r=>t(r||'Otro rol');
+const endL=p=>(p.finEstimado?'≈ ':'')+fmtDs(p.contratoFin);
 const monthsClass=m=>m===null?'':m<=8?'crit':m<=14?'warn':'good';
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 const sum=a=>a.reduce((x,y)=>x+y,0);
@@ -353,15 +385,17 @@ const ICONS={panel:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height=
  salarios:'<svg viewBox="0 0 24 24"><path d="M4 19h16M6 16V9M11 16V5M16 16v-7"/></svg>',
  agenda:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
  ajustes:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'};
-const NAV=[['panel','Panel'],['plantel','Plantel'],['contratos','Contratos'],['planificacion','Planificación'],['reclutamiento','Reclutamiento'],['salarios','Masa salarial'],['agenda','Agenda'],['ajustes','Ajustes']];
+const NAV=[['panel','Panel'],['cancha','Cancha'],['plantel','Plantel'],['staff','Cuerpo técnico'],['contratos','Contratos'],['planificacion','Planificación'],['reclutamiento','Reclutamiento'],['salarios','Masa salarial'],['agenda','Agenda'],['ajustes','Ajustes']];
 
 /* ---------- store ---------- */
+ICONS.cancha='<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="3"/></svg>';
+ICONS.staff='<svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/><path d="M16 3.5a3.5 3.5 0 0 1 0 7"/></svg>';
 const defaultSettings=()=>({presupuesto:{},moneda:'EUR'});
 const store={
   mode:'local', db:null, user:null, canWrite:true, ready:false, stale:false,
-  data:{players:[],targets:[],tasks:[],settings:defaultSettings(),activity:[]},
+  data:{players:[],targets:[],tasks:[],staff:[],settings:defaultSettings(),activity:[]},
   persistLocal(){ try{localStorage.setItem(LS_KEY,JSON.stringify(this.data));}catch(e){} },
-  loadLocal(){ try{const raw=localStorage.getItem(LS_KEY); if(raw){const d=JSON.parse(raw); this.data={players:d.players||[],targets:d.targets||[],tasks:d.tasks||[],settings:Object.assign(defaultSettings(),d.settings||{}),activity:d.activity||[]};}}catch(e){} },
+  loadLocal(){ try{const raw=localStorage.getItem(LS_KEY); if(raw){const d=JSON.parse(raw); Object.assign(this.data,{players:d.players||[],targets:d.targets||[],tasks:d.tasks||[],staff:d.staff||[],settings:Object.assign(defaultSettings(),d.settings||{}),activity:d.activity||[]});}}catch(e){} },
   async init(){
     render();
     let db=null, user=null;
@@ -375,6 +409,7 @@ const store={
       db.collection('players').onSnapshot(s=>{ this.data.players=s.docs.map(d=>d.data()); got(); },onErr);
       db.collection('targets').onSnapshot(s=>{ this.data.targets=s.docs.map(d=>d.data()); got(); },onErr);
       db.collection('tasks').onSnapshot(s=>{ this.data.tasks=s.docs.map(d=>d.data()); got(); },onErr);
+      db.collection('staff').onSnapshot(s=>{ this.data.staff=s.docs.map(d=>d.data()); got(); },onErr);
       db.doc('settings/config').onSnapshot(s=>{ this.data.settings=Object.assign(defaultSettings(),s.exists?s.data():{}); got(); },onErr);
       db.doc('meta/activity').onSnapshot(s=>{ this.data.activity=(s.exists&&s.data().items)||[]; got(); },onErr);
     } else {
@@ -402,7 +437,9 @@ const players=()=>byTeam(D.players);
 const targets=()=>byTeam(D.targets);
 const inSquad=p=>p.estado!=='futuro';
 const budget=(y,team)=>Number(((D.settings.presupuesto||{})[seasonLabel(y)]||{})[team])||0;
-const committed=(y,team)=>sum(D.players.filter(p=>p.equipo===team&&covers(p,y)).map(p=>seasonCost(p,y)));
+const committedPlayers=(y,team)=>sum(D.players.filter(p=>p.equipo===team&&covers(p,y)).map(p=>seasonCost(p,y)));
+const committedStaff=(y,team)=>sum(D.staff.filter(p=>p.equipo===team&&covers(p,y)).map(p=>seasonCost(p,y)));
+const committed=(y,team)=>committedPlayers(y,team)+committedStaff(y,team);
 const activeTargets=()=>targets().filter(x=>!['fichado','descartado'].includes(x.etapa));
 function teamsToShow(){ return TF==='all'?['M','F']:[TF]; }
 const teamL=e=>e==='F'?t('Femenino'):t('Masculino');
@@ -414,6 +451,7 @@ function alerts(){
     if(p.estado==='renovando') out.push({sev:'warn',t:fullName(p),s:`${t('Renovación en curso')} · ${t('Vence')} ${fmtDs(p.contratoFin)}`,when:p.contratoFin,act:'open-player',id:p.id});
     if(p.opcion&&p.opcionFecha){const d=daysUntil(p.opcionFecha); if(d!==null&&d<=90) out.push({sev:d<0?'crit':'serious',t:fullName(p),s:`${t('Opción a ejercer antes del')} ${fmtDs(p.opcionFecha)} (${stL(p.estado)})`,when:p.opcionFecha,act:'open-player',id:p.id});}
   }
+  for(const p of byTeam(D.staff)){ const m=monthsUntil(p.contratoFin); if(m!==null&&m<=8) out.push({sev:m<=4?'crit':'warn',t:staffL(p),s:`${roleL(p.rol)} · ${t('vence en')} ${m} ${t('meses')} (${endL(p)})`,when:p.contratoFin,act:'open-staff',id:p.id}); }
   for(const x of activeTargets()){ const d=daysUntil(x.proximoPaso); if(d!==null&&d<0) out.push({sev:'serious',t:fullName(x),s:`${t('Seguimiento vencido')} · ${esc(x.proximoPasoTexto||stgL(x.etapa))}`,when:x.proximoPaso,act:'open-target',id:x.id}); }
   for(const k of D.tasks){ const d=daysUntil(k.fecha); if(!k.hecho&&d!==null&&d<0) out.push({sev:'serious',t:k.titulo,s:t('Tarea vencida'),when:k.fecha,act:'go',id:'agenda'}); }
   for(const team of teamsToShow()) for(const y of seasons(2,CUR+1)) for(const pos of POS){
@@ -517,13 +555,13 @@ VIEWS.plantel=()=>{
   const sorters={fin:(a,b)=>String(a.contratoFin||'9').localeCompare(String(b.contratoFin||'9')),nombre:(a,b)=>fullName(a).localeCompare(fullName(b)),salario:(a,b)=>(b.salarioMensual||0)-(a.salarioMensual||0),edad:(a,b)=>String(a.nacimiento||'').localeCompare(String(b.nacimiento||'')),puesto:(a,b)=>POS.indexOf(a.posicion)-POS.indexOf(b.posicion)||String(a.contratoFin||'').localeCompare(String(b.contratoFin||''))};
   ps=[...ps].sort(sorters[plantelF.sort]||sorters.fin);
   const rows=ps.map(p=>`<tr class="row" data-action="open-player" data-id="${p.id}">
-    <td><div class="who"><div class="av ${p.equipo==='F'?'f':''}">${esc(initials(p))}</div><div><div class="name">${esc(fullName(p))} ${p.demo?'<span class="mini">·'+t('Demo')+'</span>':''}</div><div class="meta">${teamTag(p.equipo)} ${p.dorsal?'#'+esc(p.dorsal)+' · ':''}${p.categoria==='formacion'?t('Formación'):t('Profesional')}</div></div></div></td>
+    <td><div class="who">${avatar(p,'')}<div><div class="name">${esc(fullName(p))} ${p.demo?'<span class="mini">·'+t('Demo')+'</span>':''}</div><div class="meta">${teamTag(p.equipo)} ${p.dorsal?'#'+esc(p.dorsal)+' · ':''}${p.categoria==='formacion'?t('Formación'):t('Profesional')}</div></div></div></td>
     <td>${esc(posL(p.posicion))}${p.posicion2?`<div class="mini">${esc(posL(p.posicion2))}</div>`:''}</td>
     <td class="num">${age(p.nacimiento)??'—'}</td>
     <td>${flag(p.nacionalidad)} ${esc(p.nacionalidad||'')}</td>
     <td>${p.mano==='I'?t('Zurdo'):p.mano==='A'?t('Ambidiestro'):t('Diestro')}</td>
     <td class="num">${p.altura?p.altura+' cm':'—'}</td>
-    <td class="num">${fmtDs(p.contratoFin)}</td>
+    <td class="num">${endL(p)}</td>
     <td>${monthsHtml(p)}</td>
     <td class="r">${p.salarioMensual?fmtEUR(p.salarioMensual):'—'}</td>
     <td>${statusPill(p.estado)}</td>
@@ -547,11 +585,16 @@ VIEWS.contratos=()=>{
   const rows=ps.map(p=>{ const ci=parseD(p.contratoInicio)||sStart(CUR), cf=parseD(p.contratoFin); const l=pct(ci), r=pct(cf); const w=Math.max(0.4,r-l);
     let opt=''; if(p.opcion&&Number(p.opcionAnios)>0){ const oe=new Date(cf); oe.setFullYear(oe.getFullYear()+Number(p.opcionAnios)); const ol=pct(cf), orr=pct(oe); if(orr>ol) opt=`<div class="opt" style="left:${ol.toFixed(2)}%;width:${(orr-ol).toFixed(2)}%" data-tip="${esc(t('Opción')+' '+t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua')+' +'+p.opcionAnios)}"></div>`; }
     const m=monthsUntil(p.contratoFin);
-    return `<div class="gr" data-action="open-player" data-id="${p.id}"><div class="who" style="padding:4px 8px"><div class="av ${p.equipo==='F'?'f':''}">${esc(initials(p))}</div><div style="min-width:0"><div class="name" style="overflow:hidden;text-overflow:ellipsis">${esc(fullName(p))}</div><div class="meta">${teamTag(p.equipo)} ${esc(posL(p.posicion))} · ${p.salarioMensual?fmtK(p.salarioMensual*12):'—'}</div></div></div>
-    <div class="track">${w>0?`<div class="bar ${p.estado}" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%" data-tip="${esc(fullName(p)+'\n'+fmtDs(p.contratoInicio)+' → '+fmtDs(p.contratoFin)+'\n'+stL(p.estado)+(m!==null?' · '+m+' '+t('meses'):''))}">${fmtDs(p.contratoFin)}</div>`:''}${opt}<div class="now" style="left:${pct(today).toFixed(2)}%"></div></div></div>`; }).join('');
-  const table=ps.map(p=>`<tr class="row" data-action="open-player" data-id="${p.id}"><td class="name">${esc(fullName(p))} ${teamTag(p.equipo)}</td><td>${esc(posL(p.posicion))}</td><td class="num">${fmtDs(p.contratoInicio)}</td><td class="num">${fmtDs(p.contratoFin)}</td><td>${monthsHtml(p)}</td><td class="r">${p.salarioMensual?fmtEUR(p.salarioMensual):'—'}</td><td class="r">${p.salarioMensual?fmtK(p.salarioMensual*12):'—'}</td><td>${p.opcion?esc(t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua'))+' +'+(p.opcionAnios||1)+(p.opcionFecha?' · '+fmtDs(p.opcionFecha):''):'—'}</td><td>${statusPill(p.estado)}</td><td class="mini">${esc(p.agente||'—')}</td></tr>`).join('');
-  return `<div class="vhead"><div><h1>${t('Contratos')}</h1><div class="sub">${ps.length} ${t('Contratos').toLowerCase()} · ${seasonLabel(CUR)} → ${seasonLabel(CUR+n-1)}</div></div></div>
-  <div class="card glass"><h2>${t('Línea de tiempo de contratos')}</h2><div class="tscroll"><div class="gantt"><div class="gh"><div></div><div class="seasons">${seasons(n).map(y=>`<div>${seasonLabel(y)}</div>`).join('')}</div></div>${rows}</div></div>
+    return `<div class="gr" data-action="open-player" data-id="${p.id}"><div class="who" style="padding:4px 8px">${avatar(p,'')}<div style="min-width:0"><div class="name" style="overflow:hidden;text-overflow:ellipsis">${esc(fullName(p))}</div><div class="meta">${teamTag(p.equipo)} ${esc(posL(p.posicion))} · ${p.salarioMensual?fmtK(p.salarioMensual*12):'—'}</div></div></div>
+    <div class="track">${w>0?`<div class="bar ${p.estado}" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%" data-tip="${esc(fullName(p)+'\n'+fmtDs(p.contratoInicio)+' → '+endL(p)+'\n'+stL(p.estado)+(m!==null?' · '+m+' '+t('meses'):''))}">${endL(p)}</div>`:''}${opt}<div class="now" style="left:${pct(today).toFixed(2)}%"></div></div></div>`; }).join('');
+  const table=ps.map(p=>`<tr class="row" data-action="open-player" data-id="${p.id}"><td class="name">${esc(fullName(p))} ${teamTag(p.equipo)}</td><td>${esc(posL(p.posicion))}</td><td class="num">${fmtDs(p.contratoInicio)}</td><td class="num">${endL(p)}</td><td>${monthsHtml(p)}</td><td class="r">${p.salarioMensual?fmtEUR(p.salarioMensual):'—'}</td><td class="r">${p.salarioMensual?fmtK(p.salarioMensual*12):'—'}</td><td>${p.opcion?esc(t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua'))+' +'+(p.opcionAnios||1)+(p.opcionFecha?' · '+fmtDs(p.opcionFecha):''):'—'}</td><td>${statusPill(p.estado)}</td><td class="mini">${esc(p.agente||'—')}</td></tr>`).join('');
+  const st=[...byTeam(D.staff)].filter(p=>p.contratoFin).sort((a,b)=>String(a.contratoFin).localeCompare(String(b.contratoFin)));
+  const srows=st.map(p=>{ const ci=parseD(p.contratoInicio)||sStart(CUR), cf=parseD(p.contratoFin); const l=pct(ci), r=pct(cf); const w=Math.max(0.4,r-l); const m=monthsUntil(p.contratoFin);
+    return `<div class="gr" data-action="open-staff" data-id="${p.id}"><div class="who" style="padding:4px 8px">${avatar(p,'')}<div style="min-width:0"><div class="name" style="overflow:hidden;text-overflow:ellipsis">${esc(staffL(p))}</div><div class="meta">${teamTag(p.equipo)} ${esc(roleL(p.rol))}</div></div></div>
+    <div class="track">${w>0?`<div class="bar ${p.finEstimado?'cedido':'activo'}" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%" data-tip="${esc(staffL(p)+'\n'+fmtDs(p.contratoInicio)+' → '+endL(p)+(m!==null?' · '+m+' '+t('meses'):''))}">${endL(p)}</div>`:''}<div class="now" style="left:${pct(today).toFixed(2)}%"></div></div></div>`; }).join('');
+  return `<div class="vhead"><div><h1>${t('Contratos')}</h1><div class="sub">${ps.length} ${t('Jugadores').toLowerCase()} · ${st.length} ${t('Staff').toLowerCase()} · ${seasonLabel(CUR)} → ${seasonLabel(CUR+n-1)}</div></div></div>
+  ${st.length?`<div class="card glass"><h2>${t('Contratos del cuerpo técnico')}</h2><div class="tscroll"><div class="gantt"><div class="gh"><div></div><div class="seasons">${seasons(n).map(y=>`<div>${seasonLabel(y)}</div>`).join('')}</div></div>${srows}</div></div></div>`:''}
+  <div class="card glass"><h2>${t('Línea de tiempo de contratos')} · ${t('Jugadores')}</h2><div class="tscroll"><div class="gantt"><div class="gh"><div></div><div class="seasons">${seasons(n).map(y=>`<div>${seasonLabel(y)}</div>`).join('')}</div></div>${rows}</div></div>
   <div class="legend">${STATUS.map(s=>`<span><i class="dot ${STC[s]}"></i>${esc(stL(s))}</span>`).join('')}<span><i class="dot" style="background:transparent;border:2px dashed var(--accent)"></i>${t('Opción')}</span><span><i class="dot" style="background:var(--accent2)"></i>${t('Hoy')}</span></div></div>
   <div class="card glass tight"><h2 style="padding:4px 8px 0">${t('Tabla de contratos')}</h2><div class="tscroll"><table class="tbl"><thead><tr><th>${t('Jugador')}</th><th>${t('Puesto')}</th><th>${t('Inicio')}</th><th>${t('Fin')}</th><th>${t('Meses')}</th><th class="r">${t('Salario/mes')}</th><th class="r">${t('Salario anual')}</th><th>${t('Opción')}</th><th>${t('Estado')}</th><th>${t('Agente')}</th></tr></thead><tbody>${table}</tbody></table></div></div>`;
 };
@@ -580,18 +623,18 @@ VIEWS.reclutamiento=()=>{
   const ts=targets();
   const cols=STAGES.map(st=>{ const items=ts.filter(x=>x.etapa===st).sort((a,b)=>PRIO.indexOf(a.prioridad||'media')-PRIO.indexOf(b.prioridad||'media'));
     return `<div class="kcol" data-stage="${st}"><h3><i class="dot ${st==='acuerdo'||st==='fichado'?'good':st==='negociacion'?'warn':st==='descartado'?'neutral':'accent'}"></i>${esc(stgL(st))}<span class="n">${items.length}</span></h3>
-    ${items.map(x=>`<div class="kcard glass" draggable="${store.canWrite?'true':'false'}" data-action="open-target" data-id="${x.id}"><div class="kn"><i class="prio ${x.prioridad||'media'}" title="${esc(t(PRL[x.prioridad]||'Media'))}"></i>${esc(fullName(x))} ${teamTag(x.equipo)}</div><div class="ks">${esc(posL(x.posicion))}${x.mano==='I'?' · '+t('Zurdo'):''} · ${age(x.nacimiento)??'—'} ${t('años')} · ${flag(x.nacionalidad)}</div><div class="ks">${esc(x.clubActual||'—')}${x.finContrato?' · '+t('Vence')+' '+fmtDs(x.finContrato):''}</div><div class="kr">${x.costoTraspaso?`<span class="pill soft">${fmtK(x.costoTraspaso)}</span>`:''}${x.salarioPedido?`<span class="pill soft">${fmtEUR(x.salarioPedido)}/${t('meses').slice(0,3)}</span>`:''}${x.proximoPaso?`<span class="mini ${daysUntil(x.proximoPaso)<0?'months crit':''}">→ ${fmtDs(x.proximoPaso)}</span>`:''}</div></div>`).join('')}</div>`; }).join('');
+    ${items.map(x=>`<div class="kcard glass" draggable="${store.canWrite?'true':'false'}" data-action="open-target" data-id="${x.id}"><div class="kn">${x.foto?`<img src="${x.foto}" alt="" style="width:26px;height:26px;border-radius:8px;object-fit:cover;object-position:top">`:''}<i class="prio ${x.prioridad||'media'}" title="${esc(t(PRL[x.prioridad]||'Media'))}"></i>${esc(fullName(x))} ${teamTag(x.equipo)}</div><div class="ks">${esc(posL(x.posicion))}${x.mano==='I'?' · '+t('Zurdo'):''} · ${age(x.nacimiento)??'—'} ${t('años')} · ${flag(x.nacionalidad)}</div><div class="ks">${esc(x.clubActual||'—')}${x.finContrato?' · '+t('Vence')+' '+fmtDs(x.finContrato):''}</div><div class="kr">${x.costoTraspaso?`<span class="pill soft">${fmtK(x.costoTraspaso)}</span>`:''}${x.salarioPedido?`<span class="pill soft">${fmtEUR(x.salarioPedido)}/${t('meses').slice(0,3)}</span>`:''}${x.proximoPaso?`<span class="mini ${daysUntil(x.proximoPaso)<0?'months crit':''}">→ ${fmtDs(x.proximoPaso)}</span>`:''}</div></div>`).join('')}</div>`; }).join('');
   const future=players().filter(p=>p.estado==='futuro').sort((a,b)=>String(a.contratoInicio).localeCompare(String(b.contratoInicio)));
   return `<div class="vhead"><div><h1>${t('Reclutamiento')}</h1><div class="sub">${activeTargets().length} ${t('Objetivos activos').toLowerCase()}</div></div><div class="actions">${store.canWrite?`<button class="btn primary" data-action="new-target">${t('Nuevo objetivo')}</button>`:''}</div></div>
   ${ts.length?`<div class="kanban">${cols}</div>`:`<div class="card glass empty"><h2>${t('Todavía no hay objetivos en el pipeline.')}</h2>${store.canWrite?`<button class="btn primary" data-action="new-target">${t('Nuevo objetivo')}</button>`:''}</div>`}
-  <div class="card glass"><h2>${t('Fichados para próximas temporadas')}</h2>${future.length?`<div class="list">${future.map(p=>`<div class="it" data-action="open-player" data-id="${p.id}" style="cursor:pointer"><div class="av ${p.equipo==='F'?'f':''}">${esc(initials(p))}</div><div class="t"><div class="name">${esc(fullName(p))} ${teamTag(p.equipo)}</div><div class="s">${esc(posL(p.posicion))} · ${t('Llega en')} ${seasonLabel(seasonStartYear(parseD(p.contratoInicio)||today))}${p.clubOrigen?' '+t('desde')+' '+esc(p.clubOrigen):''} · ${t('Vence')} ${fmtDs(p.contratoFin)}</div></div><div class="when">${p.salarioMensual?fmtEUR(p.salarioMensual)+'/m':''}</div></div>`).join('')}</div>`:`<p class="mini">—</p>`}</div>`;
+  <div class="card glass"><h2>${t('Fichados para próximas temporadas')}</h2>${future.length?`<div class="list">${future.map(p=>`<div class="it" data-action="open-player" data-id="${p.id}" style="cursor:pointer">${avatar(p,'')}<div class="t"><div class="name">${esc(fullName(p))} ${teamTag(p.equipo)}</div><div class="s">${esc(posL(p.posicion))} · ${t('Llega en')} ${seasonLabel(seasonStartYear(parseD(p.contratoInicio)||today))}${p.clubOrigen?' '+t('desde')+' '+esc(p.clubOrigen):''} · ${t('Vence')} ${fmtDs(p.contratoFin)}</div></div><div class="when">${p.salarioMensual?fmtEUR(p.salarioMensual)+'/m':''}</div></div>`).join('')}</div>`:`<p class="mini">—</p>`}</div>`;
 };
 
 VIEWS.salarios=()=>{
   if(!D.players.length) return emptyState();
   const ys=seasons(5); const ts=teamsToShow();
-  const block=team=>{ const rows=ys.map(y=>{ const b=budget(y,team), c=committed(y,team), n=D.players.filter(p=>p.equipo===team&&covers(p,y)).length; const pct=b?Math.round(c/b*100):0;
-      return `<tr><td class="name">${seasonLabel(y)}</td><td class="r">${b?fmtEUR(b):'—'}</td><td class="r">${fmtEUR(c)}</td><td class="num">${n}</td><td style="min-width:160px">${b?`<div class="mini">${pct}%</div>${meterHtml(pct)}`:'—'}</td><td class="r ${b&&b-c<0?'months crit':''}">${b?fmtEUR(b-c):'—'}</td></tr>`; }).join('');
+  const block=team=>{ const rows=ys.map(y=>{ const b=budget(y,team), c=committed(y,team), cs=committedStaff(y,team), n=D.players.filter(p=>p.equipo===team&&covers(p,y)).length; const pct=b?Math.round(c/b*100):0;
+      return `<tr><td class="name">${seasonLabel(y)}</td><td class="r">${b?fmtEUR(b):'—'}</td><td class="r">${fmtEUR(c)}${cs?`<div class="mini">${t('Staff')} ${fmtK(cs)}</div>`:''}</td><td class="num">${n}</td><td style="min-width:160px">${b?`<div class="mini">${pct}%</div>${meterHtml(pct)}`:'—'}</td><td class="r ${b&&b-c<0?'months crit':''}">${b?fmtEUR(b-c):'—'}</td></tr>`; }).join('');
     const posItems=POS.map(pos=>({label:posL(pos),value:sum(D.players.filter(p=>p.equipo===team&&p.posicion===pos&&covers(p,CUR)).map(p=>seasonCost(p,CUR)))}));
     const top=[...D.players.filter(p=>p.equipo===team&&inSquad(p))].sort((a,b)=>(b.salarioMensual||0)-(a.salarioMensual||0)).slice(0,8);
     return `<div class="card glass"><h2>${teamL(team)}</h2><div class="tscroll"><table class="tbl" style="min-width:600px"><thead><tr><th>${t('Temporada')}</th><th class="r">${t('Presupuesto')}</th><th class="r">${t('Comprometido')}</th><th>${t('Jugadores')}</th><th>${t('Uso')}</th><th class="r">${t('Margen')}</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -606,6 +649,7 @@ VIEWS.agenda=()=>{
   const items=[];
   for(const p of players()){ if(p.contratoFin&&inSquad(p)) items.push({d:p.contratoFin,k:'Vencimiento de contrato',t:fullName(p),s:`${posL(p.posicion)} · ${stL(p.estado)}`,act:'open-player',id:p.id,sev:STC[p.estado]});
     if(p.opcion&&p.opcionFecha) items.push({d:p.opcionFecha,k:'Límite de opción',t:fullName(p),s:t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua')+' +'+(p.opcionAnios||1),act:'open-player',id:p.id,sev:'serious'}); }
+  for(const p of byTeam(D.staff)) if(p.contratoFin) items.push({d:p.contratoFin,k:'Vencimiento de contrato',t:staffL(p),s:`${roleL(p.rol)} · ${t('Cuerpo técnico')}`,act:'open-staff',id:p.id,sev:'accent'});
   for(const x of activeTargets()) if(x.proximoPaso) items.push({d:x.proximoPaso,k:'Seguimiento de objetivo',t:fullName(x),s:x.proximoPasoTexto||stgL(x.etapa),act:'open-target',id:x.id,sev:'accent'});
   for(const k of D.tasks) items.push({d:k.fecha,k:'Tarea',t:k.titulo,s:t(TTL[k.tipo]||'Otro'),task:k,sev:k.hecho?'neutral':'warn'});
   items.sort((a,b)=>String(a.d).localeCompare(String(b.d)));
@@ -630,10 +674,75 @@ VIEWS.ajustes=()=>{
     ${D.players.some(p=>p.demo)||D.targets.some(p=>p.demo)?`<button class="btn danger" data-action="clear-demo" data-confirm="1">${t('Borrar datos de demostración')}</button>`:''}
     <button class="btn danger" data-action="clear-all" data-confirm="1">${t('Borrar todos los datos')}</button>`:''}
   </div><p class="mini" style="margin-top:10px">${D.players.some(p=>p.demo)?t('Antes de agregar el plantel real, borrá los datos de demostración desde Ajustes.'):''}</p></div>
-  <div class="card glass"><h2>${t('Conexión')}</h2><p>${store.mode==='db'?t('Base compartida en la nube: todos los dirigentes ven los mismos datos.'):t('Modo local: los datos se guardan solo en este navegador.')}</p>${store.canWrite?'':`<p class="ro">${t('Solo lectura: tu acceso no permite modificar datos.')}</p>`}<p class="mini" style="margin-top:8px">${D.players.length} ${t('Jugadores').toLowerCase()} · ${D.targets.length} ${t('Objetivo').toLowerCase()}s · ${D.tasks.length} ${t('Tarea').toLowerCase()}s</p></div>
+  <div class="card glass"><h2>${t('Conexión')}</h2><p>${store.mode==='db'?t('Base compartida en la nube: todos los dirigentes ven los mismos datos.'):t('Modo local: los datos se guardan solo en este navegador.')}</p>${store.canWrite?'':`<p class="ro">${t('Solo lectura: tu acceso no permite modificar datos.')}</p>`}<p class="mini" style="margin-top:8px">${D.players.length} ${t('Jugadores').toLowerCase()} · ${D.staff.length} ${t('Staff').toLowerCase()} · ${D.targets.length} ${t('Objetivo').toLowerCase()}s · ${D.tasks.length} ${t('Tarea').toLowerCase()}s</p></div>
   <div class="card glass"><h2>${t('Idioma')}</h2><div class="seg"><button data-action="lang" data-id="es" class="${lang==='es'?'on':''}">Español</button><button data-action="lang" data-id="fr" class="${lang==='fr'?'on':''}">Français</button></div></div>
   </div>`;
 };
+
+/* ---------- court ---------- */
+const ZONES={POR:{x:50,y:8,w:30},EI:{x:11,y:44,w:20},LI:{x:28,y:65,w:24},CE:{x:50,y:78,w:26},LD:{x:72,y:65,w:24},ED:{x:89,y:44,w:20},PV:{x:50,y:44,w:30}};
+function courtSvg(){ /* half court, 20 m wide × ~21 m deep: goal at top */
+  const sx=x=>x*5, sy=y=>y*(100/21); // percent units
+  const arc=(r)=>{ // 6 m / 9 m line: quarter arcs around posts (x=8.5 & 11.5, y=0) joined by a straight segment
+    const a=sx(8.5-r), b=sx(11.5+r), yy=sy(r); return `M ${a} 0 A ${sx(r)} ${yy} 0 0 0 ${sx(8.5)} ${yy} L ${sx(11.5)} ${yy} A ${sx(r)} ${yy} 0 0 0 ${b} 0`; };
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <rect x="0" y="0" width="100" height="100" fill="none"/>
+  <path d="${arc(6)}" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.9)" stroke-width=".6" vector-effect="non-scaling-stroke"/>
+  <path d="${arc(9)}" fill="none" stroke="rgba(255,255,255,.75)" stroke-width=".5" stroke-dasharray="2 1.4" vector-effect="non-scaling-stroke"/>
+  <line x1="${sx(9.5)}" y1="${sy(7)}" x2="${sx(10.5)}" y2="${sy(7)}" stroke="#fff" stroke-width=".6" vector-effect="non-scaling-stroke"/>
+  <line x1="${sx(8.5)}" y1="0" x2="${sx(11.5)}" y2="0" stroke="#fff" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+  <line x1="${sx(9.25)}" y1="${sy(4)}" x2="${sx(10.75)}" y2="${sy(4)}" stroke="#fff" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+  <line x1="0" y1="${sy(20)}" x2="100" y2="${sy(20)}" stroke="rgba(255,255,255,.8)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+  <circle cx="50" cy="${sy(20)}" r="1" fill="#fff"/>
+  <rect x="0.3" y="0.3" width="99.4" height="99.4" fill="none" stroke="rgba(255,255,255,.7)" stroke-width=".5" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function pcard(e){ return `<div class="pcard ${e.cls}" data-action="${e.act}" data-id="${e.id}" data-tip="${esc(e.tip)}"><div class="ph">${e.foto?`<img src="${e.foto}" alt="">`:esc(e.ini)}</div><div class="pn">${esc(e.name)}</div>${e.badge?`<div class="pb">${esc(e.badge)}</div>`:''}</div>`; }
+VIEWS.cancha=()=>{
+  const team=TF==='F'?'F':'M'; const y=courtSeason??CUR;
+  const avail=x=>{const d=parseD(x.finContrato); return d?seasonStartYear(d)+1:CUR+1;};
+  const ents=pos=>{ const out=[];
+    for(const p of D.players.filter(p=>p.equipo===team&&p.posicion===pos&&covers(p,y))){ const last=parseD(p.contratoFin)&&seasonStartYear(parseD(p.contratoFin))===y; const arriving=p.estado==='futuro'&&parseD(p.contratoInicio)&&seasonStartYear(parseD(p.contratoInicio))===y;
+      const cls=arriving?'good':p.estado==='saliendo'&&last?'crit':p.estado==='renovando'?'warn':p.estado==='cedido'?'neutral':'';
+      out.push({cls,act:'open-player',id:p.id,foto:p.foto,ini:initials(p),name:shortName(p),badge:arriving?t('Llega'):last?(p.finEstimado?'≈ ':'')+t('Último año'):p.estado==='renovando'?t('Renovación en curso'):p.estado==='cedido'?t('Cedido'):'',tip:fullName(p)+'\n'+stL(p.estado)+' · '+t('Vence')+' '+endL(p)}); }
+    for(const x of D.targets.filter(x=>x.equipo===team&&x.posicion===pos&&y>=avail(x)&&y<=avail(x)+2)){ if(x.etapa==='fichado'||x.etapa==='descartado') continue; const neg=x.etapa==='negociacion'||x.etapa==='acuerdo';
+      out.push({cls:neg?'dashed':'dotted',act:'open-target',id:x.id,foto:x.foto,ini:initials(x),name:shortName(x),badge:neg?stgL(x.etapa):t('Deseado'),tip:fullName(x)+'\n'+stgL(x.etapa)+(x.clubActual?' · '+x.clubActual:'')+(x.finContrato?' · '+t('Vence')+' '+fmtDs(x.finContrato):'')}); }
+    return out; };
+  const zones=POS.map(pos=>{ const z=ZONES[pos]; const es=ents(pos); const n=es.filter(e=>!e.cls.includes('dashed')&&!e.cls.includes('dotted')).length;
+    return `<div class="zone" style="left:${z.x}%;top:${z.y}%;width:${z.w}%"><div class="zl">${esc(posL(pos))}<b>${n}</b></div><div class="zc">${es.map(pcard).join('')}</div></div>`; }).join('');
+  const staff=D.staff.filter(p=>p.equipo===team&&(covers(p,y)||!p.contratoFin));
+  const under=D.players.filter(p=>p.equipo===team&&covers(p,y)).length;
+  return `<div class="vhead"><div><h1>${t('Cancha')} · ${teamL(team)}</h1><div class="sub">${t('Plantel y objetivos ubicados por puesto. Cambiá la temporada para ver quién queda bajo contrato, quién llega y a quién se está siguiendo.')}</div></div>
+  <div class="actions"><span class="mini">${t('Temporada en cancha')}</span><div class="seg">${seasons(5).map(s=>`<button data-action="court-season" data-id="${s}" class="${s===y?'on':''}">${seasonLabel(s)}</button>`).join('')}</div></div></div>
+  ${TF==='all'?`<div class="banner info">${t('Solo se muestra un equipo por vez: elegí Masculino o Femenino arriba.')} · ${t('Masculino')}</div>`:''}
+  <div class="court-wrap"><div class="court">${courtSvg()}${zones}</div>
+  <div class="court-legend"><span><i></i>${t('Bajo contrato en')} ${seasonLabel(y)} (${under})</span><span><i style="border-color:#5fe37a"></i>${t('Llega')}</span><span><i style="border-color:var(--warn)"></i>${t('Renovación en curso')}</span><span><i style="border-color:#ff6b6b"></i>${t('Último año')}</span><span><i style="border-style:dashed;border-color:#e0a800"></i>${t('En negociación')} / ${t('Acuerdo')}</span><span><i style="border-style:dotted;border-color:var(--muted)"></i>${t('Deseado')}</span></div>
+  <div class="card glass"><h2>${t('Banquillo · cuerpo técnico')}</h2>${staff.length?`<div class="bench">${staff.map(p=>pcard({cls:'',act:'open-staff',id:p.id,foto:p.foto,ini:initials(p),name:shortName(p),badge:roleL(p.rol),tip:staffL(p)+'\n'+roleL(p.rol)+(p.contratoFin?' · '+t('Vence')+' '+endL(p):'')})).join('')}</div>`:`<p class="mini">${t('Sin miembros del staff cargados.')}</p>`}</div></div>`;
+};
+
+/* ---------- staff ---------- */
+VIEWS.staff=()=>{
+  const st=[...byTeam(D.staff)].sort((a,b)=>ROLES.indexOf(a.rol)-ROLES.indexOf(b.rol)||staffL(a).localeCompare(staffL(b)));
+  const rows=st.map(p=>`<tr class="row" data-action="open-staff" data-id="${p.id}"><td><div class="who">${avatar(p,'')}<div><div class="name">${esc(staffL(p))}</div><div class="meta">${teamTag(p.equipo)} ${flag(p.nacionalidad)} ${esc(p.nacionalidad||'')}</div></div></div></td><td>${esc(roleL(p.rol))}</td><td class="num">${age(p.nacimiento)??'—'}</td><td class="num">${fmtDs(p.contratoInicio)}</td><td class="num">${p.contratoFin?endL(p):'—'}</td><td>${p.contratoFin?monthsHtml(p):'<span class="mini">—</span>'}</td><td class="r">${p.salarioMensual?fmtEUR(p.salarioMensual):'—'}</td><td class="mini">${esc(p.observaciones||'').slice(0,60)}</td></tr>`).join('');
+  return `<div class="vhead"><div><h1>${t('Cuerpo técnico')}</h1><div class="sub">${st.length} ${t('Staff').toLowerCase()}</div></div><div class="actions">${store.canWrite?`<button class="btn primary" data-action="new-staff">${t('Nuevo miembro del staff')}</button>`:''}</div></div>
+  <div class="card glass tight"><div class="tscroll">${st.length?`<table class="tbl"><thead><tr><th>${t('Nombre')}</th><th>${t('Rol')}</th><th>${t('Edad')}</th><th>${t('Inicio')}</th><th>${t('Fin')}</th><th>${t('Meses')}</th><th class="r">${t('Salario/mes')}</th><th>${t('Notas')}</th></tr></thead><tbody>${rows}</tbody></table>`:`<div class="empty"><h2>${t('Sin miembros del staff cargados.')}</h2>${store.canWrite?`<button class="btn primary" data-action="new-staff">${t('Nuevo miembro del staff')}</button>`:''}</div>`}</div></div>`;
+};
+function staffView(s){ const p=D.staff.find(x=>x.id===s.id); if(!p){ closeDrawer(); return ''; } const m=monthsUntil(p.contratoFin);
+  const kv=(k,v,full)=>`<div class="${full?'full':''}"><div class="k">${esc(k)}</div><div class="v">${v||'—'}</div></div>`;
+  return `<div class="ph">${avatar(p,'lg')}<div style="min-width:0"><h2>${esc(staffL(p))}</h2><div class="chips">${teamTag(p.equipo)}<span class="pill soft">${esc(roleL(p.rol))}</span>${age(p.nacimiento)!==null?`<span class="pill soft">${age(p.nacimiento)} ${t('años')}</span>`:''}<span class="pill soft">${flag(p.nacionalidad)} ${esc(p.nacionalidad||'')}</span>${p.demo?`<span class="pill soft">${t('Demo')}</span>`:''}</div></div>${closeBtn()}</div>
+  <div class="kv">${kv(t('Inicio'),fmtD(p.contratoInicio))}${kv(t('Fin'),p.contratoFin?(p.finEstimado?'≈ ':'')+fmtD(p.contratoFin)+(m!==null?` · <span class="months ${monthsClass(m)}">${m} ${t('meses')}</span>`:''):'')}${kv(t('Salario bruto mensual'),p.salarioMensual?fmtEUR(p.salarioMensual):'')}${kv(t('Salario anual'),p.salarioMensual?fmtEUR(p.salarioMensual*12):'')}${kv(t('Teléfono agente'),esc(p.telefono))}${kv(t('Observaciones privadas'),esc(p.observaciones),true)}</div>
+  <h3>${t('Notas')}</h3>${store.canWrite?`<form class="addnote" id="noteForm" data-coll="staff" data-id="${p.id}"><textarea id="noteText" name="texto" placeholder="${t('Escribí una nota de seguimiento…')}" required></textarea><button class="btn primary" type="submit">${t('Agregar nota')}</button></form>`:''}<div class="list">${(p.notas||[]).length?[...p.notas].reverse().map(n=>`<div class="note" style="margin-top:8px"><div class="d">${fmtD(n.f)}</div><div>${esc(n.t)}</div></div>`).join(''):`<p class="mini">${t('Sin notas.')}</p>`}</div>
+  ${store.canWrite?`<div class="fbar"><button class="btn danger" data-action="del-staff" data-id="${p.id}" data-confirm="1">${t('Eliminar')}</button><button class="btn primary" data-action="edit-staff" data-id="${p.id}">${t('Editar')}</button></div>`:''}`;
+}
+function photoField(obj){ return `<div class="f full"><label>${t('Foto')}</label><div class="actions"><div class="av lg" id="photoPreview">${obj.foto?`<img src="${obj.foto}" alt="">`:esc(initials(obj)||'?')}</div><input type="file" accept="image/*" id="in-fotoFile" name="fotoFile" style="width:auto;flex:1">${obj.foto?`<button class="btn sm" type="button" data-action="clear-photo">${t('Quitar foto')}</button>`:''}</div><input type="hidden" id="in-foto" name="foto" value="${esc(obj.foto||'')}"></div>`; }
+function staffForm(s){ const p=D.staff.find(x=>x.id===s.id)||{};
+  return `<div class="ph"><h2>${p.id?t('Editar'):t('Nuevo miembro del staff')}</h2>${closeBtn()}</div>
+  <form class="form" id="staffForm">${p.id?`<input type="hidden" name="id" value="${esc(p.id)}">`:''}
+  <h3>${t('Identidad')}</h3>${f(t('Nombre'),inp('nombre',p.nombre,'text','required'))}${f(t('Apellido'),inp('apellido',p.apellido,'text','required'))}${f(t('Rol'),sel('rol',p.rol||'Entrenador adjunto',ROLES.map(r=>[r,t(r)])))}${f(t('Equipo'),sel('equipo',p.equipo||(TF==='F'?'F':'M'),[['M',t('Masculino')],['F',t('Femenino')]]))}${f(t('Fecha de nacimiento'),inp('nacimiento',p.nacimiento,'date'))}${f(t('Nacionalidad (código)'),inp('nacionalidad',p.nacionalidad,'text','maxlength="2" list="countries3" placeholder="FR"'))}<datalist id="countries3">${COUNTRIES.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('')}</datalist>${photoField(p)}
+  <h3>${t('Contrato')}</h3>${f(t('Inicio'),inp('contratoInicio',p.contratoInicio,'date'))}${f(t('Fin'),inp('contratoFin',p.contratoFin,'date'))}${f(t('Salario bruto mensual')+' (€)',inp('salarioMensual',p.salarioMensual,'number','min="0" step="100"'))}<div class="f"><label>&nbsp;</label><label style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--fg)"><input type="checkbox" id="in-finEstimado" name="finEstimado" ${p.finEstimado?'checked':''} style="width:auto;margin-right:6px">${t('Fecha de fin estimada (a confirmar)')}</label></div>${f(t('Teléfono agente'),inp('telefono',p.telefono,'tel'))}
+  ${f(t('Observaciones privadas'),`<textarea id="in-observaciones" name="observaciones">${esc(p.observaciones)}</textarea>`,true)}
+  <div class="fbar full"><button class="btn" type="button" data-action="${p.id?'open-staff':'close'}" data-id="${esc(p.id||'')}">${t('Cancelar')}</button><button class="btn primary" type="submit">${t('Guardar')}</button></div></form>`;
+}
+function resizeImage(file,w,h){ return new Promise((res,rej)=>{ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; const g=c.getContext('2d'); const r=Math.max(w/img.width,h/img.height); const dw=img.width*r, dh=img.height*r; g.drawImage(img,(w-dw)/2,0,dw,dh); URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg',0.82)); }; img.onerror=rej; img.src=url; }); }
 
 /* ---------- drawer: player / target ---------- */
 const COUNTRIES='FR ES AR DE DK NO SE PT HR SI PL HU BR UA NL IS CH IT RO RU SN NG EG TN MA QA JP KR BE AT CZ SK ME MK RS BA GR TR GB US CA CL UY'.split(' ');
@@ -644,6 +753,7 @@ function openDrawer(st){ drawerState=st; renderDrawer(); $('#drawer').hidden=fal
 function closeDrawer(){ drawerState=null; $('#drawer').hidden=true; document.body.style.overflow=''; }
 function renderDrawer(){ const s=drawerState; if(!s) return; const el=$('#panel');
   if(s.type==='player') el.innerHTML=s.mode==='edit'?playerForm(s):playerView(s);
+  else if(s.type==='staff') el.innerHTML=s.mode==='edit'?staffForm(s):staffView(s);
   else el.innerHTML=s.mode==='edit'?targetForm(s):targetView(s);
   el.scrollTop=0; }
 const closeBtn=()=>`<button class="btn ghost x" data-action="close" aria-label="${t('Cerrar')}">✕</button>`;
@@ -652,11 +762,11 @@ function playerView(s){ const p=D.players.find(x=>x.id===s.id); if(!p){ closeDra
   const kv=(k,v,full)=>`<div class="${full?'full':''}"><div class="k">${esc(k)}</div><div class="v">${v||'—'}</div></div>`;
   let body='';
   if(tab==='ficha') body=`<div class="kv">${kv(t('Equipo'),teamL(p.equipo))}${kv(t('Categoría'),p.categoria==='formacion'?t('Formación'):t('Profesional'))}${kv(t('Posición principal'),posL(p.posicion))}${kv(t('Posición secundaria'),p.posicion2?posL(p.posicion2):'')}${kv(t('Fecha de nacimiento'),p.nacimiento?fmtD(p.nacimiento)+(a!==null?' ('+a+' '+t('años')+')':''):'')}${kv(t('Nac.'),flag(p.nacionalidad)+' '+esc(p.nacionalidad||''))}${kv(t('Mano'),handL(p.mano))}${kv(t('Altura')+' / '+t('Peso'),(p.altura?p.altura+' cm':'—')+' · '+(p.peso?p.peso+' kg':'—'))}${kv(t('Dorsal'),esc(p.dorsal))}${kv(t('Estado'),statusPill(p.estado))}${p.cedidoClub?kv(t('Club donde está cedido'),esc(p.cedidoClub)):''}${p.clubOrigen?kv(t('Club de origen'),esc(p.clubOrigen)):''}${kv(t('Observaciones privadas'),esc(p.observaciones),true)}</div>`;
-  else if(tab==='contrato') body=`<div class="kv">${kv(t('Inicio'),fmtD(p.contratoInicio))}${kv(t('Fin'),fmtD(p.contratoFin)+(m!==null?` · <span class="months ${monthsClass(m)}">${m} ${t('meses')}</span>`:''))}${kv(t('Salario bruto mensual'),p.salarioMensual?fmtEUR(p.salarioMensual):'')}${kv(t('Salario anual'),p.salarioMensual?fmtEUR(p.salarioMensual*12):'')}${kv(t('Opción'),p.opcion?esc(t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua'))+' +'+(p.opcionAnios||1)+' · '+(p.opcionFecha?fmtD(p.opcionFecha):''):t('Sin opción'))}${kv(t('Cláusula de rescisión'),p.clausula?fmtEUR(p.clausula):'')}${kv(t('Valor de mercado'),p.valorMercado?fmtEUR(p.valorMercado):'')}${kv(t('Agente'),esc(p.agente))}${kv(t('Teléfono agente'),esc(p.agenteTel))}</div>
+  else if(tab==='contrato') body=`<div class="kv">${kv(t('Inicio'),fmtD(p.contratoInicio))}${kv(t('Fin'),(p.finEstimado?'≈ ':'')+fmtD(p.contratoFin)+(m!==null?` · <span class="months ${monthsClass(m)}">${m} ${t('meses')}</span>`:''))}${kv(t('Salario bruto mensual'),p.salarioMensual?fmtEUR(p.salarioMensual):'')}${kv(t('Salario anual'),p.salarioMensual?fmtEUR(p.salarioMensual*12):'')}${kv(t('Opción'),p.opcion?esc(t(p.opcion==='club'?'Opción club':p.opcion==='jugador'?'Opción jugador':'Opción mutua'))+' +'+(p.opcionAnios||1)+' · '+(p.opcionFecha?fmtD(p.opcionFecha):''):t('Sin opción'))}${kv(t('Cláusula de rescisión'),p.clausula?fmtEUR(p.clausula):'')}${kv(t('Valor de mercado'),p.valorMercado?fmtEUR(p.valorMercado):'')}${kv(t('Agente'),esc(p.agente))}${kv(t('Teléfono agente'),esc(p.agenteTel))}</div>
     ${store.canWrite&&p.estado!=='futuro'?`<div class="actions" style="margin-top:12px">${p.estado!=='renovando'?`<button class="btn" data-action="set-status" data-id="${p.id}" data-v="renovando">${t('Renovar')}: ${t('Renovación en curso')}</button>`:''}${p.estado!=='saliendo'?`<button class="btn" data-action="set-status" data-id="${p.id}" data-v="saliendo">${t('Sale a fin de contrato')}</button>`:''}${p.estado!=='activo'?`<button class="btn" data-action="set-status" data-id="${p.id}" data-v="activo">${t('Bajo contrato')}</button>`:''}</div>`:''}`;
   else if(tab==='notas') body=`${store.canWrite?`<form class="addnote" id="noteForm" data-coll="players" data-id="${p.id}"><textarea id="noteText" name="texto" placeholder="${t('Escribí una nota de seguimiento…')}" required></textarea><button class="btn primary" type="submit">${t('Agregar nota')}</button></form>`:''}<div class="list">${(p.notas||[]).length?[...p.notas].reverse().map(n=>`<div class="note" style="margin-top:8px"><div class="d">${fmtD(n.f)}</div><div>${esc(n.t)}</div></div>`).join(''):`<p class="mini">${t('Sin notas.')}</p>`}</div>`;
   else body=`${store.canWrite?`<form class="form" id="histForm" data-id="${p.id}">${f(t('Desde'),inp('desde','', 'date'))}${f(t('Hasta'),inp('hasta','','date'))}${f(t('Club'),inp('club',''))}${f(t('Detalle'),inp('detalle','', 'text','placeholder="'+esc(t('Salario/mes')+', '+t('Renovar').toLowerCase()+'…')+'"'))}<div class="full actions"><button class="btn" type="submit">${t('Agregar al historial')}</button></div></form>`:''}<div class="list" style="margin-top:8px">${(p.historial||[]).length?[...p.historial].sort((a,b)=>String(b.desde).localeCompare(String(a.desde))).map(h=>`<div class="it"><div class="t"><div><b>${esc(h.club||'MHB')}</b> ${h.detalle?'· '+esc(h.detalle):''}</div><div class="s">${fmtDs(h.desde)} → ${fmtDs(h.hasta)}</div></div></div>`).join(''):`<p class="mini">${t('Sin historial.')}</p>`}</div>`;
-  return `<div class="ph"><div class="av lg ${p.equipo==='F'?'f':''}">${esc(initials(p))}</div><div style="min-width:0"><h2>${esc(fullName(p))}</h2><div class="chips">${teamTag(p.equipo)}<span class="pill soft">${esc(posL(p.posicion))}</span>${a!==null?`<span class="pill soft">${a} ${t('años')}</span>`:''}<span class="pill soft">${flag(p.nacionalidad)} ${esc(p.nacionalidad||'')}</span><span class="pill soft">${handL(p.mano)}</span>${p.altura?`<span class="pill soft">${p.altura} cm</span>`:''}${p.demo?`<span class="pill soft">${t('Demo')}</span>`:''}</div></div>${closeBtn()}</div>
+  return `<div class="ph">${avatar(p,'lg')}<div style="min-width:0"><h2>${esc(fullName(p))}</h2><div class="chips">${teamTag(p.equipo)}<span class="pill soft">${esc(posL(p.posicion))}</span>${a!==null?`<span class="pill soft">${a} ${t('años')}</span>`:''}<span class="pill soft">${flag(p.nacionalidad)} ${esc(p.nacionalidad||'')}</span><span class="pill soft">${handL(p.mano)}</span>${p.altura?`<span class="pill soft">${p.altura} cm</span>`:''}${p.demo?`<span class="pill soft">${t('Demo')}</span>`:''}</div></div>${closeBtn()}</div>
   <div class="tabs">${[['ficha','Ficha'],['contrato','Contrato'],['notas','Notas'],['historial','Historial']].map(([k,l])=>`<button data-action="tab" data-id="${k}" class="${tab===k?'on':''}">${t(l)}</button>`).join('')}</div>
   <div>${body}</div>
   ${store.canWrite?`<div class="fbar"><button class="btn danger" data-action="del-player" data-id="${p.id}" data-confirm="1">${t('Eliminar')}</button><button class="btn" data-action="dup-player" data-id="${p.id}">${t('Duplicar')}</button><button class="btn primary" data-action="edit-player" data-id="${p.id}">${t('Editar')}</button></div>`:''}`;
@@ -665,16 +775,16 @@ function playerForm(s){ const p=s.draft||D.players.find(x=>x.id===s.id)||{};
   const optL={'':'Sin opción',club:'Opción club',jugador:'Opción jugador',mutua:'Opción mutua'};
   return `<div class="ph"><h2>${p.id?t('Editar'):t('Nuevo jugador')}</h2>${closeBtn()}</div>
   <form class="form" id="playerForm">${p.id?`<input type="hidden" name="id" value="${esc(p.id)}">`:''}${s.fromTarget?`<input type="hidden" name="fromTarget" value="${esc(s.fromTarget)}">`:''}
-  <h3>${t('Identidad')}</h3>${f(t('Nombre'),inp('nombre',p.nombre,'text','required'))}${f(t('Apellido'),inp('apellido',p.apellido,'text','required'))}${f(t('Fecha de nacimiento'),inp('nacimiento',p.nacimiento,'date'))}${f(t('Nacionalidad (código)'),inp('nacionalidad',p.nacionalidad,'text','maxlength="2" list="countries" placeholder="FR"'))}<datalist id="countries">${COUNTRIES.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('')}</datalist>
+  <h3>${t('Identidad')}</h3>${f(t('Nombre'),inp('nombre',p.nombre,'text','required'))}${f(t('Apellido'),inp('apellido',p.apellido,'text','required'))}${f(t('Fecha de nacimiento'),inp('nacimiento',p.nacimiento,'date'))}${f(t('Nacionalidad (código)'),inp('nacionalidad',p.nacionalidad,'text','maxlength="2" list="countries" placeholder="FR"'))}<datalist id="countries">${COUNTRIES.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('')}</datalist>${photoField(p)}
   <h3>${t('Deportivo')}</h3>${f(t('Equipo'),sel('equipo',p.equipo||(TF==='F'?'F':'M'),[['M',t('Masculino')],['F',t('Femenino')]]))}${f(t('Categoría'),sel('categoria',p.categoria||'pro',[['pro',t('Profesional')],['formacion',t('Formación')]]))}${f(t('Posición principal'),sel('posicion',p.posicion||'CE',POS.map(x=>[x,posL(x)])))}${f(t('Posición secundaria'),sel('posicion2',p.posicion2||'',[['',t('Ninguna')],...POS.map(x=>[x,posL(x)])]))}${f(t('Mano'),sel('mano',p.mano||'D',[['D',t('Derecha')],['I',t('Izquierda')],['A',t('Ambas')]]))}${f(t('Dorsal'),inp('dorsal',p.dorsal,'text','inputmode="numeric"'))}${f(t('Altura')+' (cm)',inp('altura',p.altura,'number','min="140" max="230"'))}${f(t('Peso')+' (kg)',inp('peso',p.peso,'number','min="40" max="160"'))}
-  <h3>${t('Contrato')}</h3>${f(t('Estado'),sel('estado',p.estado||'activo',STATUS.map(x=>[x,stL(x)])))}${f(t('Salario bruto mensual')+' (€)',inp('salarioMensual',p.salarioMensual,'number','min="0" step="100"'))}${f(t('Inicio'),inp('contratoInicio',p.contratoInicio||isoD(sStart(CUR)),'date'))}${f(t('Fin'),inp('contratoFin',p.contratoFin||isoD(sEnd(CUR+1)),'date','required'))}${f(t('Opción'),sel('opcion',p.opcion||'',Object.entries(optL).map(([k,l])=>[k,t(l)])))}${f(t('Años de opción'),inp('opcionAnios',p.opcionAnios||1,'number','min="1" max="3"'))}${f(t('Fecha límite opción'),inp('opcionFecha',p.opcionFecha,'date'))}${f(t('Cláusula de rescisión')+' (€)',inp('clausula',p.clausula,'number','min="0" step="1000"'))}${f(t('Valor de mercado')+' (€)',inp('valorMercado',p.valorMercado,'number','min="0" step="1000"'))}${f(t('Club donde está cedido'),inp('cedidoClub',p.cedidoClub))}${f(t('Club de origen'),inp('clubOrigen',p.clubOrigen))}
+  <h3>${t('Contrato')}</h3>${f(t('Estado'),sel('estado',p.estado||'activo',STATUS.map(x=>[x,stL(x)])))}${f(t('Salario bruto mensual')+' (€)',inp('salarioMensual',p.salarioMensual,'number','min="0" step="100"'))}${f(t('Inicio'),inp('contratoInicio',p.contratoInicio||isoD(sStart(CUR)),'date'))}${f(t('Fin'),inp('contratoFin',p.contratoFin||isoD(sEnd(CUR+1)),'date','required'))}<div class="f"><label>&nbsp;</label><label style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--fg)"><input type="checkbox" id="in-finEstimado" name="finEstimado" ${p.finEstimado?'checked':''} style="width:auto;margin-right:6px">${t('Fecha de fin estimada (a confirmar)')}</label></div>${f(t('Opción'),sel('opcion',p.opcion||'',Object.entries(optL).map(([k,l])=>[k,t(l)])))}${f(t('Años de opción'),inp('opcionAnios',p.opcionAnios||1,'number','min="1" max="3"'))}${f(t('Fecha límite opción'),inp('opcionFecha',p.opcionFecha,'date'))}${f(t('Cláusula de rescisión')+' (€)',inp('clausula',p.clausula,'number','min="0" step="1000"'))}${f(t('Valor de mercado')+' (€)',inp('valorMercado',p.valorMercado,'number','min="0" step="1000"'))}${f(t('Club donde está cedido'),inp('cedidoClub',p.cedidoClub))}${f(t('Club de origen'),inp('clubOrigen',p.clubOrigen))}
   <h3>${t('Representación')}</h3>${f(t('Agente'),inp('agente',p.agente))}${f(t('Teléfono agente'),inp('agenteTel',p.agenteTel,'tel'))}
   <h3>${t('Otros')}</h3>${f(t('Observaciones privadas'),`<textarea id="in-observaciones" name="observaciones">${esc(p.observaciones)}</textarea>`,true)}
   <div class="fbar full"><button class="btn" type="button" data-action="${p.id?'open-player':'close'}" data-id="${esc(p.id||'')}">${t('Cancelar')}</button><button class="btn primary" type="submit">${t('Guardar')}</button></div></form>`;
 }
 function targetView(s){ const x=D.targets.find(y=>y.id===s.id); if(!x){ closeDrawer(); return ''; } const a=age(x.nacimiento);
   const kv=(k,v,full)=>`<div class="${full?'full':''}"><div class="k">${esc(k)}</div><div class="v">${v||'—'}</div></div>`;
-  return `<div class="ph"><div class="av lg ${x.equipo==='F'?'f':''}" style="background:linear-gradient(145deg,var(--good),#0a6b3a)">${esc(initials(x))}</div><div style="min-width:0"><h2>${esc(fullName(x))}</h2><div class="chips">${teamTag(x.equipo)}<span class="pill soft">${esc(posL(x.posicion))}</span>${a!==null?`<span class="pill soft">${a} ${t('años')}</span>`:''}<span class="pill soft">${flag(x.nacionalidad)} ${esc(x.nacionalidad||'')}</span><span class="pill soft">${handL(x.mano)}</span><span class="pill"><i class="prio ${x.prioridad||'media'}"></i>${t(PRL[x.prioridad]||'Media')}</span>${x.demo?`<span class="pill soft">${t('Demo')}</span>`:''}</div></div>${closeBtn()}</div>
+  return `<div class="ph">${avatar(x,'lg','background:linear-gradient(145deg,var(--good),#0a6b3a)')}<div style="min-width:0"><h2>${esc(fullName(x))}</h2><div class="chips">${teamTag(x.equipo)}<span class="pill soft">${esc(posL(x.posicion))}</span>${a!==null?`<span class="pill soft">${a} ${t('años')}</span>`:''}<span class="pill soft">${flag(x.nacionalidad)} ${esc(x.nacionalidad||'')}</span><span class="pill soft">${handL(x.mano)}</span><span class="pill"><i class="prio ${x.prioridad||'media'}"></i>${t(PRL[x.prioridad]||'Media')}</span>${x.demo?`<span class="pill soft">${t('Demo')}</span>`:''}</div></div>${closeBtn()}</div>
   ${store.canWrite?`<div class="f"><label class="mini">${t('Etapa')}</label><div class="seg" style="flex-wrap:wrap">${STAGES.map(st=>`<button data-action="set-stage" data-id="${x.id}" data-v="${st}" class="${x.etapa===st?'on':''}">${esc(stgL(st))}</button>`).join('')}</div></div>`:`<div>${t('Etapa')}: <b>${esc(stgL(x.etapa))}</b></div>`}
   <div class="kv">${kv(t('Club actual'),esc(x.clubActual))}${kv(t('Liga'),esc(x.liga))}${kv(t('Fin contrato actual'),fmtD(x.finContrato))}${kv(t('Altura'),x.altura?x.altura+' cm':'')}${kv(t('Costo de traspaso estimado'),x.costoTraspaso?fmtEUR(x.costoTraspaso):'')}${kv(t('Salario pedido'),x.salarioPedido?fmtEUR(x.salarioPedido)+'/'+t('meses').slice(0,3):'')}${kv(t('Agente'),esc(x.agente))}${kv(t('Scout responsable'),esc(x.scout))}${kv(t('Próximo paso'),(x.proximoPaso?fmtD(x.proximoPaso)+' · ':'')+esc(x.proximoPasoTexto||''),true)}${kv(t('Observaciones privadas'),esc(x.observaciones),true)}</div>
   <h3>${t('Notas')}</h3>${store.canWrite?`<form class="addnote" id="noteForm" data-coll="targets" data-id="${x.id}"><textarea id="noteText" name="texto" placeholder="${t('Escribí una nota de seguimiento…')}" required></textarea><button class="btn primary" type="submit">${t('Agregar nota')}</button></form>`:''}<div class="list">${(x.notas||[]).length?[...x.notas].reverse().map(n=>`<div class="note" style="margin-top:8px"><div class="d">${fmtD(n.f)}</div><div>${esc(n.t)}</div></div>`).join(''):`<p class="mini">${t('Sin notas.')}</p>`}</div>
@@ -683,7 +793,7 @@ function targetView(s){ const x=D.targets.find(y=>y.id===s.id); if(!x){ closeDra
 function targetForm(s){ const x=D.targets.find(y=>y.id===s.id)||{};
   return `<div class="ph"><h2>${x.id?t('Editar'):t('Nuevo objetivo')}</h2>${closeBtn()}</div>
   <form class="form" id="targetForm">${x.id?`<input type="hidden" name="id" value="${esc(x.id)}">`:''}
-  <h3>${t('Identidad')}</h3>${f(t('Nombre'),inp('nombre',x.nombre,'text','required'))}${f(t('Apellido'),inp('apellido',x.apellido,'text','required'))}${f(t('Fecha de nacimiento'),inp('nacimiento',x.nacimiento,'date'))}${f(t('Nacionalidad (código)'),inp('nacionalidad',x.nacionalidad,'text','maxlength="2" list="countries2" placeholder="FR"'))}<datalist id="countries2">${COUNTRIES.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('')}</datalist>
+  <h3>${t('Identidad')}</h3>${f(t('Nombre'),inp('nombre',x.nombre,'text','required'))}${f(t('Apellido'),inp('apellido',x.apellido,'text','required'))}${f(t('Fecha de nacimiento'),inp('nacimiento',x.nacimiento,'date'))}${f(t('Nacionalidad (código)'),inp('nacionalidad',x.nacionalidad,'text','maxlength="2" list="countries2" placeholder="FR"'))}<datalist id="countries2">${COUNTRIES.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('')}</datalist>${photoField(x)}
   <h3>${t('Deportivo')}</h3>${f(t('Equipo'),sel('equipo',x.equipo||(TF==='F'?'F':'M'),[['M',t('Masculino')],['F',t('Femenino')]]))}${f(t('Puesto'),sel('posicion',x.posicion||'CE',POS.map(p=>[p,posL(p)])))}${f(t('Mano'),sel('mano',x.mano||'D',[['D',t('Derecha')],['I',t('Izquierda')],['A',t('Ambas')]]))}${f(t('Altura')+' (cm)',inp('altura',x.altura,'number','min="140" max="230"'))}${f(t('Club actual'),inp('clubActual',x.clubActual))}${f(t('Liga'),inp('liga',x.liga))}${f(t('Fin contrato actual'),inp('finContrato',x.finContrato,'date'))}
   <h3>${t('Negociación')}</h3>${f(t('Etapa'),sel('etapa',x.etapa||'observado',STAGES.map(st=>[st,stgL(st)])))}${f(t('Prioridad'),sel('prioridad',x.prioridad||'media',PRIO.map(p=>[p,t(PRL[p])])))}${f(t('Costo de traspaso estimado')+' (€)',inp('costoTraspaso',x.costoTraspaso,'number','min="0" step="1000"'))}${f(t('Salario pedido')+' (€/'+t('meses').slice(0,3)+')',inp('salarioPedido',x.salarioPedido,'number','min="0" step="100"'))}${f(t('Agente'),inp('agente',x.agente))}${f(t('Scout responsable'),inp('scout',x.scout))}${f(t('Fecha próximo paso'),inp('proximoPaso',x.proximoPaso,'date'))}${f(t('Próximo paso'),inp('proximoPasoTexto',x.proximoPasoTexto))}
   ${f(t('Observaciones privadas'),`<textarea id="in-observaciones" name="observaciones">${esc(x.observaciones)}</textarea>`,true)}
@@ -706,7 +816,7 @@ function render(){
 function go(r){ route=NAV.some(n=>n[0]===r)?r:'panel'; if(location.hash!=='#'+route) history.replaceState(null,'',location.pathname+'#'+route); render(); window.scrollTo({top:0}); }
 
 /* ---------- actions ---------- */
-const fd=form=>{ const o={}; new FormData(form).forEach((v,k)=>{ o[k]=typeof v==='string'?v.trim():v; }); return o; };
+const fd=form=>{ const o={}; new FormData(form).forEach((v,k)=>{ if(typeof v==='string') o[k]=v.trim(); }); return o; };
 const numOrNull=v=>v===''||v===undefined?null:Number(v);
 document.addEventListener('click',async e=>{
   const el=e.target.closest('[data-action]'); if(!el) return; const act=el.dataset.action, id=el.dataset.id;
@@ -720,6 +830,12 @@ document.addEventListener('click',async e=>{
     case 'close': closeDrawer(); break;
     case 'open-player': openDrawer({type:'player',id,tab:drawerState&&drawerState.id===id?drawerState.tab:'ficha'}); break;
     case 'open-target': openDrawer({type:'target',id}); break;
+    case 'open-staff': openDrawer({type:'staff',id}); break;
+    case 'new-staff': openDrawer({type:'staff',mode:'edit'}); break;
+    case 'edit-staff': openDrawer({type:'staff',mode:'edit',id}); break;
+    case 'del-staff': { const p=D.staff.find(x=>x.id===id); closeDrawer(); await store.remove('staff',id); store.log(`${t('Eliminado')}: ${staffL(p)} (${roleL(p.rol)})`); toast(t('Eliminado')); break; }
+    case 'court-season': courtSeason=Number(id); render(); break;
+    case 'clear-photo': { const h=$('#in-foto'); if(h) h.value=''; const pv=$('#photoPreview'); if(pv) pv.textContent='?'; el.remove(); break; }
     case 'new-player': openDrawer({type:'player',mode:'edit'}); break;
     case 'new-target': openDrawer({type:'target',mode:'edit'}); break;
     case 'edit-player': openDrawer({type:'player',mode:'edit',id}); break;
@@ -735,21 +851,24 @@ document.addEventListener('click',async e=>{
     case 'export-csv': exportCSV(); break;
     case 'export-json': exportJSON(); break;
     case 'load-demo': await loadDemo(); break;
-    case 'clear-demo': { for(const p of D.players.filter(x=>x.demo)) await store.remove('players',p.id); for(const x of D.targets.filter(y=>y.demo)) await store.remove('targets',x.id); for(const k of D.tasks.filter(y=>y.demo)) await store.remove('tasks',k.id); await store.log(t('Datos de demostración eliminados')); toast(t('Datos de demostración eliminados')); break; }
-    case 'clear-all': { for(const p of [...D.players]) await store.remove('players',p.id); for(const x of [...D.targets]) await store.remove('targets',x.id); for(const k of [...D.tasks]) await store.remove('tasks',k.id); await store.saveSettings(defaultSettings()); toast(t('Eliminado')); break; }
+    case 'clear-demo': { for(const p of D.players.filter(x=>x.demo)) await store.remove('players',p.id); for(const x of D.targets.filter(y=>y.demo)) await store.remove('targets',x.id); for(const k of D.tasks.filter(y=>y.demo)) await store.remove('tasks',k.id); for(const k of D.staff.filter(y=>y.demo)) await store.remove('staff',k.id); await store.log(t('Datos de demostración eliminados')); toast(t('Datos de demostración eliminados')); break; }
+    case 'clear-all': { for(const p of [...D.players]) await store.remove('players',p.id); for(const x of [...D.targets]) await store.remove('targets',x.id); for(const k of [...D.tasks]) await store.remove('tasks',k.id); for(const k of [...D.staff]) await store.remove('staff',k.id); await store.saveSettings(defaultSettings()); toast(t('Eliminado')); break; }
   }}catch(err){ console.warn(err); }
 });
 document.addEventListener('submit',async e=>{
   const form=e.target; e.preventDefault();
   try{
   if(form.id==='playerForm'){ const o=fd(form); const prev=o.id?D.players.find(x=>x.id===o.id):null;
-    const p={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),equipo:o.equipo,categoria:o.categoria,posicion:o.posicion,posicion2:o.posicion2||null,mano:o.mano,dorsal:o.dorsal||'',altura:numOrNull(o.altura),peso:numOrNull(o.peso),estado:o.estado,salarioMensual:numOrNull(o.salarioMensual),contratoInicio:o.contratoInicio||null,contratoFin:o.contratoFin||null,opcion:o.opcion||'',opcionAnios:numOrNull(o.opcionAnios)||1,opcionFecha:o.opcionFecha||null,clausula:numOrNull(o.clausula),valorMercado:numOrNull(o.valorMercado),cedidoClub:o.cedidoClub||'',clubOrigen:o.clubOrigen||'',agente:o.agente||'',agenteTel:o.agenteTel||'',observaciones:o.observaciones||'',notas:(prev&&prev.notas)||[],historial:(prev&&prev.historial)||[],demo:prev?!!prev.demo:false};
+    const p={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),equipo:o.equipo,categoria:o.categoria,posicion:o.posicion,posicion2:o.posicion2||null,mano:o.mano,dorsal:o.dorsal||'',altura:numOrNull(o.altura),peso:numOrNull(o.peso),estado:o.estado,salarioMensual:numOrNull(o.salarioMensual),contratoInicio:o.contratoInicio||null,contratoFin:o.contratoFin||null,opcion:o.opcion||'',opcionAnios:numOrNull(o.opcionAnios)||1,opcionFecha:o.opcionFecha||null,clausula:numOrNull(o.clausula),valorMercado:numOrNull(o.valorMercado),cedidoClub:o.cedidoClub||'',clubOrigen:o.clubOrigen||'',agente:o.agente||'',agenteTel:o.agenteTel||'',observaciones:o.observaciones||'',foto:o.foto||null,finEstimado:!!o.finEstimado,notas:(prev&&prev.notas)||[],historial:(prev&&prev.historial)||[],demo:prev?!!prev.demo:false};
     if(!prev||prev.contratoFin!==p.contratoFin||prev.salarioMensual!==p.salarioMensual){ if(prev&&prev.contratoFin) p.historial=[...p.historial,{desde:prev.contratoInicio,hasta:prev.contratoFin,club:'MHB',detalle:prev.salarioMensual?fmtEUR(prev.salarioMensual)+'/m':''}]; }
     await store.save('players',p); if(o.fromTarget){ const x=D.targets.find(y=>y.id===o.fromTarget); if(x){ await store.save('targets',{...x,etapa:'fichado'}); } }
     store.log(`${prev?t('Editar'):t('Nuevo jugador')}: ${fullName(p)} (${posL(p.posicion)}, ${t('Vence').toLowerCase()} ${fmtDs(p.contratoFin)})`); toast(t('Guardado')); openDrawer({type:'player',id:p.id,tab:'ficha'}); }
   else if(form.id==='targetForm'){ const o=fd(form); const prev=o.id?D.targets.find(x=>x.id===o.id):null;
-    const x={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),equipo:o.equipo,posicion:o.posicion,mano:o.mano,altura:numOrNull(o.altura),clubActual:o.clubActual||'',liga:o.liga||'',finContrato:o.finContrato||null,etapa:o.etapa,prioridad:o.prioridad,costoTraspaso:numOrNull(o.costoTraspaso),salarioPedido:numOrNull(o.salarioPedido),agente:o.agente||'',scout:o.scout||'',proximoPaso:o.proximoPaso||null,proximoPasoTexto:o.proximoPasoTexto||'',observaciones:o.observaciones||'',notas:(prev&&prev.notas)||[],demo:prev?!!prev.demo:false};
+    const x={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),equipo:o.equipo,posicion:o.posicion,mano:o.mano,altura:numOrNull(o.altura),clubActual:o.clubActual||'',liga:o.liga||'',finContrato:o.finContrato||null,etapa:o.etapa,prioridad:o.prioridad,costoTraspaso:numOrNull(o.costoTraspaso),salarioPedido:numOrNull(o.salarioPedido),agente:o.agente||'',scout:o.scout||'',proximoPaso:o.proximoPaso||null,proximoPasoTexto:o.proximoPasoTexto||'',observaciones:o.observaciones||'',foto:o.foto||null,notas:(prev&&prev.notas)||[],demo:prev?!!prev.demo:false};
     await store.save('targets',x); store.log(`${prev?t('Editar'):t('Nuevo objetivo')}: ${fullName(x)} (${stgL(x.etapa)})`); toast(t('Guardado')); openDrawer({type:'target',id:x.id}); }
+  else if(form.id==='staffForm'){ const o=fd(form); const prev=o.id?D.staff.find(x=>x.id===o.id):null;
+    const p={...(prev||{}),id:o.id||uid(),nombre:o.nombre,apellido:o.apellido,rol:o.rol,equipo:o.equipo,nacimiento:o.nacimiento||null,nacionalidad:(o.nacionalidad||'').toUpperCase(),contratoInicio:o.contratoInicio||null,contratoFin:o.contratoFin||null,finEstimado:!!o.finEstimado,salarioMensual:numOrNull(o.salarioMensual),telefono:o.telefono||'',observaciones:o.observaciones||'',foto:o.foto||null,notas:(prev&&prev.notas)||[],demo:prev?!!prev.demo:false};
+    await store.save('staff',p); store.log(`${prev?t('Editar'):t('Nuevo miembro del staff')}: ${staffL(p)} (${roleL(p.rol)})`); toast(t('Guardado')); openDrawer({type:'staff',id:p.id}); }
   else if(form.id==='noteForm'){ const coll=form.dataset.coll, id=form.dataset.id; const o=fd(form); if(!o.texto) return; const obj={...D[coll].find(x=>x.id===id)}; obj.notas=[...(obj.notas||[]),{f:isoD(today),t:o.texto}]; await store.save(coll,obj); store.log(`${t('Notas')} · ${fullName(obj)}: ${o.texto.slice(0,60)}`); form.reset(); toast(t('Guardado')); if(store.mode==='local') renderDrawer(); }
   else if(form.id==='histForm'){ const o=fd(form); const p={...D.players.find(x=>x.id===form.dataset.id)}; p.historial=[...(p.historial||[]),{desde:o.desde||null,hasta:o.hasta||null,club:o.club||'',detalle:o.detalle||''}]; await store.save('players',p); form.reset(); toast(t('Guardado')); if(store.mode==='local') renderDrawer(); }
   else if(form.id==='taskForm'){ const o=fd(form); await store.save('tasks',{id:uid(),titulo:o.titulo,fecha:o.fecha,tipo:o.tipo,hecho:false}); form.reset(); $('#tFecha').value=isoD(today); toast(t('Guardado')); }
@@ -759,7 +878,8 @@ document.addEventListener('submit',async e=>{
 document.addEventListener('change',async e=>{
   const el=e.target;
   if(el.dataset.filter){ plantelF[el.dataset.filter]=el.value; render(); }
-  if(el.id==='importFile'&&el.files[0]){ try{ const txt=await el.files[0].text(); const d=JSON.parse(txt); for(const p of d.players||[]) await store.save('players',p); for(const x of d.targets||[]) await store.save('targets',x); for(const k of d.tasks||[]) await store.save('tasks',k); if(d.settings) await store.saveSettings(Object.assign(defaultSettings(),d.settings)); toast(t('Importado')); }catch(err){ toast(t('No se pudo guardar')); } }
+  if(el.id==='in-fotoFile'&&el.files[0]){ try{ const data=await resizeImage(el.files[0],120,180); const h=$('#in-foto'); if(h) h.value=data; const pv=$('#photoPreview'); if(pv) pv.innerHTML=`<img src="${data}" alt="">`; }catch(err){ toast(t('No se pudo guardar')); } }
+  if(el.id==='importFile'&&el.files[0]){ try{ const txt=await el.files[0].text(); const d=JSON.parse(txt); for(const p of d.players||[]) await store.save('players',p); for(const x of d.targets||[]) await store.save('targets',x); for(const k of d.tasks||[]) await store.save('tasks',k); for(const k of d.staff||[]) await store.save('staff',k); if(d.settings) await store.saveSettings(Object.assign(defaultSettings(),d.settings)); toast(t('Importado')); }catch(err){ toast(t('No se pudo guardar')); } }
 });
 $('#q').addEventListener('input',e=>{ q=e.target.value; if(route!=='plantel'&&q) go('plantel'); else render(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&drawerState) closeDrawer(); });
@@ -786,7 +906,7 @@ async function deliver(filename,text,mime){
 function exportCSV(){ const cols=['equipo','nombre','apellido','posicion','posicion2','nacimiento','nacionalidad','mano','altura','peso','dorsal','categoria','estado','contratoInicio','contratoFin','salarioMensual','opcion','opcionAnios','opcionFecha','clausula','valorMercado','agente','agenteTel','cedidoClub','clubOrigen'];
   const esc2=v=>{ v=v===null||v===undefined?'':String(v); return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
   const txt='﻿'+cols.join(';')+'\n'+players().map(p=>cols.map(c=>esc2(p[c])).join(';')).join('\n'); deliver('mhb-plantel.csv',txt,'text/csv'); }
-function exportJSON(){ deliver('mhb-respaldo.json',JSON.stringify({players:D.players,targets:D.targets,tasks:D.tasks,settings:D.settings,exportado:new Date().toISOString()},null,2),'application/json'); }
+function exportJSON(){ deliver('mhb-respaldo.json',JSON.stringify({players:D.players,targets:D.targets,tasks:D.tasks,staff:D.staff,settings:D.settings,exportado:new Date().toISOString()},null,2),'application/json'); }
 
 /* ---------- demo data (fictional, flagged demo:true) ---------- */
 function demoData(){
